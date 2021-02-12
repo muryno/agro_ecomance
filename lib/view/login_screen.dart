@@ -1,7 +1,10 @@
 import 'package:agro_ecomance/entity/request/login_request.dart';
+import 'package:agro_ecomance/entity/request/openBefore.dart';
+import 'package:agro_ecomance/rxbloc_pattern/login_bloc.dart';
 import 'package:agro_ecomance/utils/RaisedGradientButton.dart';
 import 'package:agro_ecomance/utils/constants/page_route_constants.dart';
 import 'package:agro_ecomance/utils/reuseable.dart';
+import 'package:agro_ecomance/utils/share_pref.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,12 +30,28 @@ class _LoginPage extends State<LoginScreen>{
 
   final progressKey = GlobalKey();
 
-  var _userName = TextEditingController();
+  var _email = TextEditingController();
   var _password = TextEditingController();
 
   bool _showPassword = true;
 
 
+  login_request   usr;
+  @override
+  void initState() {
+
+
+    StorageUtil.saveopenedApp(openBefore(openned: true));
+
+
+    StorageUtil.getUserDataBiometric().then((value) {
+      if (value != null){
+        this.usr = value;
+      }
+
+    });
+    super.initState();
+  }
 
 
 
@@ -51,9 +70,15 @@ class _LoginPage extends State<LoginScreen>{
 
     Widget userName = Container(
         child: TextFormField(
-          controller: _userName,
+          controller: _email,
           decoration: ReUseAble().inputWithoutIcon(hint: 'Email',label: 'Email'),
-          keyboardType: TextInputType.text,
+          keyboardType: TextInputType.emailAddress,
+          validator: (value){
+            if(value.isEmpty   ){
+              return 'Enter Your Email Address';
+            }
+            return null;
+          },
         )
     );
 
@@ -97,6 +122,13 @@ class _LoginPage extends State<LoginScreen>{
               )),
 
           keyboardType: TextInputType.text,
+
+          validator: (value){
+            if(value.isEmpty   ){
+              return 'Enter Your Password';
+            }
+            return null;
+          },
         )
 
     );
@@ -173,9 +205,16 @@ class _LoginPage extends State<LoginScreen>{
                                   colors: <Color>[Color(0xff3EB120), Colors.greenAccent],
                                 ),
                                 onPressed: (){
-                                  Navigator.of(context).pushNamedAndRemoveUntil(
-                                      PageRouteConstants.dashBoardScreen, (r) => false
-                                  );
+
+                                  if (formKey.currentState.validate()) {
+
+                                    //String first_name,String last_name,String phone,String password,
+                                    loginBloc.attempLogin("user",  this._email.text,this._password.text, context);
+                                  }
+
+                                  // Navigator.of(context).pushNamedAndRemoveUntil(
+                                  //     PageRouteConstants.dashBoardScreen, (r) => false
+                                  // );
 
                                 }
                             ),
@@ -244,12 +283,12 @@ class _LoginPage extends State<LoginScreen>{
                                 hoverColor: Color(0XFF3ABC16),
                                 onTap: ()=>{
 
-                                  // if (usr!=null ){
-                                  //  // _authenticate(usr,context)
-                                  // }else{
-                                  //   ReUseAble().curvesDialog(context,"Not Available","TouchID / FaceID is not available for use. Login using username and password to activate", "ok")
-                                  // }
-                                  ReUseAble().curvesDialog(context,"Not Available","TouchID / FaceID is not available for use. Login using username and password to activate", "ok")
+                                  if (usr!=null ){
+                                   // _authenticate(usr,context)
+                                  }else{
+                                    ReUseAble().curvesDialog(context,"Not Available","TouchID / FaceID is not available for use. Login using username and password to activate", "ok")
+                                  }
+                                 // ReUseAble().curvesDialog(context,"Not Available","TouchID / FaceID is not available for use. Login using username and password to activate", "ok")
 
 
 
@@ -318,7 +357,7 @@ class _LoginPage extends State<LoginScreen>{
     if (!mounted) return;
 
     if (authenticated){
-     // loginBloc.attempLogin(usr.client,  usr.email_or_phone,usr.password, context);
+      loginBloc.attempLogin(usr.client,  usr.email_or_phone,usr.password, context);
 
     }
   }

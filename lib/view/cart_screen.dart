@@ -5,6 +5,7 @@
 
 
 import 'package:agro_ecomance/utils/RaisedGradientButton.dart';
+import 'package:agro_ecomance/utils/constants/page_route_constants.dart';
 import 'package:agro_ecomance/utils/reuseable.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -77,7 +78,7 @@ int count = 0;
 
 
 
-                ...List.generate(8, (index) =>   Container(
+                ...List.generate(3, (index) =>   Container(
 
                   height: 140,
 
@@ -175,16 +176,14 @@ int count = 0;
                   margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
                   child: RaisedGradientButton(
                       child: Text(
-                        'Login',
+                        'Continue',
                         style: TextStyle(fontSize: 18,fontFamily: 'GothamBold',color: Colors.white),
                       ),
                       gradient: LinearGradient(
                         colors: <Color>[Color(0xff3EB120), Colors.greenAccent],
                       ),
                       onPressed: (){
-                        // Navigator.of(context).pushNamedAndRemoveUntil(
-                        //     PageRouteConstants.dashBoardScreen, (r) => false
-                        // );
+                        Navigator.of(context).pushNamed(PageRouteConstants.addressScreen);
 
                       }
                   ),

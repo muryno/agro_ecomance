@@ -20,6 +20,9 @@ class UrlConstant {
   static const String UserData_Biometric = "UserDataBiometric";
 
   static const String openBefore = "openBefore";
+
+
+  static const String oTPScreen = "oTPScreen";
 //
 
   static const String connectionFails = "Server issue ..please try again"

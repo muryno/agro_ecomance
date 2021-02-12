@@ -1,4 +1,5 @@
 import 'package:agro_ecomance/entity/request/login_request.dart';
+import 'package:agro_ecomance/rxbloc_pattern/login_bloc.dart';
 import 'package:agro_ecomance/utils/RaisedGradientButton.dart';
 import 'package:agro_ecomance/utils/constants/page_route_constants.dart';
 import 'package:agro_ecomance/utils/reuseable.dart';
@@ -28,7 +29,8 @@ class _SignUpScreen extends State<SignUpScreen>{
   final progressKey = GlobalKey();
 
   var _fullName = TextEditingController();
-  var _userName = TextEditingController();
+  var _email = TextEditingController();
+  var _phone = TextEditingController();
   var _referalCode = TextEditingController();
   var _password = TextEditingController();
 
@@ -53,9 +55,34 @@ class _SignUpScreen extends State<SignUpScreen>{
 
     Widget userName = Container(
         child: TextFormField(
-          controller: _userName,
+          controller: _email,
           decoration: ReUseAble().inputWithoutIcon(hint: 'Email',label: 'Email'),
-          keyboardType: TextInputType.text,
+          keyboardType: TextInputType.emailAddress,
+
+
+          validator: (value){
+            if(value.isEmpty   ){
+              return 'Enter Your Email Address';
+            }
+            return null;
+          },
+        )
+    );
+
+
+    Widget phone = Container(
+        child: TextFormField(
+          controller: _phone,
+
+          decoration: ReUseAble().inputWithoutIcon(hint: 'Phone number',label: 'Phone number'),
+          keyboardType: TextInputType.number,
+
+          validator: (value){
+            if(value.isEmpty   ){
+              return 'Enter Your Phone number';
+            }
+            return null;
+          },
         )
     );
 
@@ -64,6 +91,12 @@ class _SignUpScreen extends State<SignUpScreen>{
           controller: _fullName,
           decoration: ReUseAble().inputWithoutIcon(hint: 'Full Name',label: 'Full Name'),
           keyboardType: TextInputType.text,
+          validator: (value){
+            if(value.isEmpty   ){
+              return 'Enter Your Full name';
+            }
+            return null;
+          },
         )
     );
 
@@ -106,6 +139,13 @@ class _SignUpScreen extends State<SignUpScreen>{
               )),
 
           keyboardType: TextInputType.text,
+
+          validator: (value){
+            if(value.isEmpty   ){
+              return 'Enter Your Password';
+            }
+            return null;
+          },
         )
 
     );
@@ -195,6 +235,8 @@ class _SignUpScreen extends State<SignUpScreen>{
                           SizedBox(height: 15,),
                           userName,
                           SizedBox(height: 15,),
+                          phone,
+                          SizedBox(height: 15,),
                           referalCode,
                           SizedBox(height: 15,),
                           password,
@@ -211,9 +253,12 @@ class _SignUpScreen extends State<SignUpScreen>{
                                   colors: <Color>[Color(0xff3EB120), Colors.greenAccent],
                                 ),
                                 onPressed: (){
-                                  Navigator.of(context).pushNamedAndRemoveUntil(
-                                      PageRouteConstants.dashBoardScreen, (r) => false
-                                  );
+                                  if (formKey.currentState.validate()) {
+                                    loginBloc.startSignUp(_phone.text, _referalCode.text, _fullName.text, _password.text, _email.text, context);
+                                    //String first_name,String last_name,String phone,String password,
+                                 //   loginBloc.attempLogin("user",  this._email.text,this._password.text, context);
+                                  }
+
                                 }
                             ),
                           ),

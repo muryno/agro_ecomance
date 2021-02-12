@@ -12,6 +12,20 @@ class PageRouteConstants {
   static const String itemDashBoardDetailsScreen = '/ItemDashBoardDetailsScreen';
 
   static const String cartScreen = '/CartScreen';
+
+
+  static const String addressScreen = '/AddressScreen';
+
+  static const String addAddressScreen = '/AddAddressScreen';
+
+  static const String paymentScreen = '/PaymentScreen';
+
+  static const String checkOutScreen = '/CheckOutScreen';
+
+  static const String confirmPaymentScreen = '/ConfirmPaymentScreen';
+
+  static const String oTPScreen = '/OTPScreen';
+
 //
 
 

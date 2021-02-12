@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'Sign_up_screen.dart';
+import 'add_address_screen.dart';
+import 'address_screen.dart';
 import 'cart_screen.dart';
 import 'dashboard.dart';
 import 'login_screen.dart';

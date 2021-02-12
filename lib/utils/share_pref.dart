@@ -6,6 +6,9 @@ import 'dart:convert';
 
 
 import 'package:agro_ecomance/entity/request/login_request.dart';
+import 'package:agro_ecomance/entity/request/openBefore.dart';
+import 'package:agro_ecomance/entity/responds/UserProfile.dart';
+import 'package:agro_ecomance/entity/responds/loginToken.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -31,9 +34,27 @@ class StorageUtil {
 
 
 
+  static Future<loginToken> getUser() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    final str = pref.getString(UrlConstant.USER_PREF);
+    if(str != null){
+      final Map<String, dynamic> json = jsonDecode(str);
+      return loginToken.fromJson(json);
+    }
+    else
+      return null;
+  }
+
+
   static  clearUser() async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     pref.clear();
+  }
+
+  static Future<void> saveUser(loginToken value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var str = value != null ? jsonEncode(value) : value;
+    prefs.setString(UrlConstant.USER_PREF, str);
   }
 
   static Future<void> clearUsers(login_request str) async {
@@ -63,7 +84,41 @@ class StorageUtil {
   }
 
 
+  static Future<UserProfileData> getProfileUser() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    final str = pref.getString(UrlConstant.USER_PROF_PREF);
+    if(str != null){
+      final Map<String, dynamic> json = jsonDecode(str);
+      return UserProfileData.fromJson(json);
+    }
+    else
+      return null;
+  }
 
+  static Future<void> saveProfileUser(UserProfileData value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var str = value != null ? jsonEncode(value) : value;
+    prefs.setString(UrlConstant.USER_PROF_PREF, str);
+  }
+
+
+
+  static Future<openBefore> openedApp() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    final str = pref.getString(UrlConstant.openBefore);
+    if(str != null){
+      final Map<String, dynamic> json = jsonDecode(str);
+      return openBefore.fromJson(json);
+    }
+    else
+      return null;
+  }
+
+  static Future<void> saveopenedApp(openBefore value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var str = value != null ? jsonEncode(value) : value;
+    prefs.setString(UrlConstant.openBefore, str);
+  }
 
 
 

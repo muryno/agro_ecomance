@@ -2,7 +2,9 @@
 
 
 
+import 'package:agro_ecomance/server/retrofit_clients.dart';
 import 'package:agro_ecomance/utils/constants/page_route_constants.dart';
+import 'package:agro_ecomance/utils/share_pref.dart';
 import 'package:flutter/material.dart';
 
 
@@ -50,9 +52,33 @@ class _SplashScreenStates extends State<SplashScreens>
     CurvedAnimation(parent: animationController, curve: Curves.easeOut)
       ..addListener(() {
         if (animationController.isCompleted) {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              PageRouteConstants.view_page, (r) => false
-          );
+
+
+
+          StorageUtil.getUser().then((value) {
+            if (value != null){
+              RetrofitClientInstance.getInstance().reset();
+
+              if (value?.data?.access_token != null){
+
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    PageRouteConstants.dashBoardScreen, (r) => false
+                );
+
+              }
+              else{
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    PageRouteConstants.view_page, (r) => false
+                );
+              }
+
+            }
+            else
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  PageRouteConstants.view_page, (r) => false
+              );
+
+          });
 
         }
 
