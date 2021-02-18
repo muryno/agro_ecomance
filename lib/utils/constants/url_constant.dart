@@ -25,9 +25,9 @@ class UrlConstant {
   static const String oTPScreen = "oTPScreen";
 //
 
-  static const String connectionFails = "Server issue ..please try again"
-  ;
+  static const String connectionFails = "Server issue ..please try again";
 
+  static const String Hero = "HeroTag";
 
 
   static const String      PAYSTACK_SECRETE_kEY     = "sk_test_fed4351c219536b23945d7bb4c72ec5d4ddbc8f2";

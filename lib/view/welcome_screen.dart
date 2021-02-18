@@ -8,6 +8,7 @@ import 'dart:io';
 import 'package:agro_ecomance/utils/RaisedGradientButton.dart';
 import 'package:agro_ecomance/utils/constants/page_route_constants.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 
@@ -78,33 +79,57 @@ class _WelcomeScreen extends State<WelcomeScreen>{
                 ),
 
                 SizedBox(
-                  height: 56.0,
+                  height: 26.0,
                 ),
+
 
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
                   child: RaisedGradientButton(
                       child: Text(
-                        'Login',
-                        style: TextStyle(fontSize: 18,fontFamily: 'GothamBold',color: Colors.white),
+                        'Sign Up with email or phone number',
+                        style: TextStyle(fontSize: 14,fontFamily: 'PoppinsBook',color: Colors.white),
                       ),
                       gradient: LinearGradient(
                         colors: <Color>[Color(0xff3EB120), Colors.greenAccent],
                       ),
                       onPressed: (){
-                        Navigator.of(context).pushNamed(PageRouteConstants.loginScreen);
+                        Navigator.of(context).pushNamed(PageRouteConstants.signUpScreen);
                       }
                   ),
                 ),
+
+
+
                 SizedBox(
                   height: 30.0,
                 ),
 
+              RichText(
+                text: new TextSpan(
+                  text: 'Already registered? ',
+                  style: DefaultTextStyle.of(context).style,
+                  children: <TextSpan>[
+                    TextSpan(
+                    text: ' Login',
+                        style: TextStyle(fontSize: 16,fontFamily: 'PoppinsBold',color: Color(0xff3DAF1C)),
+
+
+                        recognizer: TapGestureRecognizer()..onTap = () =>{
+                        Navigator.of(context).pushNamed(PageRouteConstants.loginScreen)
+                        }
+                     ),
+
+                  ],
+                ),
+              ),
+
+                SizedBox(height: 20,),
                 InkWell(
                   onTap: (){
-                    Navigator.of(context).pushNamed(PageRouteConstants.signUpScreen);
+                    Navigator.of(context).pushNamed(PageRouteConstants.dashBoardScreen);
                   },
-                  child:      Text("Sign Up",style: TextStyle(fontSize: 18,fontFamily: 'GothamBold',color: Colors.black),),
+                  child:      Text("Go back home",style: TextStyle(fontSize: 14,fontFamily: 'PoppinsBook',color: Colors.black),),
                 )
 
               ],
@@ -119,6 +144,10 @@ class _WelcomeScreen extends State<WelcomeScreen>{
 
   }
 
+
+  GestureRecognizer gotoLogin(){
+
+  }
 
 
 

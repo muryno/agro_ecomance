@@ -176,8 +176,6 @@ class LoginBloc {
 
                   Helper.loadingSuccessful("Success"),
                 StorageUtil.saveProfileUser(value.data),
-
-
           Navigator.of(context).pushNamedAndRemoveUntil(PageRouteConstants.dashBoardScreen,(r)=>false),
         }
 

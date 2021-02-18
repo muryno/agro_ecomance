@@ -3,11 +3,22 @@ import 'dart:convert';
 
 
 
+import 'package:agro_ecomance/entity/request/AddCart.dart';
+import 'package:agro_ecomance/entity/request/addNextOfKin.dart';
+import 'package:agro_ecomance/entity/request/addPersonalInfor.dart';
+import 'package:agro_ecomance/entity/request/bankReq.dart';
 import 'package:agro_ecomance/entity/request/login_request.dart';
 import 'package:agro_ecomance/entity/request/otpReq.dart';
+import 'package:agro_ecomance/entity/request/passReq.dart';
 import 'package:agro_ecomance/entity/request/signUpReq.dart';
+import 'package:agro_ecomance/entity/responds/BankRes.dart';
+import 'package:agro_ecomance/entity/responds/NextKinRes.dart';
+import 'package:agro_ecomance/entity/responds/ProductResp.dart';
 import 'package:agro_ecomance/entity/responds/SignUpRes.dart';
+import 'package:agro_ecomance/entity/responds/Slider.dart';
 import 'package:agro_ecomance/entity/responds/UserProfile.dart';
+import 'package:agro_ecomance/entity/responds/cart/CartData.dart';
+import 'package:agro_ecomance/entity/responds/delievryAddress/DeliveryAddressResp.dart';
 import 'package:agro_ecomance/entity/responds/loginToken.dart';
 import 'package:agro_ecomance/entity/userBase.dart';
 import 'package:agro_ecomance/utils/constants/url_constant.dart';
@@ -53,6 +64,48 @@ abstract class ApiRestClient {
   Future<loginToken> refreshToken();
 
 
+  //new
 
+  @GET("ecommerce/products?featured=1")
+  Future<ProductResp> getFeaturedProduct();
+
+  @GET("slides?perPage=6&type=ecommerce")
+  Future<Sliders> getSlider();
+
+
+
+  @PATCH("ecommerce/profile/nextOfKin")
+  Future<NextKinRes> nextOfKin(@Body() addNextOfKin usr);
+
+  @PATCH("ecommerce/profile/bank")
+  Future<BankRes> bankResp(@Body() bankReq usr);
+
+  @PATCH("ecommerce/profile/password")
+  Future<passReq> changePassword(@Body() passReq usr);
+
+  @PATCH("ecommerce/profile/personal")
+  Future<NextKinRes> updatePersonalInfor(@Body() addPersonalInfor usr);
+
+
+
+  @GET("ecommerce/profile/bank")
+  Future<BankRes> getBankDetails();
+
+
+
+  @POST("order/basket/add")
+  Future<CartData> addCart(@Body() AddCart usr);
+
+  @GET("order/basket")
+  Future<CartData> getCart();
+
+  @DELETE("order/basket/{id}")
+  Future<CartData> deleteCart(@Path('id') id);
+
+
+
+
+  @PATCH("ecommerce/delivery")
+  Future<DeliveryAddressResp> addDeliveryAddress(@Body() addNextOfKin usr);
 
 }

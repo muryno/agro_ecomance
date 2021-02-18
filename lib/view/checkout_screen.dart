@@ -1,7 +1,9 @@
 import 'package:agro_ecomance/entity/request/login_request.dart';
+import 'package:agro_ecomance/entity/responds/loginToken.dart';
 import 'package:agro_ecomance/utils/RaisedGradientButton.dart';
 import 'package:agro_ecomance/utils/constants/page_route_constants.dart';
 import 'package:agro_ecomance/utils/reuseable.dart';
+import 'package:agro_ecomance/utils/share_pref.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,11 +30,23 @@ class _CheckOutScreen extends State<CheckOutScreen>{
   final progressKey = GlobalKey();
   int count = 0;
 
+  loginToken _token;
+  @override
+  void initState() {
+
+    StorageUtil.getUser().then((value) {
+      if (value != null) {
+        _token = value;
+      }
+ });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery
         .of(context)
         .size;
+
 
 
 
@@ -256,8 +270,15 @@ class _CheckOutScreen extends State<CheckOutScreen>{
                             colors: <Color>[Color(0xff3EB120), Colors.greenAccent],
                           ),
                           onPressed: (){
-                            Navigator.of(context).pushNamed(PageRouteConstants.confirmPaymentScreen);
 
+                            if (_token.data?.access_token != null){
+                              Navigator.of(context).pushNamed(PageRouteConstants.confirmPaymentScreen);
+                            }
+                            else{
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  PageRouteConstants.view_page, (r) => false
+                              );
+                            }
                           }
                       ),
                     ),

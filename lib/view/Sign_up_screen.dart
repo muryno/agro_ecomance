@@ -105,7 +105,6 @@ class _SignUpScreen extends State<SignUpScreen>{
 
     Widget password = Container(
         child: TextFormField(
-
           controller: _password,
           obscureText: true,
           decoration: InputDecoration(
@@ -218,12 +217,26 @@ class _SignUpScreen extends State<SignUpScreen>{
                       padding: EdgeInsets.symmetric(horizontal: 16),
                       child:  Column(
 
+
                         crossAxisAlignment: CrossAxisAlignment.start,
 
                         children: <Widget>[
+                          SizedBox(height: 25,),
 
+                          InkWell(
+                            child:    Icon(
+                              Icons.arrow_back_outlined,
+                              color: Colors.black,
+                              size: 30,
+                            ),
+                            onTap: (){
+                              Navigator.of(context).pop();
 
+                            },
+                          ),
                           SizedBox(height: 30,),
+
+
 
                           Container(
                               padding: EdgeInsets.only(top: 40,bottom: 15),

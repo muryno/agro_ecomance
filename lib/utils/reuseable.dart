@@ -5,6 +5,7 @@ import 'dart:convert';
 
 
 import 'package:agro_ecomance/utils/pin_dialog.dart';
+import 'package:agro_ecomance/utils/profile_dialog.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -389,36 +390,21 @@ class ReUseAble {
     {@required String title,
     IconData icon,
     String asset,
-    GestureTapCallback onTap,
     bool isActive = false})
   {
-      return Card(
-          margin: const EdgeInsets.only(bottom: 12.0),
-          child: Container(
-            decoration: BoxDecoration(
-                border: Border(
-                    left: BorderSide(
-                        color: isActive ? Color(0XFF3ABC16) : Color(0XFF8C8C8C),
-                        width: 5))),
-            child: ListTile(
-                onTap: onTap,
-                leading: asset == null ? Icon(icon, color: isActive ? Color(0XFF3ABC16) : Color(0XFF8C8C8C)):
+      return      Container(
+        color: isActive ? Color(0xff003C5E): Colors.transparent,
+        height: 70,
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Row(
+          children: [
+            Icon(icon,color: Colors.white , size: 30),
 
-                Container(
-
-                  child:   Image.asset(
-                    'assets/images/$asset',
-                    color: isActive ? Color(0XFF3ABC16) : Color(0XFF8C8C8C),
-
-                    width: 25,
-                  ),
-                ),
-                title: Text(
-                  title,
-                  style: TextStyle(
-                      color: isActive ? Color(0XFF3ABC16) : Color(0XFF8C8C8C)),
-                )),
-          ));
+            SizedBox(width: 10,),
+            Text(title,style: TextStyle(fontSize: 16,color: Colors.white,fontFamily: 'PoppinsBook'),),
+          ],
+        ),
+      );
     }
 
 
@@ -461,7 +447,7 @@ class ReUseAble {
 
   getTransition(Widget stm){
     return  PageRouteBuilder(
-      transitionDuration: Duration(milliseconds: 1000),
+      transitionDuration: Duration(microseconds: 1000),
       pageBuilder: (
           BuildContext context,
           Animation<double> animation,
@@ -496,6 +482,15 @@ class ReUseAble {
         }
     );
   }
+
+  curvesProfileDialog(BuildContext context){
+    return   showDialog(context: context,
+        builder: (BuildContext context){
+          return ProfileDialogBox();
+        }
+    );
+  }
+
 
 
   homeProductItem({String img}){

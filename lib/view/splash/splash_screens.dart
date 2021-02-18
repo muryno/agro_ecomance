@@ -53,32 +53,10 @@ class _SplashScreenStates extends State<SplashScreens>
       ..addListener(() {
         if (animationController.isCompleted) {
 
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              PageRouteConstants.dashBoardScreen, (r) => false
+          );
 
-
-          StorageUtil.getUser().then((value) {
-            if (value != null){
-              RetrofitClientInstance.getInstance().reset();
-
-              if (value?.data?.access_token != null){
-
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    PageRouteConstants.dashBoardScreen, (r) => false
-                );
-
-              }
-              else{
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    PageRouteConstants.view_page, (r) => false
-                );
-              }
-
-            }
-            else
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  PageRouteConstants.view_page, (r) => false
-              );
-
-          });
 
         }
 

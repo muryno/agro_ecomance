@@ -170,7 +170,7 @@ class _LoginPage extends State<LoginScreen>{
 
                           InkWell(
                             child:    Icon(
-                              Icons.arrow_back_ios,
+                              Icons.arrow_back_outlined,
                               color: Colors.black,
                               size: 30,
                             ),
