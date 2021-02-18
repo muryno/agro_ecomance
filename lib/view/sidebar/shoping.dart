@@ -4,7 +4,10 @@
 
 
 
+import 'package:agro_ecomance/entity/responds/ProductResp.dart';
+import 'package:agro_ecomance/entity/responds/Slider.dart';
 import 'package:agro_ecomance/entity/responds/UserProfile.dart';
+import 'package:agro_ecomance/rxbloc_pattern/products_slider_bloc.dart';
 import 'package:agro_ecomance/utils/constants/page_route_constants.dart';
 import 'package:agro_ecomance/utils/constants/url_constant.dart';
 import 'package:agro_ecomance/utils/reuseable.dart';
@@ -45,10 +48,24 @@ class _DashBoardScreen extends State<DashBoardScreen>{
     StorageUtil.getProfileUser().then(
             (value) => userProfileData
     );
+
+    productsBloc.getProduce();
+    productsBloc.getSlider();
+
+
     super.initState();
   }
 
 
+
+
+
+@override
+void dispose() {
+
+  productsBloc.dispose();
+  super.dispose();
+}
 
   @override
   Widget build(BuildContext context) {
@@ -115,41 +132,59 @@ class _DashBoardScreen extends State<DashBoardScreen>{
 
               SizedBox(height: 30,),
 
-              CarouselSlider(
-                  items: [
-                    "assets/images/banner.png",
-                    "assets/images/banana.png",
-                    "assets/images/img6.png",
-                    "assets/images/img5.png",
-                  ].map((i) {
-                    return Builder(
-                      builder: (BuildContext context) {
-                        return Container(
-                            width: MediaQuery.of(context).size.width,
-                            margin: EdgeInsets.symmetric(horizontal: 5.0),
-//Image.asset("assets/images/slide_one.jpeg")
-                            child: Image.asset(i, fit:BoxFit.cover ,)
-                        );
-                      },
-                    );
-                  }).toList(),
-                  options: CarouselOptions(
-                    height: 150,
-                    aspectRatio: 16/9,
-                    viewportFraction: 0.8,
-                    initialPage: 0,
-                    enableInfiniteScroll: true,
-                    reverse: false,
-                    autoPlay: true,
-                    autoPlayInterval: Duration(seconds: 3),
-                    autoPlayAnimationDuration: Duration(milliseconds: 800),
-                    autoPlayCurve: Curves.fastOutSlowIn,
-                    enlargeCenterPage: true,
+
+              StreamBuilder(
+                stream: productsBloc.fetchSlider,
+                builder: (context, AsyncSnapshot< List<SliderData> >  snapshot){
+                  if(snapshot.hasData ){
 
 
-                    scrollDirection: Axis.horizontal,
-                  )
+                    if(snapshot.data.length > 0) {
+                      return   CarouselSlider(
+                          items: snapshot.data.map((i) {
+                            return Builder(
+                              builder: (BuildContext context) {
+                                return Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    margin: EdgeInsets.symmetric(horizontal: 5.0),
+
+                                    child: Image.asset(i.thumbnail, fit:BoxFit.cover ,)
+                                );
+                              },
+                            );
+                          }).toList(),
+                          options: CarouselOptions(
+                            height: 150,
+                            aspectRatio: 16/9,
+                            viewportFraction: 0.8,
+                            initialPage: 0,
+                            enableInfiniteScroll: true,
+                            reverse: false,
+                            autoPlay: true,
+                            autoPlayInterval: Duration(seconds: 3),
+                            autoPlayAnimationDuration: Duration(milliseconds: 800),
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            enlargeCenterPage: true,
+
+
+                            scrollDirection: Axis.horizontal,
+
+                      ));
+                    }else{
+                      return Center(child: Text("No slider available"),);
+                    }
+
+                  }
+
+                  return Container(
+                    alignment: Alignment.center,
+                    child: CircularProgressIndicator(),
+                  );
+                },
               ),
+
+
+
               SizedBox(height: 15,),
               Row(
                 children: [
@@ -170,23 +205,46 @@ class _DashBoardScreen extends State<DashBoardScreen>{
 
                 height: 250,
 
-                child:  ListView(
+                child:   StreamBuilder(
+                  stream: productsBloc.fetchProduce,
+                  builder: (context, AsyncSnapshot< List<ProductRespData> >  snapshot){
+                    if(snapshot.hasData ){
 
-                  scrollDirection: Axis.horizontal,
-                  children: [
+                      if(snapshot.data.length > 0) {
+                        return ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemCount: snapshot.data.length,
+                            physics: NeverScrollableScrollPhysics(),
 
-                    ...List.generate(10, (index) =>      InkWell(
-                        onTap: (){},
-                        child: InkWell(
-                          onTap: (){ Navigator.of(context).pushNamed(PageRouteConstants.itemDashBoardDetailsScreen);},
-                          child:   ReUseAble().homeProductItem(img: "img6.png"),
-                        )                    )
+                            itemBuilder: (context,
+                                index) {
+                              return   homeProductItem(snapshot.data[index]);
+                            });
+                      }else{
+
+                        return Center(child: Text("No Product available"),);
+
+                      }
 
 
-                    ),
 
-                  ],
+
+                    }else if(snapshot.hasError) {
+                      return Text(snapshot.error.toString());
+                    }
+
+                    return Container(
+                      alignment: Alignment.center,
+                      child: CircularProgressIndicator(),
+                    );
+                  },
                 ),
+
+
+
+
+
 
                 decoration: BoxDecoration(
                     border: Border.all(
@@ -217,26 +275,48 @@ class _DashBoardScreen extends State<DashBoardScreen>{
               SizedBox(height: 10,),
               Container(
 
-                height: 240,
+                height: 250,
 
-                child:  ListView(
+                child:   StreamBuilder(
+                  stream: productsBloc.fetchProduce,
+                  builder: (context, AsyncSnapshot< List<ProductRespData> >  snapshot){
+                    if(snapshot.hasData ){
 
-                  scrollDirection: Axis.horizontal,
-                  children: [
+                      if(snapshot.data.length > 0) {
+                        return ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemCount: snapshot.data.length,
+                            physics: NeverScrollableScrollPhysics(),
 
-                    ...List.generate(10, (index) =>      InkWell(
-                        onTap: (){},
-                        child: InkWell(
-                          onTap: (){ Navigator.of(context).pushNamed(PageRouteConstants.itemDashBoardDetailsScreen);},
-                          child:   ReUseAble().homeProductItem(img: "img3.png"),
-                        )
-                    )
-//
+                            itemBuilder: (context,
+                                index) {
+                              return   homeProductItem(snapshot.data[index]);
+                            });
+                      }else{
 
-                    ),
+                        return Center(child: Text("No Product available"),);
 
-                  ],
+                      }
+
+
+
+
+                    }else if(snapshot.hasError) {
+                      return Text(snapshot.error.toString());
+                    }
+
+                    return Container(
+                      alignment: Alignment.center,
+                      child: CircularProgressIndicator(),
+                    );
+                  },
                 ),
+
+
+
+
+
 
                 decoration: BoxDecoration(
                     border: Border.all(
@@ -244,7 +324,7 @@ class _DashBoardScreen extends State<DashBoardScreen>{
                     ),
                     borderRadius: BorderRadius.all(Radius.circular(4))
                 ),
-              )
+              ),
 
 
             ],
@@ -421,6 +501,34 @@ class _DashBoardScreen extends State<DashBoardScreen>{
 
   }
 
+
+  homeProductItem(ProductRespData dat){
+    return InkWell(
+        onTap: (){ Navigator.of(context).pushNamed(PageRouteConstants.itemDashBoardDetailsScreen,arguments: dat);},
+    child: Padding(
+      padding: EdgeInsets.symmetric(horizontal: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+
+          Image.network(
+            dat.featured_image.thumbnail_url,
+            fit:BoxFit.fill ,
+            height: 150,
+            width: 150,
+          ),
+
+
+          SizedBox(height: 3,),
+          Text("NGN${dat.price}",style: TextStyle(color: Color(0xff434343),fontFamily: "PoppinsBold",fontSize: 18),),
+
+          SizedBox(height: 5,),
+
+          Text(dat.name,style: TextStyle(color: Color(0xff656565),fontFamily: "PoppinsRegular",fontSize: 14),)
+        ],
+      ),)
+    );
+  }
 
 
 

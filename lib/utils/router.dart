@@ -3,13 +3,14 @@
 
 
 
-import 'package:agro_ecomance/view/Item_dashboard_details.dart';
+import 'package:agro_ecomance/view/shoping_details.dart';
 import 'package:agro_ecomance/view/Sign_up_screen.dart';
 import 'package:agro_ecomance/view/add_address_screen.dart';
 import 'package:agro_ecomance/view/address_screen.dart';
 import 'package:agro_ecomance/view/cart_screen.dart';
 import 'package:agro_ecomance/view/checkout_screen.dart';
 import 'package:agro_ecomance/view/confirm_payment_screen.dart';
+import 'package:agro_ecomance/view/shoping_details.dart';
 import 'package:agro_ecomance/view/sidebar/shoping.dart';
 import 'package:agro_ecomance/view/shoping_details.dart';
 import 'package:agro_ecomance/view/login_screen.dart';
@@ -49,7 +50,7 @@ class Routers {
 
 
       case PageRouteConstants.itemDashBoardDetailsScreen:
-        return MaterialPageRoute(builder: (_) => ItemDashBoardDetailsScreen());
+        return MaterialPageRoute(builder: (_) => ShopingDetails(),settings: RouteSettings( arguments: settings.arguments));
 
       case PageRouteConstants.cartScreen:
         return MaterialPageRoute(builder: (_) => CartScreen());

@@ -500,7 +500,7 @@ class ReUseAble {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
 
-        Image.asset(
+        Image.network(
           'assets/images/$img',
           fit:BoxFit.fill ,
           height: 150,

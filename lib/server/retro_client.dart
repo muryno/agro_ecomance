@@ -105,7 +105,19 @@ abstract class ApiRestClient {
 
 
 
-  @PATCH("ecommerce/delivery")
-  Future<DeliveryAddressResp> addDeliveryAddress(@Body() addNextOfKin usr);
+  @POST("ecommerce/delivery")
+  Future<DeliveryAddressResp> addDeliveryAddress(@Body() addPersonalInfor usr);
 
+
+  @PATCH("ecommerce/delivery/default/{id}")
+  Future<DeliveryAddressResp> addDefaultAddress(@Path('id') id);
+
+
+
+  @PATCH("ecommerce/delivery/{id}")
+  Future<DeliveryAddressResp> updateDeliveryAddress(@Body() addPersonalInfor usr,@Path('id') id);
+
+
+  @DELETE("ecommerce/delivery/{id}")
+  Future<DeliveryAddressResp> deleteAddress(@Path('id') id);
 }
