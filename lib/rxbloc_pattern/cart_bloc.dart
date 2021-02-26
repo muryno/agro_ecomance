@@ -8,12 +8,6 @@ import 'dart:convert';
 
 
 import 'package:agro_ecomance/entity/request/AddCart.dart';
-import 'package:agro_ecomance/entity/request/addNextOfKin.dart';
-import 'package:agro_ecomance/entity/request/addPersonalInfor.dart';
-import 'package:agro_ecomance/entity/request/bankReq.dart';
-import 'package:agro_ecomance/entity/responds/BankRes.dart';
-import 'package:agro_ecomance/entity/responds/ProductResp.dart';
-import 'package:agro_ecomance/entity/responds/Slider.dart';
 import 'package:agro_ecomance/entity/responds/cart/CartData.dart';
 import 'package:agro_ecomance/entity/responds/cart/CartDataa.dart';
 
@@ -25,7 +19,7 @@ import 'package:rxdart/rxdart.dart';
 
 class CartBloc {
 
-
+   var  CartCount = 0 ;
   final apiProvider = RetrofitClientInstance.getInstance();
 
 
@@ -41,14 +35,15 @@ class CartBloc {
 
 
 
-  addCartData( int product_id,int quantity , BuildContext context) {
+  addCartData( int product_id,int weight , BuildContext context) {
 
 
 
     var addBask = AddCart();
     addBask.product_id = product_id;
-    addBask.quantity = quantity;
+    addBask.weight = weight;
 
+    addBask.quantity = 1;
 
     Helper.startLoading(context);
 
@@ -59,7 +54,7 @@ class CartBloc {
       RetrofitClientInstance.getInstance().getDataService().addCart(addBask).then((value)=>{
 
 
-        if(value.dataa!= null){
+        if(value.data!= null){
           Helper.loadingSuccessful("success"),
           Navigator.of(context).pop(),
 
@@ -91,13 +86,15 @@ class CartBloc {
       RetrofitClientInstance.getInstance().getDataService().deleteCart(path_id).then((value)=>{
 
 
-        if(value.dataa!= null){
-          Helper.loadingSuccessful("success"),
-          Navigator.of(context).pop(),
+        if(value.status_code== 200){
+          Helper.loadingSuccessful("${value.message}"),
+
+       getCart()
+
 
         } else
 
-          Helper.loadingFailed("Can't update ")
+          Helper.loadingFailed("${value.message}")
 
 
       }).catchError(onError);
@@ -113,8 +110,9 @@ class CartBloc {
 
 
 
-  getSlider() async{
+  getCart() async{
     CartData item = await apiProvider.getDataService().getCart();
+    CartCount  = item.dataa.length;
     _cartDataa.sink.add(item.dataa);
   }
 

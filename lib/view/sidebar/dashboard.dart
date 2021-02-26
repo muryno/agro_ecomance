@@ -1,4 +1,7 @@
 
+import 'package:agro_ecomance/entity/responds/DashboardResp.dart';
+import 'package:agro_ecomance/entity/responds/UserProfile.dart';
+import 'package:agro_ecomance/rxbloc_pattern/dashboard_bloc.dart';
 import 'package:agro_ecomance/utils/constants/url_constant.dart';
 import 'package:agro_ecomance/utils/reuseable.dart';
 import 'package:agro_ecomance/view/sidebar/purchase.dart';
@@ -8,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
+import 'logout.dart';
 import 'shoping.dart';
 import 'Network.dart';
 import 'commision.dart';
@@ -16,6 +20,9 @@ import 'ewallet.dart';
 
 class HomePageDashboard extends StatefulWidget {
 
+ final UserProfileData userProfileData;
+
+  HomePageDashboard({@required  this.userProfileData});
   @override
   _HomePageDashboard createState() => _HomePageDashboard();
 }
@@ -24,7 +31,7 @@ class _HomePageDashboard extends State<HomePageDashboard> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
 
-  String _name = "";
+
 
   String _usr = "";
 
@@ -35,11 +42,14 @@ class _HomePageDashboard extends State<HomePageDashboard> {
   @override
   void initState() {
 
-
-
+    dashBloc.getDashBoard();
     super.initState();
+  }
 
-
+  @override
+  void dispose() {
+    dashBloc.dispose();
+    super.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -74,31 +84,32 @@ class _HomePageDashboard extends State<HomePageDashboard> {
                   },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 16.0, left: 14.0),
-              child:InkWell(
+            InkWell(
                 onTap: (){
+                  ReUseAble().getTransition(SettingScreen(userProfileData:widget.userProfileData));
 
-                  },
-                child:     Container(
-                    width: 40,
-                    height: 40,
-                    child:  this?.avr!= null ?
-                    Container(
-                        width: 40.0,
-                        height: 40.0,
-                        decoration: new BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image: new NetworkImage(
-                                    "${this?.avr}")
-                            )
-                        )): CircleAvatar(
-                        backgroundColor: ReUseAble().getButtonColor(),
-                        radius: 20,child: Icon(Icons.person,color: Colors.white, size: 30))
-                ),
-              ) ,
+                },
+                child:    Padding(
+                  padding: const EdgeInsets.only(right: 16.0, left: 14.0),
+                  child:   Container(
+                      width: 40,
+                      height: 40,
+                      child:  this?.avr!= null ?
+                      Container(
+                          width: 40.0,
+                          height: 40.0,
+                          decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: new DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: new NetworkImage(
+                                      "${this?.avr}")
+                              )
+                          )): CircleAvatar(
+                          backgroundColor: ReUseAble().getButtonColor(),
+                          radius: 20,child: Icon(Icons.person,color: Colors.white, size: 30))
+                  ),
+                )
             )
           ],
         ),
@@ -108,7 +119,7 @@ class _HomePageDashboard extends State<HomePageDashboard> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'Hello, $_name',
+                'Hello, ${widget?.userProfileData?.username}',
                 style: TextStyle(
                     fontSize: 20,
                     color: Color(0XFFABA3A3),
@@ -193,7 +204,22 @@ class _HomePageDashboard extends State<HomePageDashboard> {
                           SizedBox(height: 15,),
                           Text("Total Referral",style: TextStyle(color: Color(0xff0B2E70),fontFamily:'PoppinsBold',fontSize: 12 ),),
                           SizedBox(height: 15,),
-                          Text("544",style: TextStyle(color: Color(0xff3ABC16),fontFamily:'PoppinsBold',fontSize: 16 ),)
+
+
+                          StreamBuilder(
+                            stream: dashBloc.fetchTotalReferral,
+                            builder: (context, AsyncSnapshot< int >  snapshot){
+                              if(snapshot.hasData ){
+                                return  Text("${snapshot.data}",style: TextStyle(color: Color(0xff3ABC16),fontFamily:'PoppinsBold',fontSize: 16 ),);
+                              }else if(snapshot.hasError) {
+                                return Text(snapshot.error.toString());
+                              }
+
+                              return CircularProgressIndicator();
+                            },
+                          ),
+
+
 
                         ],
                       ) ,
@@ -216,7 +242,20 @@ class _HomePageDashboard extends State<HomePageDashboard> {
                           Text("Total Commission",style: TextStyle(color: Color(0xff0B2E70),fontFamily:'PoppinsBold',fontSize: 12 ),),
 
                           SizedBox(height: 15,),
-                          Text("N1,284,836.48",style: TextStyle(color: Color(0xff3ABC16),fontFamily:'PoppinsBold',fontSize: 16 ),)
+                          StreamBuilder(
+                            stream: dashBloc.fetchTotalCommission,
+                            builder: (context, AsyncSnapshot< int >  snapshot){
+                              if(snapshot.hasData ){
+                                return Text("N${snapshot.data}",style: TextStyle(color: Color(0xff3ABC16),fontFamily:'PoppinsBold',fontSize: 16 ),);
+
+                              }else if(snapshot.hasError) {
+                                return Text(snapshot.error.toString());
+                              }
+
+                              return CircularProgressIndicator();
+                            },
+                          ),
+
 
 
                         ],
@@ -242,7 +281,20 @@ class _HomePageDashboard extends State<HomePageDashboard> {
                           SizedBox(height: 15,),
                           Text("Approved Commission",style: TextStyle(color: Color(0xff0B2E70),fontFamily:'PoppinsBold',fontSize: 12 ),),
                           SizedBox(height: 15,),
-                          Text("N1,200,111.08",style: TextStyle(color: Color(0xff3ABC16),fontFamily:'PoppinsBold',fontSize: 16 ),)
+                          StreamBuilder(
+                            stream: dashBloc.fetchApprovedCommission,
+                            builder: (context, AsyncSnapshot< int >  snapshot){
+                              if(snapshot.hasData ){
+                                return Text("N${snapshot.data}",style: TextStyle(color: Color(0xff3ABC16),fontFamily:'PoppinsBold',fontSize: 16 ),);
+
+                              }else if(snapshot.hasError) {
+                                return Text(snapshot.error.toString());
+                              }
+
+                              return CircularProgressIndicator();
+                            },
+                          ),
+
 
                         ],
                       ) ,
@@ -263,7 +315,21 @@ class _HomePageDashboard extends State<HomePageDashboard> {
                           SizedBox(height: 15,),
                           Text("Pending Commission",style: TextStyle(color: Color(0xff0B2E70),fontFamily:'PoppinsBold',fontSize: 12 ),),
                           SizedBox(height: 15,),
-                          Text("N84,715.40",style: TextStyle(color: Color(0xff3ABC16),fontFamily:'PoppinsBold',fontSize: 16 ),)
+
+                          StreamBuilder(
+                            stream: dashBloc.fetchPendingCommission,
+                            builder: (context, AsyncSnapshot< int >  snapshot){
+                              if(snapshot.hasData ){
+                                return Text("N${snapshot.data}",style: TextStyle(color: Color(0xff3ABC16),fontFamily:'PoppinsBold',fontSize: 16 ),);
+
+                              }else if(snapshot.hasError) {
+                                return Text(snapshot.error.toString());
+                              }
+
+                              return CircularProgressIndicator();
+                            },
+                          ),
+
 
                         ],
                       ) ,
@@ -366,31 +432,32 @@ class _HomePageDashboard extends State<HomePageDashboard> {
                     ),
                     SizedBox(height: 15,),
 
-                    ...List.generate(5, (index) =>
 
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 16,vertical: 3),
-                          child: Row(
-                            children: [
+                    StreamBuilder(
+                      stream: dashBloc.fetchNewDescendantst,
+                      builder: (context, AsyncSnapshot< List<NewDescendant> >  snapshot){
+                        if(snapshot.hasData ){
 
-                              Container(
-                                  width: 40,
-                                  height: 40,
-                                  padding: EdgeInsets.symmetric(horizontal: 5),
-                                  child:   CircleAvatar(
-                                      backgroundColor: ReUseAble().getButtonColor(),
-                                      radius: 20,child: Icon(Icons.person,color: Colors.white, size: 20))
-                              ),
-                              Spacer(),
-                              Text("Sarah Stark",style: TextStyle(color: Color(0xff707070),fontFamily:'PoppinsBook',fontSize: 12 ),),
-                              Spacer(),
-                              Text("lV.3",style: TextStyle(color: Color(0xff3ABC16),fontFamily:'PoppinsBook',fontSize: 12 ),)
+                          return   Container(
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: snapshot.data.length,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemBuilder: (context,index){
+                                    return descendantItem( newDescendant : snapshot.data[index] );
+                                  })
+                          );
 
 
-                            ],
-                          ),
-                        )
-                    )
+                        }else if(snapshot.hasError) {
+                          return Text(snapshot.error.toString());
+                        }
+
+                        return CircularProgressIndicator();
+                      },
+                    ),
+
+
 
                   ],
                 ) ,
@@ -414,7 +481,7 @@ class _HomePageDashboard extends State<HomePageDashboard> {
                   ),
 
 
-                  child: Column(
+                  child: ListView(
                     children: [
 
                       Container(
@@ -439,7 +506,7 @@ class _HomePageDashboard extends State<HomePageDashboard> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
 
-                                Text("John Doe",style: TextStyle(fontSize: 20,color: Color(0xff003C5E),fontFamily: 'PoppinsBold'),),
+                                Text("${widget?.userProfileData?.username}",style: TextStyle(fontSize: 20,color: Color(0xff003C5E),fontFamily: 'PoppinsBold'),),
                                 Text("REF ID: 3Y92Q1",style: TextStyle(fontSize: 16,color: Color(0xff003C5E)),)
 
                               ],
@@ -454,7 +521,7 @@ class _HomePageDashboard extends State<HomePageDashboard> {
 
                       GestureDetector(
                         onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(HomePageDashboard())
+                            ReUseAble().getTransition(HomePageDashboard(userProfileData:widget.userProfileData))
                         );},
                         child:
                         ReUseAble().drawerItem(isActive: true, title: "Dashboard",icon: Icons.dashboard),
@@ -462,7 +529,7 @@ class _HomePageDashboard extends State<HomePageDashboard> {
 
                       GestureDetector(
                         onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(Commission())
+                            ReUseAble().getTransition(Commission(userProfileData:widget.userProfileData))
                         );},
                         child:
                         ReUseAble().drawerItem(title: "Commissions",icon: Icons.alternate_email_sharp,),
@@ -471,7 +538,7 @@ class _HomePageDashboard extends State<HomePageDashboard> {
 
                       GestureDetector(
                         onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(Purchase())
+                            ReUseAble().getTransition(Purchase(userProfileData:widget.userProfileData))
                         );},
                         child:
                         ReUseAble().drawerItem( title: "Purchases",icon: Icons.shopping_basket, ),
@@ -481,7 +548,7 @@ class _HomePageDashboard extends State<HomePageDashboard> {
 
                       GestureDetector(
                         onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(NetworkScreen())
+                            ReUseAble().getTransition(NetworkScreen(userProfileData:widget.userProfileData))
                         );},
                         child:
                         ReUseAble().drawerItem( title: "Network",icon: Icons.share, ),
@@ -491,7 +558,7 @@ class _HomePageDashboard extends State<HomePageDashboard> {
                       GestureDetector(
                         onTap: (){
                           Navigator.of(context).push(
-                              ReUseAble().getTransition(EWallet())
+                              ReUseAble().getTransition(EWallet(userProfileData:widget.userProfileData))
                           );
                         },
                         child:
@@ -506,7 +573,7 @@ class _HomePageDashboard extends State<HomePageDashboard> {
                       GestureDetector(
                         onTap: (){
                           Navigator.of(context).push(
-                              ReUseAble().getTransition(SettingScreen())
+                              ReUseAble().getTransition(SettingScreen(userProfileData:widget.userProfileData))
                           );
                         },
                         child:
@@ -528,7 +595,9 @@ class _HomePageDashboard extends State<HomePageDashboard> {
 
                       GestureDetector(
                         onTap: (){
-
+                          Navigator.of(context).push(
+                              ReUseAble().getTransition(LogoOut())
+                          );
                         },
                         child:
                         ReUseAble().drawerItem(title: "Logout",icon: Icons.exit_to_app_sharp, ),
@@ -645,6 +714,32 @@ class _HomePageDashboard extends State<HomePageDashboard> {
 
 
 
+  descendantItem({NewDescendant newDescendant}){
+
+    return    Container(
+      padding: EdgeInsets.symmetric(horizontal: 16,vertical: 3),
+      child: Row(
+        children: [
+
+          Container(
+              width: 40,
+              height: 40,
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child:   CircleAvatar(
+                  backgroundColor: ReUseAble().getButtonColor(),
+                  radius: 20,
+                  child: newDescendant.avatar_url != null?Image.network(newDescendant.avatar_url ):Icon(Icons.person,color: Colors.white, size: 20))
+          ),
+          Spacer(),
+          Text("${newDescendant.display_name}",style: TextStyle(color: Color(0xff707070),fontFamily:'PoppinsBook',fontSize: 12 ),),
+          Spacer(),
+          Text("lV.${newDescendant.level}",style: TextStyle(color: Color(0xff3ABC16),fontFamily:'PoppinsBook',fontSize: 12 ),)
+
+
+        ],
+      ),
+    );
+  }
 
 
 

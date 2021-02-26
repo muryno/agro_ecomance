@@ -95,7 +95,7 @@ class Address {
     String created_at;
     String distributor_id;
     String food_mart_id;
-    int id;
+    var id;
     String lat;
     String lga;
     String long;

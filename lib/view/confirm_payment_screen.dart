@@ -27,6 +27,7 @@ class _ConfirmPaymentScreen extends State<ConfirmPaymentScreen>{
 
   final progressKey = GlobalKey();
 
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +40,6 @@ class _ConfirmPaymentScreen extends State<ConfirmPaymentScreen>{
 
 
 
-    final formKey = GlobalKey<FormState>();
 
 
 

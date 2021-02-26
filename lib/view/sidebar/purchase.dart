@@ -1,4 +1,5 @@
 
+import 'package:agro_ecomance/entity/responds/UserProfile.dart';
 import 'package:agro_ecomance/utils/constants/url_constant.dart';
 import 'package:agro_ecomance/utils/custom_dialog.dart';
 import 'package:agro_ecomance/utils/reuseable.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
+import 'logout.dart';
 import 'shoping.dart';
 import 'Network.dart';
 import 'commision.dart';
@@ -16,6 +18,12 @@ import 'ewallet.dart';
 
 
 class Purchase extends StatefulWidget {
+
+  UserProfileData userProfileData;
+
+  Purchase({@required  this.userProfileData});
+
+
 
   @override
   _Purchase createState() => _Purchase();
@@ -76,31 +84,32 @@ class _Purchase extends State<Purchase> {
                   },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 16.0, left: 14.0),
-              child:InkWell(
+            InkWell(
                 onTap: (){
+                  ReUseAble().getTransition(SettingScreen(userProfileData:widget.userProfileData));
 
-                  },
-                child:     Container(
-                    width: 40,
-                    height: 40,
-                    child:  this?.avr!= null ?
-                    Container(
-                        width: 40.0,
-                        height: 40.0,
-                        decoration: new BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image: new NetworkImage(
-                                    "${this?.avr}")
-                            )
-                        )): CircleAvatar(
-                        backgroundColor: ReUseAble().getButtonColor(),
-                        radius: 20,child: Icon(Icons.person,color: Colors.white, size: 30))
-                ),
-              ) ,
+                },
+                child:    Padding(
+                  padding: const EdgeInsets.only(right: 16.0, left: 14.0),
+                  child:   Container(
+                      width: 40,
+                      height: 40,
+                      child:  this?.avr!= null ?
+                      Container(
+                          width: 40.0,
+                          height: 40.0,
+                          decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: new DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: new NetworkImage(
+                                      "${this?.avr}")
+                              )
+                          )): CircleAvatar(
+                          backgroundColor: ReUseAble().getButtonColor(),
+                          radius: 20,child: Icon(Icons.person,color: Colors.white, size: 30))
+                  ),
+                )
             )
           ],
         ),
@@ -212,7 +221,7 @@ class _Purchase extends State<Purchase> {
                   ),
 
 
-                  child: Column(
+                  child: ListView(
                     children: [
 
                       Container(
@@ -239,7 +248,7 @@ class _Purchase extends State<Purchase> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
 
-                                Text("John Doe",style: TextStyle(fontSize: 20,color: Color(0xff003C5E),fontFamily: 'PoppinsBold'),),
+                                Text("${widget?.userProfileData?.username}",style: TextStyle(fontSize: 20,color: Color(0xff003C5E),fontFamily: 'PoppinsBold'),),
                                 Text("REF ID: 3Y92Q1",style: TextStyle(fontSize: 16,color: Color(0xff003C5E)),)
 
                               ],
@@ -254,7 +263,7 @@ class _Purchase extends State<Purchase> {
 
                       GestureDetector(
                         onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(HomePageDashboard())
+                            ReUseAble().getTransition(HomePageDashboard(userProfileData:widget.userProfileData))
                         );},
                         child:
                         ReUseAble().drawerItem(title: "Dashboard",icon: Icons.dashboard),
@@ -262,7 +271,7 @@ class _Purchase extends State<Purchase> {
 
                       GestureDetector(
                         onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(Commission())
+                            ReUseAble().getTransition(Commission(userProfileData:widget.userProfileData))
                         );},
                         child:
                         ReUseAble().drawerItem(title: "Commissions",icon: Icons.alternate_email_sharp,),
@@ -271,7 +280,7 @@ class _Purchase extends State<Purchase> {
 
                       GestureDetector(
                         onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(Purchase())
+                            ReUseAble().getTransition(Purchase(userProfileData:widget.userProfileData))
                         );},
                         child:
                         ReUseAble().drawerItem(isActive: true, title: "Purchases",icon: Icons.shopping_basket, ),
@@ -281,7 +290,7 @@ class _Purchase extends State<Purchase> {
 
                       GestureDetector(
                         onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(NetworkScreen())
+                            ReUseAble().getTransition(NetworkScreen(userProfileData:widget.userProfileData))
                         );},
                         child:
                         ReUseAble().drawerItem( title: "Network",icon: Icons.share, ),
@@ -291,7 +300,7 @@ class _Purchase extends State<Purchase> {
                       GestureDetector(
                         onTap: (){
                           Navigator.of(context).push(
-                              ReUseAble().getTransition(EWallet())
+                              ReUseAble().getTransition(EWallet(userProfileData:widget.userProfileData))
                           );
                         },
                         child:
@@ -306,7 +315,7 @@ class _Purchase extends State<Purchase> {
                       GestureDetector(
                         onTap: (){
                           Navigator.of(context).push(
-                              ReUseAble().getTransition(SettingScreen())
+                              ReUseAble().getTransition(SettingScreen(userProfileData:widget.userProfileData))
                           );
                         },
                         child:
@@ -328,7 +337,9 @@ class _Purchase extends State<Purchase> {
 
                       GestureDetector(
                         onTap: (){
-
+                          Navigator.of(context).push(
+                              ReUseAble().getTransition(LogoOut())
+                          );
                         },
                         child:
                         ReUseAble().drawerItem(title: "Logout",icon: Icons.exit_to_app_sharp, ),

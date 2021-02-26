@@ -1,6 +1,10 @@
 
+import 'package:agro_ecomance/entity/responds/NetworkResp.dart';
+import 'package:agro_ecomance/entity/responds/UserProfile.dart';
+import 'package:agro_ecomance/rxbloc_pattern/network_bloc.dart';
 import 'package:agro_ecomance/utils/constants/url_constant.dart';
 import 'package:agro_ecomance/utils/reuseable.dart';
+import 'package:agro_ecomance/view/sidebar/logout.dart';
 import 'package:agro_ecomance/view/sidebar/purchase.dart';
 import 'package:agro_ecomance/view/sidebar/setting.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -15,6 +19,12 @@ import 'ewallet.dart';
 
 
 class NetworkScreen extends StatefulWidget {
+
+
+  UserProfileData userProfileData;
+
+  NetworkScreen({@required  this.userProfileData});
+
 
   @override
   _NetworkScreen createState() => _NetworkScreen();
@@ -32,15 +42,17 @@ class _NetworkScreen extends State<NetworkScreen> {
   var _stock = ["All(34)","Few"];
 
   String avr ;
-
   @override
   void initState() {
 
-
-
+    networkBloc.getNetworkResp();
     super.initState();
+  }
 
-
+  @override
+  void dispose() {
+    networkBloc.dispose();
+    super.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -75,31 +87,32 @@ class _NetworkScreen extends State<NetworkScreen> {
                   },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 16.0, left: 14.0),
-              child:InkWell(
+            InkWell(
                 onTap: (){
+                  ReUseAble().getTransition(SettingScreen(userProfileData:widget.userProfileData));
 
-                  },
-                child:     Container(
-                    width: 40,
-                    height: 40,
-                    child:  this?.avr!= null ?
-                    Container(
-                        width: 40.0,
-                        height: 40.0,
-                        decoration: new BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image: new NetworkImage(
-                                    "${this?.avr}")
-                            )
-                        )): CircleAvatar(
-                        backgroundColor: ReUseAble().getButtonColor(),
-                        radius: 20,child: Icon(Icons.person,color: Colors.white, size: 30))
-                ),
-              ) ,
+                },
+                child:    Padding(
+                  padding: const EdgeInsets.only(right: 16.0, left: 14.0),
+                  child:   Container(
+                      width: 40,
+                      height: 40,
+                      child:  this?.avr!= null ?
+                      Container(
+                          width: 40.0,
+                          height: 40.0,
+                          decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: new DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: new NetworkImage(
+                                      "${this?.avr}")
+                              )
+                          )): CircleAvatar(
+                          backgroundColor: ReUseAble().getButtonColor(),
+                          radius: 20,child: Icon(Icons.person,color: Colors.white, size: 30))
+                  ),
+                )
             )
           ],
         ),
@@ -122,58 +135,40 @@ class _NetworkScreen extends State<NetworkScreen> {
                 height: 16.0,
               ),
 
-//
+
+              StreamBuilder(
+                stream: networkBloc.fetchNetwork,
+                builder: (context, AsyncSnapshot<NetworkResp >  snapshot){
+                  if(snapshot.hasData ){
 
 
-              ...List.generate(5, (index) =>
-                GestureDetector(
-                  onTap: (){ReUseAble().curvesProfileDialog(context);},
-                  child:   Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
+                    if(snapshot.data?.data?.length == 0){
 
-                    child: Container(
+                      return   Center(child:  Text("No network available"),);
+                    }else {
+                      return Container(
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: snapshot.data?.data?.length,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return networkItem(
+                                    networkData: snapshot.data.data[index],
+                                    meta: snapshot.data.meta);
+                              })
+                      );
+                    }
 
-                      padding: EdgeInsets.symmetric(vertical: 10,horizontal: 15),
-                      child: Row(
-                        children: [
+                  }else if(snapshot.hasError) {
+                    return Text(snapshot.error.toString());
+                  }
+
+                  return Center(child:  CircularProgressIndicator(),);
+                },
+              ),
 
 
-                          Container(
-                            child: CircleAvatar(
-                                backgroundColor: ReUseAble().getButtonColor(),
-                                radius: 20,child: Icon(Icons.person,color: Colors.white, size: 30)),
-                          ),
-                          SizedBox(width: 10,),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Sarak Stark",
-                                style: TextStyle(
-                                    fontSize: 10,
-                                    color: Color(0XFF707070),
-                                    fontFamily:'PoppinsBold' ),),
 
-                              Text("REFR : ER45",
-                                style: TextStyle(
-                                    fontSize: 8,
-                                    color: Color(0XFF3ABC16),
-                                    fontFamily:'PoppinsBold' ),),
-                              Text("08011223443",
-                                style: TextStyle(
-                                    fontSize: 10,
-                                    color: Color(0XFF707070),
-                                    fontFamily:'PoppinsBold' ),),
-
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                )
-              )
             ],
           ),
         ),
@@ -193,7 +188,7 @@ class _NetworkScreen extends State<NetworkScreen> {
                   ),
 
 
-                  child: Column(
+                  child: ListView(
                     children: [
 
                       Container(
@@ -218,7 +213,7 @@ class _NetworkScreen extends State<NetworkScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
 
-                                Text("John Doe",style: TextStyle(fontSize: 20,color: Color(0xff003C5E),fontFamily: 'PoppinsBold'),),
+                                Text("${widget?.userProfileData?.username}",style: TextStyle(fontSize: 20,color: Color(0xff003C5E),fontFamily: 'PoppinsBold'),),
                                 Text("REF ID: 3Y92Q1",style: TextStyle(fontSize: 16,color: Color(0xff003C5E)),)
 
                               ],
@@ -233,7 +228,7 @@ class _NetworkScreen extends State<NetworkScreen> {
 
                       GestureDetector(
                         onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(HomePageDashboard())
+                            ReUseAble().getTransition(HomePageDashboard(userProfileData:widget.userProfileData))
                         );},
                         child:
                         ReUseAble().drawerItem(title: "Dashboard",icon: Icons.dashboard),
@@ -241,7 +236,7 @@ class _NetworkScreen extends State<NetworkScreen> {
 
                       GestureDetector(
                         onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(Commission())
+                            ReUseAble().getTransition(Commission(userProfileData:widget.userProfileData))
                         );},
                         child:
                         ReUseAble().drawerItem(title: "Commissions",icon: Icons.alternate_email_sharp,),
@@ -250,7 +245,7 @@ class _NetworkScreen extends State<NetworkScreen> {
 
                       GestureDetector(
                         onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(Purchase())
+                            ReUseAble().getTransition(Purchase(userProfileData:widget.userProfileData))
                         );},
                         child:
                         ReUseAble().drawerItem( title: "Purchases",icon: Icons.shopping_basket, ),
@@ -260,7 +255,7 @@ class _NetworkScreen extends State<NetworkScreen> {
 
                       GestureDetector(
                         onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(NetworkScreen())
+                            ReUseAble().getTransition(NetworkScreen(userProfileData:widget.userProfileData))
                         );},
                         child:
                         ReUseAble().drawerItem(isActive: true, title: "Network",icon: Icons.share, ),
@@ -270,7 +265,7 @@ class _NetworkScreen extends State<NetworkScreen> {
                       GestureDetector(
                         onTap: (){
                           Navigator.of(context).push(
-                              ReUseAble().getTransition(EWallet())
+                              ReUseAble().getTransition(EWallet(userProfileData:widget.userProfileData))
                           );
                         },
                         child:
@@ -285,7 +280,7 @@ class _NetworkScreen extends State<NetworkScreen> {
                       GestureDetector(
                         onTap: (){
                           Navigator.of(context).push(
-                              ReUseAble().getTransition(SettingScreen())
+                              ReUseAble().getTransition(SettingScreen(userProfileData:widget.userProfileData))
                           );
                         },
                         child:
@@ -307,7 +302,9 @@ class _NetworkScreen extends State<NetworkScreen> {
 
                       GestureDetector(
                         onTap: (){
-
+                          Navigator.of(context).push(
+                              ReUseAble().getTransition(LogoOut())
+                          );
                         },
                         child:
                         ReUseAble().drawerItem(title: "Logout",icon: Icons.exit_to_app_sharp, ),
@@ -337,6 +334,59 @@ class _NetworkScreen extends State<NetworkScreen> {
               ),
             ))
 
+    );
+  }
+
+  networkItem({NetworkData networkData,Meta meta}){
+    return     GestureDetector(
+      onTap: (){
+        ReUseAble().curvesProfileDialog(context,networkData,meta);
+
+        },
+      child:   Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+
+        child: Container(
+
+          padding: EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+          child: Row(
+            children: [
+
+
+              Container(
+                child: CircleAvatar(
+                    backgroundColor: ReUseAble().getButtonColor(),
+                    radius: 20,child: networkData.avatar_url!= null ?Image.network(networkData.avatar_url) : Icon(Icons.person,color: Colors.white, size: 30)),
+              ),
+              SizedBox(width: 10,),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("${networkData.display_name}",
+                    style: TextStyle(
+                        fontSize: 10,
+                        color: Color(0XFF707070),
+                        fontFamily:'PoppinsBold' ),),
+
+                  Text("${networkData.referral_code}",
+                    style: TextStyle(
+                        fontSize: 8,
+                        color: Color(0XFF3ABC16),
+                        fontFamily:'PoppinsBold' ),),
+                  Text("${networkData.phone}",
+                    style: TextStyle(
+                        fontSize: 10,
+                        color: Color(0XFF707070),
+                        fontFamily:'PoppinsBold' ),),
+
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 

@@ -7,7 +7,7 @@ class addNextOfKin {
     String lga;
     double long;
     String name;
-    String phone;
+    var phone;
     String state;
 
     addNextOfKin({this.address, this.city, this.email, this.lat, this.lga, this.long, this.name, this.phone, this.state});

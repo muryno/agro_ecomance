@@ -36,6 +36,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.5.0-nullsafety.1"
+  badges:
+    dependency: "direct main"
+    description:
+      name: badges
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.6"
   boolean_selector:
     dependency: transitive
     description:
@@ -135,7 +142,7 @@ packages:
     source: hosted
     version: "1.0.4"
   chopper:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: chopper
       url: "https://pub.dartlang.org"
@@ -349,6 +356,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.11"
+  flutter_slidable:
+    dependency: "direct main"
+    description:
+      name: flutter_slidable
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.7"
   flutter_spinkit:
     dependency: transitive
     description:
@@ -758,13 +772,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.13"
-  progress_dialog:
-    dependency: "direct main"
-    description:
-      name: progress_dialog
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.4"
   provider:
     dependency: transitive
     description:

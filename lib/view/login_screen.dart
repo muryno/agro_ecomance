@@ -54,7 +54,7 @@ class _LoginPage extends State<LoginScreen>{
   }
 
 
-
+  final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery
@@ -136,7 +136,7 @@ class _LoginPage extends State<LoginScreen>{
 
 
 
-    final formKey = GlobalKey<FormState>();
+
 
 
 

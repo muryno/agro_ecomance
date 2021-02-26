@@ -1,5 +1,7 @@
 
 
+import 'package:agro_ecomance/entity/responds/UserProfile.dart';
+import 'package:agro_ecomance/rxbloc_pattern/setting_bloc.dart';
 import 'package:agro_ecomance/utils/constants/url_constant.dart';
 import 'package:agro_ecomance/utils/reuseable.dart';
 import 'package:agro_ecomance/view/sidebar/purchase.dart';
@@ -8,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
+import 'logout.dart';
 import 'shoping.dart';
 import 'Network.dart';
 import 'commision.dart';
@@ -15,6 +18,10 @@ import 'dashboard.dart';
 import 'ewallet.dart';
 
 class SettingScreen extends StatefulWidget {
+
+  final UserProfileData userProfileData;
+
+  SettingScreen({@required  this.userProfileData});
 
 
   @override
@@ -32,6 +39,17 @@ class _Screen15State extends State<SettingScreen> {
   String _str;
   String token;
 
+  @override
+  void initState() {
+ settingsBloc.getBankDetails();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    settingsBloc.dispose();
+    super.dispose();
+  }
 
 
   @override
@@ -194,6 +212,7 @@ class _Screen15State extends State<SettingScreen> {
                               )
                           ),
                             onTap: ()=>{
+                              ReUseAble().personalDialogBox(context)
                             },
                         ),
                          SizedBox(height: 8.0),
@@ -207,7 +226,7 @@ class _Screen15State extends State<SettingScreen> {
                                 size: 20,
                               )),
                           onTap: ()=>{
-
+                            ReUseAble().addressDialogBox(context)
                           },
                         ),
                         SizedBox(height: 8.0),
@@ -221,7 +240,7 @@ class _Screen15State extends State<SettingScreen> {
                                 size: 20,
                               )),
                           onTap: ()=>{
-
+                            ReUseAble().securityDialogBox(context)
                           },
                         ),
                         SizedBox(height: 8.0),
@@ -235,6 +254,7 @@ class _Screen15State extends State<SettingScreen> {
                                 size: 20,
                               )),
                           onTap: ()=>{
+                            ReUseAble().bankDialogBox(context)
 
                           },
                         ),
@@ -250,7 +270,7 @@ class _Screen15State extends State<SettingScreen> {
                                 size: 20,
                               )),
                           onTap: ()=>{
-
+                            ReUseAble().nextKinDialogBox(context)
                           },
                         ),
 
@@ -298,7 +318,7 @@ class _Screen15State extends State<SettingScreen> {
                   ),
 
 
-                  child: Column(
+                  child: ListView(
                     children: [
 
                       Container(
@@ -308,22 +328,20 @@ class _Screen15State extends State<SettingScreen> {
                         child: Row(
                           children: [
 
-                            Hero(
-                                tag:UrlConstant.Hero,
-                                child:  Container(
-                                    width: 80,
-                                    height: 80,
-                                    padding: EdgeInsets.symmetric(horizontal: 5),
-                                    child:   CircleAvatar(
-                                        backgroundColor: ReUseAble().getButtonColor(),
-                                        radius: 20,child: Icon(Icons.person,color: Colors.white, size: 60))
-                                )),
+                            Container(
+                                width: 80,
+                                height: 80,
+                                padding: EdgeInsets.symmetric(horizontal: 5),
+                                child:   CircleAvatar(
+                                    backgroundColor: ReUseAble().getButtonColor(),
+                                    radius: 20,child: Icon(Icons.person,color: Colors.white, size: 60))
+                            ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
 
-                                Text("John Doe",style: TextStyle(fontSize: 20,color: Color(0xff003C5E),fontFamily: 'PoppinsBold'),),
+                                Text("${widget?.userProfileData?.username}",style: TextStyle(fontSize: 20,color: Color(0xff003C5E),fontFamily: 'PoppinsBold'),),
                                 Text("REF ID: 3Y92Q1",style: TextStyle(fontSize: 16,color: Color(0xff003C5E)),)
 
                               ],
@@ -338,7 +356,7 @@ class _Screen15State extends State<SettingScreen> {
 
                       GestureDetector(
                         onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(HomePageDashboard())
+                            ReUseAble().getTransition(HomePageDashboard(userProfileData:widget.userProfileData))
                         );},
                         child:
                         ReUseAble().drawerItem(title: "Dashboard",icon: Icons.dashboard),
@@ -346,7 +364,7 @@ class _Screen15State extends State<SettingScreen> {
 
                       GestureDetector(
                         onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(Commission())
+                            ReUseAble().getTransition(Commission(userProfileData:widget.userProfileData))
                         );},
                         child:
                         ReUseAble().drawerItem(title: "Commissions",icon: Icons.alternate_email_sharp,),
@@ -355,7 +373,7 @@ class _Screen15State extends State<SettingScreen> {
 
                       GestureDetector(
                         onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(Purchase())
+                            ReUseAble().getTransition(Purchase(userProfileData:widget.userProfileData))
                         );},
                         child:
                         ReUseAble().drawerItem( title: "Purchases",icon: Icons.shopping_basket, ),
@@ -365,7 +383,7 @@ class _Screen15State extends State<SettingScreen> {
 
                       GestureDetector(
                         onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(NetworkScreen())
+                            ReUseAble().getTransition(NetworkScreen(userProfileData:widget.userProfileData))
                         );},
                         child:
                         ReUseAble().drawerItem( title: "Network",icon: Icons.share, ),
@@ -375,7 +393,7 @@ class _Screen15State extends State<SettingScreen> {
                       GestureDetector(
                         onTap: (){
                           Navigator.of(context).push(
-                              ReUseAble().getTransition(EWallet())
+                              ReUseAble().getTransition(EWallet(userProfileData:widget.userProfileData))
                           );
                         },
                         child:
@@ -390,7 +408,7 @@ class _Screen15State extends State<SettingScreen> {
                       GestureDetector(
                         onTap: (){
                           Navigator.of(context).push(
-                              ReUseAble().getTransition(SettingScreen())
+                              ReUseAble().getTransition(SettingScreen(userProfileData:widget.userProfileData))
                           );
                         },
                         child:
@@ -412,7 +430,9 @@ class _Screen15State extends State<SettingScreen> {
 
                       GestureDetector(
                         onTap: (){
-
+                          Navigator.of(context).push(
+                              ReUseAble().getTransition(LogoOut())
+                          );
                         },
                         child:
                         ReUseAble().drawerItem(title: "Logout",icon: Icons.exit_to_app_sharp, ),

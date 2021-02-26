@@ -32,7 +32,7 @@ class _SplashScreenStates extends State<SplashScreens>
   void initState() {
     super.initState();
 
-
+    RetrofitClientInstance.getInstance().reset();
 
 
     _startAnimation();

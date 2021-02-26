@@ -29,7 +29,26 @@ class LoginBloc {
     Helper.startLoading(context);
     try {
       var urs = signUpReq();
-      urs.phone = phone;
+
+      if(phone == "" && email == "" ){
+        Helper.toastFailed("Phone number or email is require");
+        return;
+      }
+
+
+      var phne ;
+
+      if(phone.substring(0,3) != "234"){
+        phne = "${234}$phone";
+      }else if(phone.substring(0,3) == "234" && phone.substring(0,4) != "2340"){
+        phne = "${2340}${phone.substring(3)}";
+      }else{
+        phne = phone;
+      }
+
+
+
+      urs.phone =phne;
       urs.referral_code = referral_code;
       urs.username = username;
       urs.password = password;
@@ -191,137 +210,6 @@ class LoginBloc {
 
 
 
-//
-//   patientUpdateAccount(String _email,  String country_id, String first_name, String last_name, String sex,String address,String dob,BuildContext context ) {
-//
-//     Helper.startLoading(context);
-//     try {
-//       RetrofitClientInstance.getInstance().getDataService().updatePatient(first_name,last_name,_email,dob,sex,country_id,address).then((value)=>{
-// //        if (value.status== "success"  ) {
-// //          Helper.loadingSuccessful(value.message),
-// //
-// //          Navigator.pop(context),
-// //        }
-// //        else
-// //
-// //          Helper.loadingFailed(value.message)
-// //
-//
-//       }).catchError(onError);
-//     }catch(e){
-//
-//       Helper.loadingFailed(UrlConstant.connectionFails);
-//     }
-//
-//   }
-//
-//
-//   doctorUpdateAccount(String _email, String country_id, String first_name, String last_name, String sex,String language,String address,String dob,BuildContext context ) {
-//
-//     Helper.startLoading(context);
-//     try {
-//       RetrofitClientInstance.getInstance().getDataService().updateDoctor(first_name,last_name,_email,dob,sex,country_id,address,language).then((value)=>{
-// //        if (value.status== "success"  ) {
-// //          Helper.loadingSuccessful(value.message),
-// //
-// //          Navigator.pop(context),
-// //        }
-// //        else
-// //
-// //          Helper.loadingFailed(value.message)
-// //
-//
-//       }).catchError(onError);
-//     }catch(e){
-//
-//       Helper.loadingFailed(UrlConstant.connectionFails);
-//     }
-//
-//   }
-// //uploadProfilePicture
-//
-//
-//
-//   attemptOtp(String _otp,BuildContext context) {
-//
-//     Helper.startLoading(context);
-//     try {
-//       RetrofitClientInstance.getInstance().getDataService().attemptOtp(_otp).then((value)=>{
-// //        if (value.status== "success" ) {
-// //          Helper.loadingSuccessful(value.message),
-// //
-// //          StorageUtil.saveUser(value).then((value) =>
-// //              RetrofitClientInstance.getInstance().reset()),
-// //
-// //
-// //        //  Navigator.pushReplacementNamed(context, PageRouteConstants.RegistrationScreen,arguments: value.mobile)
-// //
-// //
-// //        }
-// //        else
-// //
-// //          Helper.loadingFailed(value.message)
-//
-//
-//       }).catchError(onError);
-//     }catch(e){
-//
-//       Helper.loadingFailed(UrlConstant.connectionFails);
-//     }
-//   }
-//
-//   attemptReg(String _otp,BuildContext context) {
-//
-//
-//     Helper.startLoading(context);
-//     try {
-//       RetrofitClientInstance.getInstance().getDataService().attemptReg(_otp).then((value)=>{
-// //        if (value.status== "success") {
-// //          Helper.loadingSuccessful(value.message),
-// //              RetrofitClientInstance.getInstance().reset(),
-// //            //  Navigator.pushReplacementNamed(context, PageRouteConstants.otpScreen,arguments: _otp)
-// //        }
-// //        else
-// //
-// //          Helper.loadingFailed(value.message)
-//
-//
-//       }).catchError(onError);
-//     }catch(e){
-//
-//       Helper.loadingFailed(UrlConstant.connectionFails);
-//     }
-//   }
-//
-//
-//   forgotPassword(String _num,BuildContext context) {
-//
-//
-//     Helper.startLoading(context);
-//     try {
-//       RetrofitClientInstance.getInstance().getDataService().forgotPassword(_num).then((value)=>{
-// //        if (value.status== "success") {
-// //          Helper.loadingSuccessful(value.message),
-// //
-// //
-// //          RetrofitClientInstance.getInstance().reset(),
-// //
-// //
-// //         // Navigator.pushReplacementNamed(context, PageRouteConstants.ConfirmNewScreen,arguments: _num)
-//
-//
-// //        }
-// //        else
-// //
-// //          Helper.loadingFailed(value.message)
-//
-//
-//       }).catchError(onError);
-//     }catch(e){
-//
-//       Helper.loadingFailed(UrlConstant.connectionFails);
-//     }
-//   }
 
 
 

@@ -39,7 +39,7 @@ class _SignUpScreen extends State<SignUpScreen>{
   bool _showReferralCode = true;
 
 
-
+  final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery
@@ -53,144 +53,17 @@ class _SignUpScreen extends State<SignUpScreen>{
 
 
 
-    Widget userName = Container(
-        child: TextFormField(
-          controller: _email,
-          decoration: ReUseAble().inputWithoutIcon(hint: 'Email',label: 'Email'),
-          keyboardType: TextInputType.emailAddress,
-
-
-          validator: (value){
-            if(value.isEmpty   ){
-              return 'Enter Your Email Address';
-            }
-            return null;
-          },
-        )
-    );
-
-
-    Widget phone = Container(
-        child: TextFormField(
-          controller: _phone,
-
-          decoration: ReUseAble().inputWithoutIcon(hint: 'Phone number',label: 'Phone number'),
-          keyboardType: TextInputType.number,
-
-          validator: (value){
-            if(value.isEmpty   ){
-              return 'Enter Your Phone number';
-            }
-            return null;
-          },
-        )
-    );
-
-    Widget fullName = Container(
-        child: TextFormField(
-          controller: _fullName,
-          decoration: ReUseAble().inputWithoutIcon(hint: 'Full Name',label: 'Full Name'),
-          keyboardType: TextInputType.text,
-          validator: (value){
-            if(value.isEmpty   ){
-              return 'Enter Your Full name';
-            }
-            return null;
-          },
-        )
-    );
 
 
 
 
-    Widget password = Container(
-        child: TextFormField(
-          controller: _password,
-          obscureText: true,
-          decoration: InputDecoration(
-              hintText: "Password",
-              //#2C2C2C
-              hintStyle: TextStyle(color: Colors.grey),
-              labelText: "Password",
-              labelStyle: TextStyle(color: Colors.grey),
-              hoverColor: Colors.black,
-              fillColor: Colors.grey[100].withOpacity(0.1),
-              filled: true,
-              suffix: Text('Password'),
-              border: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey.withOpacity(0.2)),
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey.withOpacity(0.2)),
-              ),
-
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey.withOpacity(0.2)),
-              ),
-              suffixIcon: IconButton(
-                icon: Icon(
-                    _showPassword ? Icons.visibility_off : Icons.visibility),
-                onPressed: () {
-                  setState(() {
-                    _showPassword = !_showPassword;
-                  });
-                },
-              )),
-
-          keyboardType: TextInputType.text,
-
-          validator: (value){
-            if(value.isEmpty   ){
-              return 'Enter Your Password';
-            }
-            return null;
-          },
-        )
-
-    );
-
-    Widget referalCode = Container(
-        child: TextFormField(
-
-          controller: _referalCode,
-          obscureText: true,
-          decoration: InputDecoration(
-              hintText: "Referral Code",
-              //#2C2C2C
-              hintStyle: TextStyle(color: Colors.grey),
-              labelText: "Referral Code",
-              labelStyle: TextStyle(color: Colors.grey),
-              hoverColor: Colors.black,
-              fillColor: Colors.grey[100].withOpacity(0.1),
-              filled: true,
-              suffix: Text('Referral Code'),
-              border: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey.withOpacity(0.2)),
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey.withOpacity(0.2)),
-              ),
-
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey.withOpacity(0.2)),
-              ),
-              suffixIcon: IconButton(
-                icon: Icon(
-                    _showReferralCode ? Icons.visibility_off : Icons.visibility),
-                onPressed: () {
-                  setState(() {
-                    _showReferralCode = !_showPassword;
-                  });
-                },
-              )),
-
-          keyboardType: TextInputType.text,
-        )
-
-    );
 
 
-    final formKey = GlobalKey<FormState>();
+
+
+
+
+
 
 
 
@@ -244,15 +117,129 @@ class _SignUpScreen extends State<SignUpScreen>{
                           ),
 
                           SizedBox(height: 15,),
-                          fullName,
+                          Container(
+                              child: TextFormField(
+                                controller: _fullName,
+                                decoration: ReUseAble().inputWithoutIcon(hint: 'Full Name',label: 'Full Name'),
+                                keyboardType: TextInputType.text,
+                                validator: (value){
+                                  if(value.isEmpty   ){
+                                    return 'Enter Your Full name';
+                                  }
+                                  return null;
+                                },
+                              )
+                          ),
                           SizedBox(height: 15,),
-                          userName,
+                          Container(
+                              child: TextFormField(
+                                controller: _email,
+                                decoration: ReUseAble().inputWithoutIcon(hint: 'Email',label: 'Email'),
+                                keyboardType: TextInputType.emailAddress,
+
+
+                                // validator: (value){
+                                //   if(value.isEmpty   ){
+                                //     return 'Enter Your Email Address';
+                                //   }
+                                //   return null;
+                                // },
+                              )
+                          ),
                           SizedBox(height: 15,),
-                          phone,
+                          Container(
+                              child: TextFormField(
+                                controller: _phone,
+
+                                decoration: ReUseAble().inputWithoutIcon(hint: 'Phone number',label: 'Phone number'),
+                                keyboardType: TextInputType.number,
+
+                                // validator: (value){
+                                //   if(value.isEmpty   ){
+                                //     return 'Enter Your Phone number';
+                                //   }
+                                //   return null;
+                                // },
+                              )
+                          ),
                           SizedBox(height: 15,),
-                          referalCode,
+                          Container(
+                              child: TextFormField(
+
+                                controller: _referalCode,
+
+                                decoration: InputDecoration(
+                                  hintText: "Referral Code",
+                                  //#2C2C2C
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                  labelText: "Referral Code",
+                                  labelStyle: TextStyle(color: Colors.grey),
+                                  hoverColor: Colors.black,
+                                  fillColor: Colors.grey[100].withOpacity(0.1),
+                                  filled: true,
+                                  suffix: Text('Referral Code'),
+                                  border: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey.withOpacity(0.2)),
+                                  ),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey.withOpacity(0.2)),
+                                  ),
+
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey.withOpacity(0.2)),
+                                  ),
+                                ),
+
+                                keyboardType: TextInputType.text,
+                              )
+
+                          ),
                           SizedBox(height: 15,),
-                          password,
+                          Container(
+                              child: TextFormField(
+                                controller: _password,
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                    hintText: "Password",
+                                    //#2C2C2C
+                                    hintStyle: TextStyle(color: Colors.grey),
+                                    labelText: "Password",
+                                    labelStyle: TextStyle(color: Colors.grey),
+                                    hoverColor: Colors.black,
+                                    fillColor: Colors.grey[100].withOpacity(0.1),
+                                    filled: true,
+                                    suffix: Text('Password'),
+                                    border: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey.withOpacity(0.2)),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey.withOpacity(0.2)),
+                                    ),
+
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey.withOpacity(0.2)),
+                                    ),
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                          _showPassword ? Icons.visibility_off : Icons.visibility),
+                                      onPressed: () {
+                                        setState(() {
+                                          _showPassword = !_showPassword;
+                                        });
+                                      },
+                                    )),
+
+                                keyboardType: TextInputType.text,
+
+                                validator: (value){
+                                  if(value.isEmpty   ){
+                                    return 'Enter Your Password';
+                                  }
+                                  return null;
+                                },
+                              )
+
+                          ),
                           SizedBox(height: 35,),
 
                           Container(

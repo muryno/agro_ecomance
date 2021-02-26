@@ -7,7 +7,9 @@ import 'dart:convert';
 
 import 'package:agro_ecomance/entity/request/login_request.dart';
 import 'package:agro_ecomance/entity/request/openBefore.dart';
+import 'package:agro_ecomance/entity/responds/BankRes.dart';
 import 'package:agro_ecomance/entity/responds/UserProfile.dart';
+import 'package:agro_ecomance/entity/responds/bankDetailResponds.dart';
 import 'package:agro_ecomance/entity/responds/loginToken.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -82,6 +84,24 @@ class StorageUtil {
     StorageUtil.userDataBiometric(str);
 
   }
+
+  static Future<BankResX> getBankDetails() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    final str = pref.getString(UrlConstant.Bank_Data);
+    if(str != null){
+      final Map<String, dynamic> json = jsonDecode(str);
+      return BankResX.fromJson(json);
+    }
+    else
+      return null;
+  }
+
+  static Future<void> SaveBankDetails(BankResX value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var str = value != null ? jsonEncode(value) : value;
+    prefs.setString(UrlConstant.Bank_Data, str);
+  }
+
 
 
   static Future<UserProfileData> getProfileUser() async {

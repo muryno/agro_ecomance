@@ -1,4 +1,5 @@
 
+import 'package:agro_ecomance/entity/responds/UserProfile.dart';
 import 'package:agro_ecomance/utils/constants/url_constant.dart';
 import 'package:agro_ecomance/utils/reuseable.dart';
 import 'package:agro_ecomance/view/sidebar/shoping.dart';
@@ -12,9 +13,13 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import 'Network.dart';
 import 'dashboard.dart';
+import 'logout.dart';
 
 
 class Commission extends StatefulWidget {
+  UserProfileData userProfileData;
+
+  Commission({@required  this.userProfileData});
 
   @override
   _Commission createState() => _Commission();
@@ -75,38 +80,36 @@ class _Commission extends State<Commission> {
                   },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 16.0, left: 14.0),
-              child:InkWell(
+
+            InkWell(
                 onTap: (){
+                  ReUseAble().getTransition(SettingScreen(userProfileData:widget.userProfileData));
 
-                  },
-                child:        Hero(
-    tag:UrlConstant.Hero,
-    child:
-
-
-    Container(
-                    width: 40,
-                    height: 40,
-                    child:  this?.avr!= null ?
-                    Container(
-                        width: 40.0,
-                        height: 40.0,
-                        decoration: new BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image: new NetworkImage(
-                                    "${this?.avr}")
-                            )
-                        )): CircleAvatar(
-                        backgroundColor: ReUseAble().getButtonColor(),
-                        radius: 20,child: Icon(Icons.person,color: Colors.white, size: 30))
+                },
+                child:    Padding(
+                  padding: const EdgeInsets.only(right: 16.0, left: 14.0),
+                  child:   Container(
+                      width: 40,
+                      height: 40,
+                      child:  this?.avr!= null ?
+                      Container(
+                          width: 40.0,
+                          height: 40.0,
+                          decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: new DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: new NetworkImage(
+                                      "${this?.avr}")
+                              )
+                          )): CircleAvatar(
+                          backgroundColor: ReUseAble().getButtonColor(),
+                          radius: 20,child: Icon(Icons.person,color: Colors.white, size: 30))
+                  ),
                 )
-                ),
-              ) ,
             )
+
+
           ],
         ),
         body: SingleChildScrollView(
@@ -218,7 +221,7 @@ class _Commission extends State<Commission> {
                   ),
 
 
-                  child: Column(
+                  child: ListView(
                     children: [
 
                       Container(
@@ -243,7 +246,7 @@ class _Commission extends State<Commission> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
 
-                                Text("John Doe",style: TextStyle(fontSize: 20,color: Color(0xff003C5E),fontFamily: 'PoppinsBold'),),
+                                Text("${widget?.userProfileData?.username}",style: TextStyle(fontSize: 20,color: Color(0xff003C5E),fontFamily: 'PoppinsBold'),),
                                 Text("REF ID: 3Y92Q1",style: TextStyle(fontSize: 16,color: Color(0xff003C5E)),)
 
                               ],
@@ -258,7 +261,7 @@ class _Commission extends State<Commission> {
 
                       GestureDetector(
                         onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(HomePageDashboard())
+                            ReUseAble().getTransition(HomePageDashboard(userProfileData:widget.userProfileData))
                         );},
                         child:
                         ReUseAble().drawerItem(title: "Dashboard",icon: Icons.dashboard),
@@ -266,7 +269,7 @@ class _Commission extends State<Commission> {
 
                       GestureDetector(
                         onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(Commission())
+                            ReUseAble().getTransition(Commission(userProfileData:widget.userProfileData))
                         );},
                         child:
                         ReUseAble().drawerItem(isActive:true,title: "Commissions",icon: Icons.alternate_email_sharp,),
@@ -275,7 +278,7 @@ class _Commission extends State<Commission> {
 
                       GestureDetector(
                         onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(Purchase())
+                            ReUseAble().getTransition(Purchase(userProfileData:widget.userProfileData))
                         );},
                         child:
                         ReUseAble().drawerItem( title: "Purchases",icon: Icons.shopping_basket, ),
@@ -285,7 +288,7 @@ class _Commission extends State<Commission> {
 
                       GestureDetector(
                         onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(NetworkScreen())
+                            ReUseAble().getTransition(NetworkScreen(userProfileData:widget.userProfileData))
                         );},
                         child:
                         ReUseAble().drawerItem( title: "Network",icon: Icons.share, ),
@@ -295,7 +298,7 @@ class _Commission extends State<Commission> {
                       GestureDetector(
                         onTap: (){
                           Navigator.of(context).push(
-                              ReUseAble().getTransition(EWallet())
+                              ReUseAble().getTransition(EWallet(userProfileData:widget.userProfileData))
                           );
                           },
                         child:
@@ -310,7 +313,7 @@ class _Commission extends State<Commission> {
                       GestureDetector(
                         onTap: (){
                           Navigator.of(context).push(
-                              ReUseAble().getTransition(SettingScreen())
+                              ReUseAble().getTransition(SettingScreen(userProfileData:widget.userProfileData))
                           );
                         },
                         child:
@@ -332,7 +335,9 @@ class _Commission extends State<Commission> {
 
                       GestureDetector(
                         onTap: (){
-
+                          Navigator.of(context).push(
+                              ReUseAble().getTransition(LogoOut())
+                          );
                         },
                         child:
                         ReUseAble().drawerItem(title: "Logout",icon: Icons.exit_to_app_sharp, ),

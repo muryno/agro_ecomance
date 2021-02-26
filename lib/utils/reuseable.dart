@@ -4,8 +4,16 @@
 import 'dart:convert';
 
 
+import 'package:agro_ecomance/entity/responds/NetworkResp.dart';
+import 'package:agro_ecomance/entity/responds/ProductResp.dart';
 import 'package:agro_ecomance/utils/pin_dialog.dart';
 import 'package:agro_ecomance/utils/profile_dialog.dart';
+import 'package:agro_ecomance/utils/settings/address_dialog.dart';
+import 'package:agro_ecomance/utils/settings/bank_dialog.dart';
+import 'package:agro_ecomance/utils/settings/nextKin_dialog.dart';
+import 'package:agro_ecomance/utils/settings/personal_dialog.dart';
+import 'package:agro_ecomance/utils/settings/security_dialog.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -483,40 +491,101 @@ class ReUseAble {
     );
   }
 
-  curvesProfileDialog(BuildContext context){
+  curvesProfileDialog(BuildContext context, NetworkData networkData,Meta meta){
     return   showDialog(context: context,
         builder: (BuildContext context){
-          return ProfileDialogBox();
+          return ProfileDialogBox(networkData: networkData,meta: meta);
         }
     );
   }
 
 
 
-  homeProductItem({String img}){
-    return  Padding(
-        padding: EdgeInsets.symmetric(horizontal: 5),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-
-        Image.network(
-          'assets/images/$img',
-          fit:BoxFit.fill ,
-          height: 150,
-          width: 150,
-        ),
-
-
-        SizedBox(height: 3,),
-        Text("NGN 5000",style: TextStyle(color: Color(0xff434343),fontFamily: "PoppinsBold",fontSize: 18),),
-
-        SizedBox(height: 5,),
-
-        Text("Bunch of Banana",style: TextStyle(color: Color(0xff656565),fontFamily: "PoppinsRegular",fontSize: 14),)
-      ],
-    ),);
+  personalDialogBox(BuildContext context){
+    return   showDialog(context: context,
+        builder: (BuildContext context){
+          return PersonalDialogBox();
+        }
+    );
   }
+
+
+  addressDialogBox(BuildContext context){
+    return   showDialog(context: context,
+        builder: (BuildContext context){
+          return AddressDialogBox();
+        }
+    );
+  }
+  securityDialogBox(BuildContext context){
+    return   showDialog(context: context,
+        builder: (BuildContext context){
+          return SecurityDialogBox();
+        }
+    );
+  }
+
+  bankDialogBox(BuildContext context){
+    return   showDialog(context: context,
+        builder: (BuildContext context){
+          return BankDialogBox();
+        }
+    );
+  }
+
+  nextKinDialogBox(BuildContext context){
+    return   showDialog(context: context,
+        builder: (BuildContext context){
+          return NextKinDialogBox();
+        }
+    );
+  }
+
+//
+
+
+  homeProductItem(ProductRespData dat,BuildContext context){
+    return InkWell(
+        onTap: (){ Navigator.of(context).pushNamed(PageRouteConstants.itemDashBoardDetailsScreen,arguments: dat);},
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+
+
+              Container(
+                height: 150,
+                width: 150,
+                child:     CachedNetworkImage(
+                  imageUrl: '${dat.featured_image.file_url}',
+                  imageBuilder: (context, imageProvider) => Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                          colorFilter:
+                          ColorFilter.mode(Colors.transparent, BlendMode.colorBurn)),
+                    ),
+                  ),
+                  placeholder: (context, url) =>Center(child:  CircularProgressIndicator(),),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                ),
+              ),
+
+
+
+              SizedBox(height: 3,),
+              Text("NGN${dat.price}",style: TextStyle(color: Color(0xff434343),fontFamily: "PoppinsBold",fontSize: 18),),
+
+              SizedBox(height: 5,),
+
+              Text(dat.name,style: TextStyle(color: Color(0xff656565),fontFamily: "PoppinsRegular",fontSize: 14),)
+            ],
+          ),)
+    );
+  }
+
 }//
 
 

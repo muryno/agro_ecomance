@@ -2,9 +2,9 @@
 class DeliveryAddress {
     String address;
     String city;
-    int lat;
+    var lat;
     String lga;
-    int long;
+    var long;
     String state;
 
     DeliveryAddress({this.address, this.city, this.lat, this.lga, this.long, this.state});

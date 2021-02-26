@@ -14,7 +14,7 @@ import 'package:local_auth/local_auth.dart';
 
 
 
-class  PaymentScreen extends StatefulWidget{
+class  CheckoutScreen extends StatefulWidget{
 
 
   @override
@@ -23,7 +23,7 @@ class  PaymentScreen extends StatefulWidget{
 }
 
 
-class _PaymentScreen extends State<PaymentScreen>{
+class _PaymentScreen extends State<CheckoutScreen>{
 
   final progressKey = GlobalKey();
 
@@ -79,7 +79,7 @@ class _PaymentScreen extends State<PaymentScreen>{
 
                     SizedBox(height: 20,),
 
-                    Text("Payment",style: TextStyle(color: Color(0xff434343),fontFamily:'PoppinsRegular' ,fontSize: 25),),
+                    Text("Checkout",style: TextStyle(color: Color(0xff3CBE1B),fontFamily:'PoppinsRegular' ,fontSize: 25),),
 
 
 

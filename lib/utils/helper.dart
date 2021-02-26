@@ -9,7 +9,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 
 
-import 'package:progress_dialog/progress_dialog.dart';
 
 
 import 'dart:async';
@@ -44,17 +43,17 @@ class Helper {
 
 
 
-  static ProgressDialog _progressDialog;
+
 
   static void startLoading(BuildContext context, [String message = "Please wait..."]){
     if( EasyLoading.isShow) {EasyLoading.dismiss();}
-    configLoading();
+    configLoading(set : Colors.black);
     EasyLoading.show(status: message);
   }
 
 
   static void loadingSuccessful(String message){
-
+    configLoading(set : Colors.green);
     EasyLoading.showSuccess(message);
     EasyLoading.showToast(message);
     if( EasyLoading.isShow) {EasyLoading.dismiss();}
@@ -64,6 +63,7 @@ class Helper {
 
   static void loadingFailed(String message){
     if( EasyLoading.isShow) {EasyLoading.dismiss();}
+    configLoading(set : Colors.red);
     EasyLoading.showError(message);
 
     if( EasyLoading.isShow) {EasyLoading.dismiss();}
@@ -71,9 +71,16 @@ class Helper {
 
   }
 
+  static void toastFailed(String message){
+    configLoading(set : Colors.red);
+    EasyLoading.showError(message);
 
 
- static void configLoading() {
+  }
+
+
+
+ static void configLoading({Color  set  = Colors.green} ) {
    EasyLoading.instance
      ..indicatorType = EasyLoadingIndicatorType.cubeGrid
      ..loadingStyle = EasyLoadingStyle.custom
@@ -82,7 +89,7 @@ class Helper {
 
      ..userInteractions = false
      ..progressColor = Colors.white
-     ..backgroundColor = Colors.black
+     ..backgroundColor = set
      ..indicatorColor = Colors.white
      ..textColor = Colors.white
      ..maskColor = Colors.blue.withOpacity(0.5)

@@ -1,4 +1,25 @@
 
+
+class DeliveryAddressResp {
+    DeliveryAddres deliveryAddress;
+
+    DeliveryAddressResp({this.deliveryAddress});
+
+    factory DeliveryAddressResp.fromJson(Map<String, dynamic> json) {
+        return DeliveryAddressResp(
+            deliveryAddress: json['data'] != null ? DeliveryAddres.fromJson(json['data']) : null,
+        );
+    }
+
+    Map<String, dynamic> toJson() {
+        final Map<String, dynamic> data = new Map<String, dynamic>();
+        if (this.deliveryAddress != null) {
+            data['data'] = this.deliveryAddress.toJson();
+        }
+        return data;
+    }
+}
+
 class DeliveryAddres {
     String address;
     String city;
@@ -17,18 +38,18 @@ class DeliveryAddres {
 
     factory DeliveryAddres.fromJson(Map<String, dynamic> json) {
         return DeliveryAddres(
-            address: json['address'], 
-            city: json['city'], 
+            address: json['address'],
+            city: json['city'],
             defaults: json['default'],
-            email: json['email'], 
-            first_name: json['first_name'], 
-            last_name: json['last_name'], 
-            lat: json['lat'], 
-            long: json['long'], 
-            nearest_bus_stop: json['nearest_bus_stop'], 
-            phone: json['phone'], 
-            state: json['state'], 
-            uuid: json['uuid'], 
+            email: json['email'],
+            first_name: json['first_name'],
+            last_name: json['last_name'],
+            lat: json['lat'],
+            long: json['long'],
+            nearest_bus_stop: json['nearest_bus_stop'],
+            phone: json['phone'],
+            state: json['state'],
+            uuid: json['uuid'],
         );
     }
 

@@ -7,7 +7,11 @@
 import 'package:agro_ecomance/entity/responds/ProductResp.dart';
 import 'package:agro_ecomance/entity/responds/Slider.dart';
 import 'package:agro_ecomance/entity/responds/UserProfile.dart';
+import 'package:agro_ecomance/entity/responds/cart/CartData.dart';
+import 'package:agro_ecomance/entity/responds/cart/CartDataa.dart';
+import 'package:agro_ecomance/rxbloc_pattern/cart_bloc.dart';
 import 'package:agro_ecomance/rxbloc_pattern/products_slider_bloc.dart';
+import 'package:agro_ecomance/server/retrofit_clients.dart';
 import 'package:agro_ecomance/utils/constants/page_route_constants.dart';
 import 'package:agro_ecomance/utils/constants/url_constant.dart';
 import 'package:agro_ecomance/utils/reuseable.dart';
@@ -18,9 +22,13 @@ import 'package:agro_ecomance/view/sidebar/dashboard.dart';
 import 'package:agro_ecomance/view/sidebar/ewallet.dart';
 import 'package:agro_ecomance/view/sidebar/purchase.dart';
 import 'package:agro_ecomance/view/sidebar/setting.dart';
+import 'package:badges/badges.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+
+import 'logout.dart';
+
 
 
 
@@ -46,7 +54,19 @@ class _DashBoardScreen extends State<DashBoardScreen>{
   @override
   void initState() {
     StorageUtil.getProfileUser().then(
-            (value) => userProfileData
+
+            (value )=>
+            {
+              if(value != null )
+                {
+                  setState((){
+                    userProfileData = value;
+                  }),
+
+                  cartBloc.getCart()
+
+                }
+            }
     );
 
     productsBloc.getProduce();
@@ -64,6 +84,7 @@ class _DashBoardScreen extends State<DashBoardScreen>{
 void dispose() {
 
   productsBloc.dispose();
+  cartBloc.dispose();
   super.dispose();
 }
 
@@ -89,30 +110,87 @@ void dispose() {
 
               Row(
                 children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.menu,
-                      color: Colors.black,
-                    ),
-                    onPressed: () {
+
+                   InkWell(
+
+                    onTap: (){
                       if(userProfileData?.email!= null) {
+                        RetrofitClientInstance.getInstance().reset();
                         _scaffoldKey.currentState.openDrawer();
                       }else{
                         Navigator.of(context).pushNamed(PageRouteConstants.view_page);
                       }
                     },
+
+                    child: Container(
+                      child:    Image.asset(
+                        'assets/images/menu.png',
+                        width: 24,height: 24,color: Colors.black,
+                      ),
+                    )
+
                   ),
 
 
+
+
                   Spacer(),
-                  Icon(Icons.notifications_none_sharp,color: Colors.black,),
-                  SizedBox(width: 5,),
+                  InkWell(
+
+                    onTap: (){
+                      if(userProfileData?.email!= null) {
+                        Navigator.of(context).push(
+                            ReUseAble().getTransition(SettingScreen(userProfileData:userProfileData))
+                        );
+                      }else{
+                        Navigator.of(context).pushNamed(PageRouteConstants.view_page);
+                      }
+                    },
+
+                    child:  Icon(Icons.person,color: Colors.black,size: 24,),
+
+                  ),
+
+                  SizedBox(width: 10,),
+
                   InkWell(
                     onTap: (){
-                      Navigator.of(context).pushNamed(PageRouteConstants.cartScreen);
+
+                      if(userProfileData?.email!= null) {
+                        RetrofitClientInstance.getInstance().reset();
+                        Navigator.of(context).pushNamed(PageRouteConstants.cartScreen);
+                      }else{
+                        Navigator.of(context).pushNamed(PageRouteConstants.view_page);
+                      }
+
+
                     },
-                    child:        Icon(Icons.shopping_basket,color: Colors.black,),
-                  )
+                    child:             StreamBuilder(
+                      stream:cartBloc.fetchCart,
+                      builder: (context, AsyncSnapshot< List<CartDataa> >  snapshot){
+                        if(snapshot.hasData ){
+
+
+                          return     Badge(
+                            badgeColor: Colors.green,
+                            badgeContent: Text('${snapshot.data.length}',style: TextStyle(color: Colors.white),),
+                            child:  Icon(Icons.shopping_basket,color: Colors.green,),
+                          );
+                        }
+
+                        return    Badge(
+                          badgeColor: Colors.green,
+                          badgeContent: Text('0',style: TextStyle(color: Colors.white),),
+                          child:  Icon(Icons.shopping_basket,color: Colors.green,),
+                        );
+                      },
+                    ),
+
+
+
+
+                  ),
+                  SizedBox(width: 5,),
                 ],
               ),
               SizedBox(height: 15,),
@@ -148,7 +226,7 @@ void dispose() {
                                     width: MediaQuery.of(context).size.width,
                                     margin: EdgeInsets.symmetric(horizontal: 5.0),
 
-                                    child: Image.asset(i.thumbnail, fit:BoxFit.cover ,)
+                                    child: Image.asset(i.image, fit:BoxFit.cover ,)
                                 );
                               },
                             );
@@ -171,7 +249,41 @@ void dispose() {
 
                       ));
                     }else{
-                      return Center(child: Text("No slider available"),);
+                      return CarouselSlider(
+                          items: [
+                            'assets/images/img1.png',
+                            'assets/images/img4.png',
+                            'assets/images/img3.png',
+                            'assets/images/img6.png'
+                          ].map((i) {
+                            return Builder(
+                              builder: (BuildContext context) {
+                                return Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    margin: EdgeInsets.symmetric(horizontal: 5.0),
+
+                                    child: Image.asset(i, fit:BoxFit.cover ,)
+                                );
+                              },
+                            );
+                          }).toList(),
+                          options: CarouselOptions(
+                            height: 150,
+                            aspectRatio: 16/9,
+                            viewportFraction: 0.8,
+                            initialPage: 0,
+                            enableInfiniteScroll: true,
+                            reverse: false,
+                            autoPlay: true,
+                            autoPlayInterval: Duration(seconds: 3),
+                            autoPlayAnimationDuration: Duration(milliseconds: 800),
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            enlargeCenterPage: true,
+
+
+                            scrollDirection: Axis.horizontal,
+
+                          ));
                     }
 
                   }
@@ -219,7 +331,7 @@ void dispose() {
 
                             itemBuilder: (context,
                                 index) {
-                              return   homeProductItem(snapshot.data[index]);
+                              return   ReUseAble().homeProductItem(snapshot.data[index],context);
                             });
                       }else{
 
@@ -291,7 +403,7 @@ void dispose() {
 
                             itemBuilder: (context,
                                 index) {
-                              return   homeProductItem(snapshot.data[index]);
+                              return   ReUseAble().homeProductItem(snapshot.data[index],context);
                             });
                       }else{
 
@@ -354,7 +466,7 @@ void dispose() {
                   ),
 
 
-                  child: Column(
+                  child: ListView(
                     children: [
 
                       Container(
@@ -379,7 +491,7 @@ void dispose() {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
 
-                                Text("John Doe",style: TextStyle(fontSize: 20,color: Color(0xff003C5E),fontFamily: 'PoppinsBold'),),
+                                Text("${userProfileData?.username } ",style: TextStyle(fontSize: 20,color: Color(0xff003C5E),fontFamily: 'PoppinsBold'),),
                                 Text("REF ID: 3Y92Q1",style: TextStyle(fontSize: 16,color: Color(0xff003C5E)),)
 
                               ],
@@ -394,15 +506,16 @@ void dispose() {
 
                       GestureDetector(
                         onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(HomePageDashboard())
+                            ReUseAble().getTransition(HomePageDashboard(userProfileData:userProfileData))
                         );},
                         child:
                         ReUseAble().drawerItem( title: "Dashboard",icon: Icons.dashboard),
                       ),
 
+
                       GestureDetector(
                         onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(Commission())
+                            ReUseAble().getTransition(Commission(userProfileData:userProfileData))
                         );},
                         child:
                         ReUseAble().drawerItem(title: "Commissions",icon: Icons.alternate_email_sharp,),
@@ -411,7 +524,7 @@ void dispose() {
 
                       GestureDetector(
                         onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(Purchase())
+                            ReUseAble().getTransition(Purchase(userProfileData:userProfileData))
                         );},
                         child:
                         ReUseAble().drawerItem( title: "Purchases",icon: Icons.shopping_basket, ),
@@ -421,7 +534,7 @@ void dispose() {
 
                       GestureDetector(
                         onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(NetworkScreen())
+                            ReUseAble().getTransition(NetworkScreen(userProfileData:userProfileData))
                         );},
                         child:
                         ReUseAble().drawerItem( title: "Network",icon: Icons.share, ),
@@ -431,7 +544,7 @@ void dispose() {
                       GestureDetector(
                         onTap: (){
                           Navigator.of(context).push(
-                              ReUseAble().getTransition(EWallet())
+                              ReUseAble().getTransition(EWallet(userProfileData:userProfileData))
                           );
                         },
                         child:
@@ -446,7 +559,7 @@ void dispose() {
                       GestureDetector(
                         onTap: (){
                           Navigator.of(context).push(
-                              ReUseAble().getTransition(SettingScreen())
+                              ReUseAble().getTransition(SettingScreen(userProfileData:userProfileData))
                           );
                         },
                         child:
@@ -468,7 +581,9 @@ void dispose() {
 
                       GestureDetector(
                         onTap: (){
-
+                          Navigator.of(context).push(
+                              ReUseAble().getTransition(LogoOut())
+                          );
                         },
                         child:
                         ReUseAble().drawerItem(title: "Logout",icon: Icons.exit_to_app_sharp, ),
@@ -485,7 +600,7 @@ void dispose() {
                           );
                         },
                         child:
-                        ReUseAble().drawerItem(isActive: true,title: "Continue Shopping",icon: Icons.arrow_back, ),
+                        ReUseAble().drawerItem(title: "Continue Shopping",icon: Icons.arrow_back, ),
                       ),
 
 
@@ -498,37 +613,8 @@ void dispose() {
               ),
             ))
     );
-
   }
 
-
-  homeProductItem(ProductRespData dat){
-    return InkWell(
-        onTap: (){ Navigator.of(context).pushNamed(PageRouteConstants.itemDashBoardDetailsScreen,arguments: dat);},
-    child: Padding(
-      padding: EdgeInsets.symmetric(horizontal: 5),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-
-          Image.network(
-            dat.featured_image.thumbnail_url,
-            fit:BoxFit.fill ,
-            height: 150,
-            width: 150,
-          ),
-
-
-          SizedBox(height: 3,),
-          Text("NGN${dat.price}",style: TextStyle(color: Color(0xff434343),fontFamily: "PoppinsBold",fontSize: 18),),
-
-          SizedBox(height: 5,),
-
-          Text(dat.name,style: TextStyle(color: Color(0xff656565),fontFamily: "PoppinsRegular",fontSize: 14),)
-        ],
-      ),)
-    );
-  }
 
 
 

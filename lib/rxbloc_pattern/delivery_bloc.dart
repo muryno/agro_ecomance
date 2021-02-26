@@ -14,6 +14,7 @@ import 'package:agro_ecomance/entity/request/bankReq.dart';
 import 'package:agro_ecomance/entity/responds/BankRes.dart';
 import 'package:agro_ecomance/entity/responds/ProductResp.dart';
 import 'package:agro_ecomance/entity/responds/Slider.dart';
+import 'package:agro_ecomance/entity/responds/UserProfile.dart';
 import 'package:agro_ecomance/entity/responds/cart/CartData.dart';
 import 'package:agro_ecomance/entity/responds/cart/CartDataa.dart';
 
@@ -30,9 +31,23 @@ class DeliveryBloc {
 
 
 
+  final _addressData = PublishSubject<List<DeliveryAddres>>();
+  Stream<List<DeliveryAddres>> get fetchAddress => _addressData.stream;
+
+  List<DeliveryAddres> dfr = [];
 
 
-  addDeliveryAddress( String address,String city , String email, String first_name,String last_name,String state, String phone,double lat,double lon,String lga,bool set_default,String nearest_bus_stop, BuildContext context) {
+
+  getAddress() async{
+    UserProfile item = await apiProvider.getDataService().getUserProfile();
+    _addressData.sink.add(item.data.delivery_address != null ? item.data.delivery_address  :dfr );
+  }
+
+
+
+
+
+  addDeliveryAddress( String address,String city , String email, String first_name,String last_name,String state, String phone,double lat,double lon,bool set_default,String nearest_bus_stop, BuildContext context) {
 
 
     var addBask = addPersonalInfor();
@@ -45,13 +60,10 @@ class DeliveryBloc {
     addBask.state = state;
     addBask.long = lon;
     addBask.set_default = set_default;
-    addBask.lga = lga;
     addBask.nearest_bus_stop = nearest_bus_stop;
 
     Helper.startLoading(context);
 
-
-    Helper.startLoading(context);
 
 
     try {
@@ -62,7 +74,9 @@ class DeliveryBloc {
 
         if(value.deliveryAddress!= null){
           Helper.loadingSuccessful("success"),
+          getAddress(),
           Navigator.of(context).pop(),
+
 
         } else
 
@@ -91,7 +105,6 @@ class DeliveryBloc {
     addBask.state = state;
     addBask.long = lon;
     addBask.set_default = set_default;
-    addBask.lga = lga;
     addBask.nearest_bus_stop = nearest_bus_stop;
 
     Helper.startLoading(context);
@@ -138,7 +151,7 @@ class DeliveryBloc {
 
         if(value.deliveryAddress!= null){
           Helper.loadingSuccessful("success"),
-          Navigator.of(context).pop(),
+       //   Navigator.of(context).pop(),
 
         } else
 
@@ -165,7 +178,8 @@ class DeliveryBloc {
 
         if(value.deliveryAddress!= null){
           Helper.loadingSuccessful("success"),
-          Navigator.of(context).pop(),
+          getAddress(),
+        //  Navigator.of(context).pop(),
 
         } else
 
@@ -184,6 +198,9 @@ class DeliveryBloc {
 
 
 
+  dispose(){
+    _addressData.drain();
+  }
 
 
 
