@@ -7,8 +7,10 @@ import 'dart:convert';
 
 
 
+import 'package:agro_ecomance/entity/responds/ProductCategory.dart';
 import 'package:agro_ecomance/entity/responds/ProductResp.dart';
 import 'package:agro_ecomance/entity/responds/Slider.dart';
+import 'package:agro_ecomance/entity/responds/addCartResp/CategoryDataResp.dart';
 
 import 'package:agro_ecomance/server/retrofit_clients.dart';
 import 'package:agro_ecomance/utils/helper.dart';
@@ -29,6 +31,8 @@ class ProductsBloc {
   Stream<List<ProductRespData>> get fetchProduce => _productArrayResp.stream;
 
 
+  final _productData = PublishSubject<List<CategoryData>>();
+  Stream<List<CategoryData>> get fetchCategory => _productData.stream;
 
 
   final _sliderData = PublishSubject<List<SliderData>>();
@@ -49,8 +53,16 @@ class ProductsBloc {
 
 
 
+  getCategory() async{
+    CategoryDataResp item = await apiProvider.getDataService().getCategories();
+    _productData.sink.add(item.categoryData);
+  }
 
 
+  getProduceByCategory(int uuid) async{
+    ProductResp item = await apiProvider.getDataService().getProductByCategories(uuid);
+    _productArrayResp.sink.add(item.data);
+  }
 
 
 
@@ -59,6 +71,7 @@ class ProductsBloc {
   dispose() {
     _productArrayResp.drain();
     _sliderData.drain();
+    _productData.drain();
   }
 
   onError(e) {

@@ -29,8 +29,7 @@ class CartBloc {
   Stream<List<CartDataa>> get fetchCart => _cartDataa.stream;
 
 
-
-
+  var myData = List<CartDataa>();
 
 
 
@@ -113,6 +112,7 @@ class CartBloc {
   getCart() async{
     CartData item = await apiProvider.getDataService().getCart();
     CartCount  = item.dataa.length;
+
     _cartDataa.sink.add(item.dataa);
   }
 
@@ -120,10 +120,26 @@ class CartBloc {
 
 
 
+   addIncrementICarts(CartDataa item) async{
 
-  dispose() {
+     CartDataa sd =  myData.where((element) => element.uuid == item.uuid).first;
+     myData.remove(item);
+     myData.add(item);
+     _cartDataa.sink.add(myData);
+   }
+
+   addAllIncrementICarts(List<CartDataa> item) async{
+     _cartDataa.sink.add(item);
+   }
+
+
+
+
+
+   dispose() {
 
     _cartDataa.drain();
+  //  addedCart.drain();
 
   }
 

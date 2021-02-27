@@ -5,7 +5,10 @@ import 'dart:convert';
 
 
 import 'package:agro_ecomance/entity/responds/NetworkResp.dart';
+import 'package:agro_ecomance/entity/responds/ProductCategory.dart';
 import 'package:agro_ecomance/entity/responds/ProductResp.dart';
+import 'package:agro_ecomance/entity/responds/addCartResp/CategoryDataResp.dart';
+import 'package:agro_ecomance/rxbloc_pattern/products_slider_bloc.dart';
 import 'package:agro_ecomance/utils/pin_dialog.dart';
 import 'package:agro_ecomance/utils/profile_dialog.dart';
 import 'package:agro_ecomance/utils/settings/address_dialog.dart';
@@ -13,6 +16,7 @@ import 'package:agro_ecomance/utils/settings/bank_dialog.dart';
 import 'package:agro_ecomance/utils/settings/nextKin_dialog.dart';
 import 'package:agro_ecomance/utils/settings/personal_dialog.dart';
 import 'package:agro_ecomance/utils/settings/security_dialog.dart';
+import 'package:agro_ecomance/view/wish_list/addWishList_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -541,6 +545,15 @@ class ReUseAble {
     );
   }
 
+
+
+  addWishListDialogBox(BuildContext context){
+    return   showDialog(context: context,
+        builder: (BuildContext context){
+          return AddWishDialogBox();
+        }
+    );
+  }
 //
 
 
@@ -555,7 +568,7 @@ class ReUseAble {
 
 
               Container(
-                height: 150,
+                height: 140,
                 width: 150,
                 child:     CachedNetworkImage(
                   imageUrl: '${dat.featured_image.file_url}',
@@ -583,6 +596,67 @@ class ReUseAble {
               Text(dat.name,style: TextStyle(color: Color(0xff656565),fontFamily: "PoppinsRegular",fontSize: 14),)
             ],
           ),)
+    );
+  }
+
+
+  homeCategoryItem(CategoryData dat,BuildContext context){
+    return InkWell(
+        onTap: (){
+
+          productsBloc.getProduceByCategory(dat.id);
+          Navigator.of(context).pushNamed(PageRouteConstants.categoryItemScreenScreen,arguments: dat.uuid);
+
+
+
+          },
+        child: Container(
+          height: 65,
+          width: 114,
+          margin: EdgeInsets.symmetric(horizontal: 5),
+          child: Stack(
+            children: [
+
+
+              Container(
+                height: 65,
+                width: 114,
+               child: CachedNetworkImage(
+                  imageUrl: '${dat.image.file_url}',
+                  imageBuilder: (context, imageProvider) => Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                          colorFilter:
+                          ColorFilter.mode(Colors.transparent, BlendMode.colorBurn)),
+                    ),
+                  ),
+                  placeholder: (context, url) =>Center(child:  CircularProgressIndicator(),),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                ),
+              ),
+
+
+
+              Container(
+                color: Colors.transparent,
+                height: 65,
+                width: 114,
+                alignment: Alignment.center,
+                child:  Text("${dat.name}",style: TextStyle(color: Colors.white,fontFamily: "PoppinsBold",fontSize: 18),),
+
+              )
+
+            ],
+          ),
+          decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.white,
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(15))
+          ),
+        )
     );
   }
 

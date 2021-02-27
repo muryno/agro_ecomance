@@ -71,7 +71,7 @@ class _LoginPage extends State<LoginScreen>{
     Widget userName = Container(
         child: TextFormField(
           controller: _email,
-          decoration: ReUseAble().inputWithoutIcon(hint: 'Email',label: 'Email'),
+          decoration: ReUseAble().inputWithoutIcon(hint: 'Email or Phone number',label: 'Email or Phone number '),
           keyboardType: TextInputType.emailAddress,
           validator: (value){
             if(value.isEmpty   ){
@@ -284,12 +284,10 @@ class _LoginPage extends State<LoginScreen>{
                                 onTap: ()=>{
 
                                   if (usr!=null ){
-                                   // _authenticate(usr,context)
+                                    _authenticate(usr,context)
                                   }else{
                                     ReUseAble().curvesDialog(context,"Not Available","TouchID / FaceID is not available for use. Login using username and password to activate", "ok")
                                   }
-                                 // ReUseAble().curvesDialog(context,"Not Available","TouchID / FaceID is not available for use. Login using username and password to activate", "ok")
-
 
 
 
@@ -357,7 +355,7 @@ class _LoginPage extends State<LoginScreen>{
     if (!mounted) return;
 
     if (authenticated){
-      loginBloc.attempLogin(usr.client,  usr.email_or_phone,usr.password, context);
+      loginBloc.attempLogin("user",  usr.email_or_phone,usr.password, context);
 
     }
   }

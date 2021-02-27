@@ -1,5 +1,6 @@
 import 'package:agro_ecomance/entity/request/login_request.dart';
 import 'package:agro_ecomance/entity/responds/UserProfile.dart';
+import 'package:agro_ecomance/entity/responds/cart/CartDataa.dart';
 import 'package:agro_ecomance/entity/userBase.dart';
 import 'package:agro_ecomance/rxbloc_pattern/delivery_bloc.dart';
 import 'package:agro_ecomance/utils/RaisedGradientButton.dart';
@@ -12,6 +13,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:local_auth/local_auth.dart';
 
 import 'package:flutter_slidable/flutter_slidable.dart';
+
+import 'checkout_screen.dart';
 
 
 
@@ -49,8 +52,13 @@ class _AddressScreen extends State<AddressScreen>{
 
 
   final formKey = GlobalKey<FormState>();
+
+  List<CartDataa>   snapshotData;
+  DeliveryAddres  deliveryAddres;
   @override
   Widget build(BuildContext context) {
+
+    snapshotData = ModalRoute.of(context).settings.arguments;
     final size = MediaQuery
         .of(context)
         .size;
@@ -154,7 +162,10 @@ class _AddressScreen extends State<AddressScreen>{
 
 
 
+
                           if(snapshot.data.length > 0) {
+
+                            deliveryAddres =    snapshot.data.where((element) => element.defaults ).first;
                             return        Container(
                                 child: ListView.builder(
                                     shrinkWrap: true,
@@ -235,7 +246,15 @@ class _AddressScreen extends State<AddressScreen>{
                             colors: <Color>[Color(0xff3EB120), Colors.greenAccent],
                           ),
                           onPressed: (){
-                            Navigator.of(context).pushNamed(PageRouteConstants.paymentScreen);
+                               List<dynamic> dfr = [];
+                                dfr.add(snapshotData);
+                                dfr.add(deliveryAddres);
+
+
+                               Navigator.of(context).push(
+                                   ReUseAble().getTransition(CheckOutScreen(snapshotData: dfr))
+                               );
+                           // Navigator.of(context).pushNamed(PageRouteConstants.checkOutScreen,arguments:dfr );
 
                           }
                       ),

@@ -26,7 +26,10 @@ class PageRouteConstants {
 
   static const String oTPScreen = '/OTPScreen';
 
+  static const String categoryItemScreenScreen = '/CategoryItemScreenScreen';
 //
+
+//paymentScreen
 
 
 

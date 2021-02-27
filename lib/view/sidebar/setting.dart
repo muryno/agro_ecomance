@@ -5,6 +5,7 @@ import 'package:agro_ecomance/rxbloc_pattern/setting_bloc.dart';
 import 'package:agro_ecomance/utils/constants/url_constant.dart';
 import 'package:agro_ecomance/utils/reuseable.dart';
 import 'package:agro_ecomance/view/sidebar/purchase.dart';
+import 'package:agro_ecomance/view/sidebar/wishList.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -419,7 +420,9 @@ class _Screen15State extends State<SettingScreen> {
 
                       GestureDetector(
                         onTap: (){
-
+                          Navigator.of(context).push(
+                              ReUseAble().getTransition(WishListScreen())
+                          );
                         },
                         child:
                         ReUseAble().drawerItem(title: "Wish / Bookings",icon: Icons.card_travel_sharp, ),

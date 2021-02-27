@@ -35,7 +35,14 @@ class CartDetailsScreen extends StatefulWidget{
 
 class _CartDetailsScreen extends State<CartDetailsScreen>{
 
-int count = 0 ;
+int count = 1 ;
+
+CartDataa acts ;
+@override
+  void initState () {
+  acts = widget.dat;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -117,12 +124,14 @@ int count = 0 ;
                                 setState(() {
                                   count = count - 1;
                                 });
+                                acts.quantity = count;
+                                cartBloc.addIncrementICarts(acts);
                               }
                             },
                             child: Icon(Icons.remove, size: 12,),
                           ),
                           SizedBox(width: 10,),
-                          Text("$count"),
+                          Text("${widget.dat.quantity}"),
 
 
                           SizedBox(width: 10,),
@@ -130,7 +139,10 @@ int count = 0 ;
                             onTap: () {
                               setState(() {
                                 count = count + 1;
+
                               });
+                              acts.quantity = count;
+                              cartBloc.addIncrementICarts(acts);
                             },
                             child: Icon(Icons.add, size: 12,),
                           ),

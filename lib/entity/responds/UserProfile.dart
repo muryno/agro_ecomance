@@ -69,7 +69,8 @@ class UserProfileData {
             ip: json['ip'],
             last_login: json['last_login'],
             last_name: json['last_name'],
-            next_of_kin: json['next_of_kin'] ,
+
+            next_of_kin: json['next_of_kin'] != null ? NextOfKin.fromJson(json['next_of_kin']) : null,
             parent_id: json['parent_id'],
             phone: json['phone'],
             preference: json['preference'] != null ? Preference.fromJson(json['preference']) : null,
@@ -108,7 +109,7 @@ class UserProfileData {
             data['delivery_address'] = this.delivery_address.map((v) => v.toJson()).toList();
         }
         if (this.next_of_kin != null) {
-            data['next_of_kin'] = this.next_of_kin;
+            data['next_of_kin'] = this.next_of_kin.toJson();
         }
         if (this.preference != null) {
             data['preference'] = this.preference.toJson();

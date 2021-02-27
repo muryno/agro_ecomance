@@ -278,34 +278,71 @@ class _ItemDashBoardDetailsScreen extends State<ShopingDetails>{
                 SizedBox(height: 40,),
 
 
-                Container(
+                Row(
+                  children: [
 
-                  width: double.infinity,
-                  child: RaisedButton(
-
-
+                    Expanded(
 
 
-                      onPressed: () {
-
-                        if(userProfileData?.email!= null) {
-                          RetrofitClientInstance.getInstance().reset();
-                          cartBloc.addCartData(productRespData.id, quatity, context);
-                        }else{
-                          Navigator.of(context).pushNamed(PageRouteConstants.view_page);}
-
-
-                      },
+                      child: Container(
+                        height: 55,
+                        child: RaisedButton(
 
 
 
 
-                      child: Text("ADD TO CART",style: TextStyle(
-                          color: Colors.white
-                      ),),
-                      color: Color(0xff3ABC16)
-                  ),
+                            onPressed: () {
+
+
+                            },
+
+
+
+
+                            child: Text("ADD TO WISH",style: TextStyle(
+                                color: Colors.white
+                            ),),
+                            color: Colors.grey
+                        ),
+                      )
+                    ),
+
+                    Expanded(
+
+
+                      child:Container(
+                        height: 55,
+                        child:  RaisedButton(
+
+
+
+
+
+                            onPressed: () {
+
+                              if(userProfileData?.email!= null) {
+                                RetrofitClientInstance.getInstance().reset();
+                                cartBloc.addCartData(productRespData.id, quatity, context);
+                              }else{
+                                Navigator.of(context).pushNamed(PageRouteConstants.view_page);}
+
+
+                            },
+
+
+
+
+                            child: Text("ADD TO CART",style: TextStyle(
+                                color: Colors.white
+                            ),),
+                            color: Color(0xff3ABC16)
+                        ),
+                      )
+                    ),
+                  ],
                 ),
+
+                SizedBox(height: 10,),
               ]
           ),
 

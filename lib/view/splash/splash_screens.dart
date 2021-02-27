@@ -93,6 +93,7 @@ class _SplashScreenStates extends State<SplashScreens>
               'assets/images/back.png',
               width: double.infinity,
               height: double.infinity,
+              fit: BoxFit.fill,
             ),
           ),
 

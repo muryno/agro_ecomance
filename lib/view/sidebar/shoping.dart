@@ -4,9 +4,11 @@
 
 
 
+import 'package:agro_ecomance/entity/responds/ProductCategory.dart';
 import 'package:agro_ecomance/entity/responds/ProductResp.dart';
 import 'package:agro_ecomance/entity/responds/Slider.dart';
 import 'package:agro_ecomance/entity/responds/UserProfile.dart';
+import 'package:agro_ecomance/entity/responds/addCartResp/CategoryDataResp.dart';
 import 'package:agro_ecomance/entity/responds/cart/CartData.dart';
 import 'package:agro_ecomance/entity/responds/cart/CartDataa.dart';
 import 'package:agro_ecomance/rxbloc_pattern/cart_bloc.dart';
@@ -22,6 +24,7 @@ import 'package:agro_ecomance/view/sidebar/dashboard.dart';
 import 'package:agro_ecomance/view/sidebar/ewallet.dart';
 import 'package:agro_ecomance/view/sidebar/purchase.dart';
 import 'package:agro_ecomance/view/sidebar/setting.dart';
+import 'package:agro_ecomance/view/sidebar/wishList.dart';
 import 'package:badges/badges.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -71,7 +74,7 @@ class _DashBoardScreen extends State<DashBoardScreen>{
 
     productsBloc.getProduce();
     productsBloc.getSlider();
-
+    productsBloc.getCategory();
 
     super.initState();
   }
@@ -251,10 +254,8 @@ void dispose() {
                     }else{
                       return CarouselSlider(
                           items: [
-                            'assets/images/img1.png',
-                            'assets/images/img4.png',
-                            'assets/images/img3.png',
-                            'assets/images/img6.png'
+                            'assets/images/banner.png',
+                            'assets/images/banana.png',
                           ].map((i) {
                             return Builder(
                               builder: (BuildContext context) {
@@ -270,7 +271,7 @@ void dispose() {
                           options: CarouselOptions(
                             height: 150,
                             aspectRatio: 16/9,
-                            viewportFraction: 0.8,
+                            viewportFraction: 1,
                             initialPage: 0,
                             enableInfiniteScroll: true,
                             reverse: false,
@@ -294,10 +295,77 @@ void dispose() {
                   );
                 },
               ),
+              SizedBox(height: 25,),
+              Row(
+                children: [
+                  Text("Category",style: TextStyle(color: Colors.black,fontFamily: "PoppinsMedium",fontSize: 22),),
 
 
 
-              SizedBox(height: 15,),
+
+                ],
+              ),
+              SizedBox(height: 10,),
+              Container(
+
+                height: 70,
+                alignment: Alignment.center,
+
+                child:   StreamBuilder(
+                  stream: productsBloc.fetchCategory,
+                  builder: (context, AsyncSnapshot< List<CategoryData> >  snapshot){
+                    if(snapshot.hasData ){
+
+                      if(snapshot.data.length > 0) {
+                        return ListView.builder(
+                            scrollDirection: Axis.horizontal,
+
+                            itemCount: snapshot.data.length,
+
+
+                            itemBuilder: (context,
+                                index) {
+                              return   ReUseAble().homeCategoryItem(snapshot.data[index],context);
+                            });
+                      }else{
+
+                        return Center(child: Text("No Category available"),);
+
+                      }
+
+
+
+
+                    }else if(snapshot.hasError) {
+                      return Text(snapshot.error.toString());
+                    }
+
+                    return Container(
+                      alignment: Alignment.center,
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                ),
+
+
+
+
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+
+
+              ),
+
+              SizedBox(height: 25,),
               Row(
                 children: [
                   Text("Featured",style: TextStyle(color: Colors.black,fontFamily: "PoppinsMedium",fontSize: 22),),
@@ -327,7 +395,7 @@ void dispose() {
                             scrollDirection: Axis.horizontal,
                             shrinkWrap: true,
                             itemCount: snapshot.data.length,
-                            physics: NeverScrollableScrollPhysics(),
+
 
                             itemBuilder: (context,
                                 index) {
@@ -365,10 +433,6 @@ void dispose() {
                     borderRadius: BorderRadius.all(Radius.circular(4))
                 ),
               ),
-
-
-
-
               SizedBox(height: 30,),
               Row(
                 children: [
@@ -570,6 +634,10 @@ void dispose() {
 
                       GestureDetector(
                         onTap: (){
+
+                          Navigator.of(context).push(
+                              ReUseAble().getTransition(WishListScreen())
+                          );
 
                         },
                         child:

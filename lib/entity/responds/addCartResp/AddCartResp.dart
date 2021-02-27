@@ -23,11 +23,11 @@ class AddCartResp {
 class AddCartData {
     int id;
     Product product;
-    int product_id;
-    int quantity;
-    int user_id;
-    String uuid;
-    int weight;
+    var product_id;
+    var quantity;
+    var user_id;
+    var uuid;
+    var weight;
 
     AddCartData({this.id, this.product, this.product_id, this.quantity, this.user_id, this.uuid, this.weight});
 
@@ -58,11 +58,11 @@ class AddCartData {
     }
 }
 class PriceDistribution {
-    int discount;
-    int price;
-    int profit;
-    String unit;
-    int weight;
+    var discount;
+    var price;
+    var profit;
+    var unit;
+    var weight;
 
     PriceDistribution({this.discount, this.price, this.profit, this.unit, this.weight});
 
@@ -88,25 +88,24 @@ class PriceDistribution {
 }
 
 class Product {
-    List<Object> additional_information;
-    String description;
-    String discount;
-    bool featured;
-    int featured_image;
-    int id;
-    String name;
-    String price;
+    var description;
+    var discount;
+    var featured;
+    var featured_image;
+    var id;
+    var name;
+    var price;
     List<PriceDistribution> price_distribution;
-    String profit;
-    String sku;
-    String slug;
-    int status;
-    int stock_status;
-    String unit;
-    String uuid;
-    String weight;
+    var profit;
+    var sku;
+    var slug;
+    var status;
+    var stock_status;
+    var unit;
+    var uuid;
+    var weight;
 
-    Product({this.additional_information, this.description, this.discount, this.featured, this.featured_image, this.id, this.name, this.price, this.price_distribution, this.profit, this.sku, this.slug, this.status, this.stock_status, this.unit, this.uuid, this.weight});
+    Product({ this.description, this.discount, this.featured, this.featured_image, this.id, this.name, this.price, this.price_distribution, this.profit, this.sku, this.slug, this.status, this.stock_status, this.unit, this.uuid, this.weight});
 
     factory Product.fromJson(Map<String, dynamic> json) {
         return Product(

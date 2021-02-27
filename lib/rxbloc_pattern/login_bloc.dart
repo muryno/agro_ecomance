@@ -9,6 +9,8 @@ import 'dart:convert';
 import 'package:agro_ecomance/entity/request/login_request.dart';
 import 'package:agro_ecomance/entity/request/otpReq.dart';
 import 'package:agro_ecomance/entity/request/signUpReq.dart';
+import 'package:agro_ecomance/entity/responds/FailedLogin.dart';
+import 'package:agro_ecomance/entity/responds/errorResponds/SignUpError.dart';
 import 'package:agro_ecomance/server/retrofit_clients.dart';
 import 'package:agro_ecomance/utils/constants/page_route_constants.dart';
 import 'package:agro_ecomance/utils/helper.dart';
@@ -69,7 +71,28 @@ class LoginBloc {
           Helper.loadingFailed(value.message)
 
 
-      }).catchError(onError);
+      }).catchError((e){
+
+        var ad =  jsonDecode(e);
+
+        var resp = SignUpError.fromJson(ad);
+
+        if(resp.errors!= null){
+
+          if(resp.errors.phone.length> 0) {
+            Helper.loadingFailed(resp.errors.phone[0].toString());
+          }
+          if(resp.errors.email.length> 0) {
+            Helper.loadingFailed(resp.errors.phone[0].toString());
+          }
+          if(resp.errors.username.length> 0) {
+            Helper.loadingFailed(resp.errors.phone[0].toString());
+          }
+
+        }
+
+        //
+      });
     }catch(e){
 
       Helper.loadingFailed(e.toString());
@@ -181,7 +204,19 @@ class LoginBloc {
         }
 
 
-      }).catchError(onError);
+      }).catchError((e){
+        var ad =  jsonDecode(e);
+
+        var resp = FailedLogin.fromJson(ad);
+
+        if(resp.data!= null){
+
+          Navigator.pushReplacementNamed(context, PageRouteConstants.oTPScreen,arguments: resp.data.otp_secret);
+          Helper.loadingFailed(resp.error.toString());
+
+
+        }
+      });
     }catch(e){
 
       Helper.loadingFailed(e.toString());
@@ -214,9 +249,29 @@ class LoginBloc {
 
 
 
-  onError(e) {
-  var ad =  jsonDecode(e.response.toString());
+  //
+  // onErrors(e,BuildContext context) {
+  //   var ad =  jsonDecode(e.toString());
+  //
+  //   var resp = FailedLogin.fromJson(ad);
+  //
+  //   if(resp.data!= null){
+  //     Navigator.pushReplacementNamed(context, PageRouteConstants.oTPScreen,arguments: value.otp_secret)
+  //   }
+  //   ad["error"] == null ?
+  //   Helper.loadingFailed(ad["message"]):
+  //   Helper.loadingFailed(ad["error"]);
+  // }
 
+
+  onError(e) {
+  var ad =  jsonDecode(e.toString());
+
+  // var resp = FailedLogin.fromJson(ad);
+  //
+  // if(resp.data!= null){
+  //   Navigator.pushReplacementNamed(context, PageRouteConstants.oTPScreen,arguments: value.otp_secret)
+  // }
   ad["error"] == null ?
   Helper.loadingFailed(ad["message"]):
     Helper.loadingFailed(ad["error"]);

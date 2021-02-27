@@ -7,6 +7,7 @@ import 'package:agro_ecomance/utils/reuseable.dart';
 import 'package:agro_ecomance/view/sidebar/logout.dart';
 import 'package:agro_ecomance/view/sidebar/purchase.dart';
 import 'package:agro_ecomance/view/sidebar/setting.dart';
+import 'package:agro_ecomance/view/sidebar/wishList.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -291,7 +292,9 @@ class _NetworkScreen extends State<NetworkScreen> {
 
                       GestureDetector(
                         onTap: (){
-
+                          Navigator.of(context).push(
+                              ReUseAble().getTransition(WishListScreen())
+                          );
                         },
                         child:
                         ReUseAble().drawerItem(title: "Wish / Bookings",icon: Icons.card_travel_sharp, ),

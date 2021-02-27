@@ -261,8 +261,8 @@ class Category {
     String description;
     int id;
     int image_id;
-    String max_amount;
-    String min_amount;
+    var max_amount;
+    var min_amount;
     String name;
     Pivot pivot;
     String slug;
@@ -311,8 +311,8 @@ class Category {
 
 
 class Pivot {
-    int category_id;
-    int product_id;
+    var category_id;
+    var product_id;
 
     Pivot({this.category_id, this.product_id});
 
@@ -332,11 +332,11 @@ class Pivot {
 }
 
 class PriceDistribution {
-    int discount;
-    int price;
-    int profit;
-    String unit;
-    int weight;
+    var discount;
+    var price;
+    var profit;
+    var unit;
+    var weight;
 
     PriceDistribution({this.discount, this.price, this.profit, this.unit, this.weight});
 

@@ -99,9 +99,9 @@ class NextOfKin {
     String city;
     String email;
     var lat;
-    String lga;
+    var lga;
     var long;
-    String name;
+    var name;
     var phone;
     String state;
 

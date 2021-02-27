@@ -1,52 +1,59 @@
 
+import 'package:agro_ecomance/entity/responds/DashboardResp.dart';
 import 'package:agro_ecomance/entity/responds/UserProfile.dart';
+import 'package:agro_ecomance/entity/responds/WishBaskResp.dart';
+import 'package:agro_ecomance/rxbloc_pattern/dashboard_bloc.dart';
+import 'package:agro_ecomance/rxbloc_pattern/wish_bloc.dart';
+import 'package:agro_ecomance/utils/RaisedGradientButton.dart';
 import 'package:agro_ecomance/utils/constants/url_constant.dart';
 import 'package:agro_ecomance/utils/reuseable.dart';
-import 'package:agro_ecomance/view/sidebar/shoping.dart';
-import 'package:agro_ecomance/view/sidebar/ewallet.dart';
+import 'package:agro_ecomance/view/sidebar/dashboard.dart';
 import 'package:agro_ecomance/view/sidebar/purchase.dart';
 import 'package:agro_ecomance/view/sidebar/setting.dart';
-import 'package:agro_ecomance/view/sidebar/wishList.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-import 'Network.dart';
-import 'dashboard.dart';
 import 'logout.dart';
+import 'shoping.dart';
+import 'Network.dart';
+import 'commision.dart';
+import 'ewallet.dart';
 
 
-class Commission extends StatefulWidget {
-  UserProfileData userProfileData;
+class WishListScreen extends StatefulWidget {
 
-  Commission({@required  this.userProfileData});
+ final UserProfileData userProfileData;
 
+ WishListScreen({  this.userProfileData});
   @override
-  _Commission createState() => _Commission();
+  _WishListScreen createState() => _WishListScreen();
 }
 
-class _Commission extends State<Commission> {
+class _WishListScreen extends State<WishListScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
 
-  String _name = "";
+
 
   String _usr = "";
 
 
-  var _stock = ["All(34)","Few"];
 
   String avr ;
 
   @override
   void initState() {
 
-
-
+    wishBloc.fetchWishBasket();
     super.initState();
+  }
 
-
+  @override
+  void dispose() {
+    wishBloc.dispose();
+    super.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -81,11 +88,9 @@ class _Commission extends State<Commission> {
                   },
               ),
             ),
-
             InkWell(
                 onTap: (){
-                  ReUseAble().getTransition(SettingScreen(userProfileData:widget.userProfileData));
-
+                ReUseAble().getTransition(SettingScreen(userProfileData:widget.userProfileData));
                 },
                 child:    Padding(
                   padding: const EdgeInsets.only(right: 16.0, left: 14.0),
@@ -109,8 +114,6 @@ class _Commission extends State<Commission> {
                   ),
                 )
             )
-
-
           ],
         ),
         body: SingleChildScrollView(
@@ -118,90 +121,99 @@ class _Commission extends State<Commission> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                'COMMISSION ',
-                style: TextStyle(
-                    fontSize: 20,
-                    color: Color(0XFFABA3A3),
-                    fontFamily:'PoppinsRegular' ),
-              ),
 
-              SizedBox(
-                height: 16.0,
-              ),
 
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Expanded(
-                    child:  Text(
-                      'FIlter by:  ',
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Color(0XFF3ABC16),
-                          fontFamily:'PoppinsRegular' ),
-                    ),
+                children: [
+                  Text(
+                    "Wish Basket",
+                    style: TextStyle(
+                        fontSize: 30,
+                        color: Color(0XFF3ABC16),
+                        fontFamily:'PoppinsRegular' ),
                   ),
 
+                  Spacer(),
 
-
-                  Expanded(
-                    child:   DropdownButtonFormField(
-
-                      isDense: true,
-                      hint: new Text('All ',
-                          textAlign: TextAlign.center),
-                      items:_stock.map((value) {
-                        return DropdownMenuItem<String>(
-
-                          value: value.toString(),
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-
-                      },
-
-                      decoration: InputDecoration(
-
-                        border: InputBorder.none,
-                        filled: true,
-                        fillColor: Color(0XFFD8D8D8).withOpacity(0.2),
+                  ButtonTheme(
+                    // minWidth: 120,
+                    child: RaisedButton(
+                      elevation: 0.0,
+                      textColor: Colors.white,
+                      color: Color(0XFF3ABC16),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(40.0)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("New "),
+                          const SizedBox(
+                            width: 8.0,
+                          ),
+                          Icon(Icons.add_circle_outline)
+                        ],
                       ),
+                      onPressed: () {
+
+
+                        ReUseAble().addWishListDialogBox(context);
+                      },
                     ),
                   ),
+
                 ],
               ),
+
+
                SizedBox(
-                height: 16.0,
+                height: 24.0,
               ),
 
 
 
-              SizedBox(height: 15,),
+              StreamBuilder(
+                stream: wishBloc.fetchbasket,
+                builder: (context, AsyncSnapshot< List<WishBaskData> >  snapshot){
+                  if(snapshot.hasData ){
+
+                    return   Container(
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: snapshot.data.length,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (context,index){
+                              return itemWishies( wishBaskData : snapshot.data[index] );
+                            })
+                    );
+
+
+                  }else if(snapshot.hasError) {
+                    return Text(snapshot.error.toString());
+                  }
+
+                  return Center(child: CircularProgressIndicator(),);
+                },
+              ),
+
+
+
+
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 8,vertical: 5),
-                child:  Text("Commission History",style: TextStyle(color: Color(0xff0B2E70),fontFamily:'PoppinsBold',fontSize: 12 ),),
-              ),
-              SizedBox(height: 15,),
-
-              ...List.generate(5, (index) =>
-
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16,vertical: 15),
-                    child: Row(
-                      children: [
-
-
-                        Text("Bunch of Plantain",style: TextStyle(color: Color(0xff707070),fontFamily:'PoppinsBook',fontSize: 16 ),),
-                        Spacer(),
-                        Text("N50",style: TextStyle(color: Color(0xff707070),fontFamily:'PoppinsBook',fontSize: 16 ),)
-
-
-                      ],
+                margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                child: RaisedGradientButton(
+                    child: Text(
+                      'Add All Wishes',
+                      style: TextStyle(fontSize: 18,fontFamily: 'GothamBold',color: Colors.white),
                     ),
-                  )
-              )
+                    gradient: LinearGradient(
+                      colors: <Color>[Color(0xff3EB120), Colors.greenAccent],
+                    ),
+                    onPressed: (){
+
+
+                    }
+                ),
+              ),
 
             ],
           ),
@@ -273,7 +285,7 @@ class _Commission extends State<Commission> {
                             ReUseAble().getTransition(Commission(userProfileData:widget.userProfileData))
                         );},
                         child:
-                        ReUseAble().drawerItem(isActive:true,title: "Commissions",icon: Icons.alternate_email_sharp,),
+                        ReUseAble().drawerItem(title: "Commissions",icon: Icons.alternate_email_sharp,),
                       ),
 
 
@@ -292,7 +304,7 @@ class _Commission extends State<Commission> {
                             ReUseAble().getTransition(NetworkScreen(userProfileData:widget.userProfileData))
                         );},
                         child:
-                        ReUseAble().drawerItem( title: "Network",icon: Icons.share, ),
+                        ReUseAble().drawerItem(isActive: true, title: "Network",icon: Icons.share, ),
                       ),
 
 
@@ -301,7 +313,7 @@ class _Commission extends State<Commission> {
                           Navigator.of(context).push(
                               ReUseAble().getTransition(EWallet(userProfileData:widget.userProfileData))
                           );
-                          },
+                        },
                         child:
                         ReUseAble().drawerItem(title: "E-wallet",icon: Icons.account_balance_wallet_rounded, ),
                       ),
@@ -325,12 +337,10 @@ class _Commission extends State<Commission> {
 
                       GestureDetector(
                         onTap: (){
-                          Navigator.of(context).push(
-                              ReUseAble().getTransition(WishListScreen())
-                          );
+                          Navigator.of(context).pop();
                         },
                         child:
-                        ReUseAble().drawerItem(title: "Wish / Bookings",icon: Icons.card_travel_sharp, ),
+                        ReUseAble().drawerItem(isActive: true, title: "Wish / Bookings",icon: Icons.card_travel_sharp, ),
                       ),
 
 
@@ -372,6 +382,50 @@ class _Commission extends State<Commission> {
 
     );
   }
+
+
+  itemWishies({WishBaskData wishBaskData}){
+    return      Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+
+      child: Row(
+        children: [
+
+          Image.asset(
+
+            'assets/images/wish.png',
+            width:  90,
+            height: 90,
+
+          ),
+          Spacer(),
+
+          Text("${wishBaskData.title}"),
+
+          Spacer(),
+
+
+          Container(
+            alignment: Alignment.topRight,
+            padding: EdgeInsets.all(9),
+            height: 120,
+            child:   Icon(Icons.clear, color: Colors.black, size: 24,),
+          ),
+
+          SizedBox(
+            height: 10.0,
+          ),
+
+        ],
+      ),
+
+    );
+  }
+
+
+
 
 
 

@@ -9,6 +9,7 @@ import 'package:agro_ecomance/entity/responds/cart/CartDataa.dart';
 import 'package:agro_ecomance/rxbloc_pattern/cart_bloc.dart';
 import 'package:agro_ecomance/utils/RaisedGradientButton.dart';
 import 'package:agro_ecomance/utils/constants/page_route_constants.dart';
+import 'package:agro_ecomance/utils/helper.dart';
 import 'package:agro_ecomance/utils/reuseable.dart';
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -51,10 +52,13 @@ class _CartScreen extends State<CartScreen>{
     super.dispose();
   }
 
+  List<CartDataa>   snapshotData;
   @override
   Widget build(BuildContext context) {
 
     final size = MediaQuery.of(context).size;
+
+
 
     return Scaffold(
 
@@ -135,6 +139,7 @@ class _CartScreen extends State<CartScreen>{
                       builder: (context, AsyncSnapshot< List<CartDataa> >  snapshot){
                         if(snapshot.hasData ){
 
+                          snapshotData = snapshot.data;
                           return   Container(
                               child: ListView.builder(
                                   shrinkWrap: true,
@@ -150,18 +155,9 @@ class _CartScreen extends State<CartScreen>{
                           return Text(snapshot.error.toString());
                         }
 
-                        return CircularProgressIndicator();
+                        return Center(child: CircularProgressIndicator(),);
                       },
                     ),
-
-
-
-
-
-
-
-
-
 
                   ]
               ),
@@ -182,7 +178,17 @@ class _CartScreen extends State<CartScreen>{
                         colors: <Color>[Color(0xff3EB120), Colors.greenAccent],
                       ),
                       onPressed: (){
-                        Navigator.of(context).pushNamed(PageRouteConstants.addressScreen);
+
+                        snapshotData.forEach((element) {
+                          if(element!= null && element.quantity>0){
+                            Navigator.of(context).pushNamed(PageRouteConstants.addressScreen,arguments:snapshotData );
+                          }else{
+
+                            Helper.toastError("Select number of quantity you want");
+                          }
+                        });
+
+
 
                       }
                   ),

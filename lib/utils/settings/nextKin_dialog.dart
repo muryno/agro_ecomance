@@ -49,7 +49,7 @@ class _NextKinDialogBox extends State<NextKinDialogBox> {
 
     StorageUtil.getProfileUser().then((value) =>
     {
-      if (value != null && value.next_of_kin!= null){
+      if (value != null && value.next_of_kin.name!= null){
 
 
           setState(() {
@@ -60,7 +60,7 @@ class _NextKinDialogBox extends State<NextKinDialogBox> {
             lat = value.next_of_kin.lat;
             lon = value.next_of_kin.long;
             _email.text=value.next_of_kin.email;
-            _phone.text = value.next_of_kin.phone;
+            _phone.text = value.next_of_kin.phone.toString();
             _NameName.text = value.next_of_kin.name;
           })
 
@@ -249,7 +249,7 @@ class _NextKinDialogBox extends State<NextKinDialogBox> {
 
                         Container(
                             padding: EdgeInsets.only(top: 40,bottom: 15),
-                            child:  Text("Next of kin Information",style: TextStyle(color: Color(0xff3EB120),fontWeight: FontWeight.bold,fontSize: 25),)
+                            child:  Text("Next of kin Information",style: TextStyle(color: Color(0xff3EB120),fontWeight: FontWeight.bold,fontSize: 20),)
                         ),
 
                         SizedBox(height: 15,),

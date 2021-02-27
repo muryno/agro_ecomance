@@ -27,12 +27,12 @@ class DeliveryAddres {
     String email;
     String first_name;
     String last_name;
-    double lat;
-    double long;
+    var lat;
+    var long;
     String nearest_bus_stop;
-    String phone;
-    String state;
-    String uuid;
+    var phone;
+    var state;
+    var uuid;
 
     DeliveryAddres({this.address, this.city, this.defaults, this.email, this.first_name, this.last_name, this.lat, this.long, this.nearest_bus_stop, this.phone, this.state, this.uuid});
 
