@@ -12,6 +12,7 @@ import 'package:agro_ecomance/server/retrofit_clients.dart';
 import 'package:agro_ecomance/utils/constants/page_route_constants.dart';
 import 'package:agro_ecomance/utils/reuseable.dart';
 import 'package:agro_ecomance/utils/share_pref.dart';
+import 'package:agro_ecomance/view/sidebar/wishList.dart';
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_options.dart';
@@ -290,11 +291,18 @@ class _ItemDashBoardDetailsScreen extends State<ShopingDetails>{
 
 
 
-
                             onPressed: () {
+
+                              if(userProfileData?.email!= null) {
+                                Navigator.of(context).push(
+                                    ReUseAble().getTransition(WishListScreen())
+                                );
+                              }else{
+                                Navigator.of(context).pushNamed(PageRouteConstants.view_page);}
 
 
                             },
+
 
 
 
@@ -365,7 +373,7 @@ class _ItemDashBoardDetailsScreen extends State<ShopingDetails>{
         onTap: (){
       setState(() {
         _index = indexClicked;
-        quatity = priceDistribution.weight;
+        quatity = int.parse(priceDistribution.weight?? 0) ;
       });
 
     },

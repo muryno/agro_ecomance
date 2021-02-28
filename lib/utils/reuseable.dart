@@ -568,7 +568,7 @@ class ReUseAble {
 
 
               Container(
-                height: 140,
+                height: 180,
                 width: 150,
                 child:     CachedNetworkImage(
                   imageUrl: '${dat.featured_image.file_url}',
@@ -605,9 +605,8 @@ class ReUseAble {
         onTap: (){
 
           productsBloc.getProduceByCategory(dat.id);
+
           Navigator.of(context).pushNamed(PageRouteConstants.categoryItemScreenScreen,arguments: dat.uuid);
-
-
 
           },
         child: Container(

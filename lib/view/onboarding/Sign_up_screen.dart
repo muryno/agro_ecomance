@@ -70,11 +70,7 @@ class _SignUpScreen extends State<SignUpScreen>{
     return Scaffold(
 
 
-      body:  Stack(
-
-
-        children: <Widget>[
-
+      body:
         SingleChildScrollView(
           child:   Form(
             key: formKey,
@@ -120,11 +116,11 @@ class _SignUpScreen extends State<SignUpScreen>{
                           Container(
                               child: TextFormField(
                                 controller: _fullName,
-                                decoration: ReUseAble().inputWithoutIcon(hint: 'Full Name',label: 'Full Name'),
+                                decoration: ReUseAble().inputWithoutIcon(hint: 'User Name',label: 'User Name'),
                                 keyboardType: TextInputType.text,
                                 validator: (value){
                                   if(value.isEmpty   ){
-                                    return 'Enter Your Full name';
+                                    return 'Enter Your User Name';
                                   }
                                   return null;
                                 },
@@ -309,10 +305,7 @@ class _SignUpScreen extends State<SignUpScreen>{
           )
         )
 
-        ],
 
-
-      )
     );
 
 

@@ -4,10 +4,11 @@
 
 
 import 'package:agro_ecomance/view/cart/payment_screen.dart';
+import 'package:agro_ecomance/view/onboarding/Signup_payment_screen.dart';
 import 'package:agro_ecomance/view/shoping/CategoriesItems.dart';
 import 'package:agro_ecomance/view/shoping/seeAllDetails.dart';
 import 'package:agro_ecomance/view/shoping/shoping_details.dart';
-import 'package:agro_ecomance/view/Sign_up_screen.dart';
+import 'package:agro_ecomance/view/onboarding/Sign_up_screen.dart';
 import 'package:agro_ecomance/view/cart/add_address_screen.dart';
 import 'package:agro_ecomance/view/cart/address_screen.dart';
 import 'package:agro_ecomance/view/cart/cart_screen.dart';
@@ -16,9 +17,9 @@ import 'package:agro_ecomance/view/confirm_payment_screen.dart';
 import 'package:agro_ecomance/view/shoping/shoping_details.dart';
 import 'package:agro_ecomance/view/sidebar/shoping.dart';
 import 'package:agro_ecomance/view/shoping/shoping_details.dart';
-import 'package:agro_ecomance/view/login_screen.dart';
+import 'package:agro_ecomance/view/onboarding/login_screen.dart';
 import 'package:agro_ecomance/view/payment_screen.dart';
-import 'package:agro_ecomance/view/verifyotp.dart';
+import 'package:agro_ecomance/view/onboarding/verifyotp.dart';
 import 'package:agro_ecomance/view/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -77,7 +78,11 @@ class Routers {
         return MaterialPageRoute(builder: (_) => PaymentScreen());
       case PageRouteConstants.categoryItemScreenScreen:
         return MaterialPageRoute(builder: (_) => CategoryItemScreenScreen());
-      //
+
+      case PageRouteConstants.signUpPaymentScreen:
+        return MaterialPageRoute(builder: (_) => SignUpPaymentScreen());
+
+      //SignUpPaymentScreen
       case PageRouteConstants.oTPScreen:
         return MaterialPageRoute(builder: (_) => OTPScreen(),settings: RouteSettings( arguments: settings.arguments));
 

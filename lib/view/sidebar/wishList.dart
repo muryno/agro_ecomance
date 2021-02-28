@@ -304,7 +304,7 @@ class _WishListScreen extends State<WishListScreen> {
                             ReUseAble().getTransition(NetworkScreen(userProfileData:widget.userProfileData))
                         );},
                         child:
-                        ReUseAble().drawerItem(isActive: true, title: "Network",icon: Icons.share, ),
+                        ReUseAble().drawerItem( title: "Network",icon: Icons.share, ),
                       ),
 
 

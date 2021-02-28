@@ -81,6 +81,7 @@ class _CheckOutScreen extends State<CheckOutScreen>{
     super.initState();
   }
   //List<dynamic> snapshotData = [];
+  final formKey = GlobalKey<FormState>();
 
 
   @override
@@ -100,7 +101,6 @@ class _CheckOutScreen extends State<CheckOutScreen>{
 
 
 
-    final formKey = GlobalKey<FormState>();
 
 
 

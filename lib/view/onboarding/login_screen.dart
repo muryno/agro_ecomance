@@ -90,7 +90,7 @@ class _LoginPage extends State<LoginScreen>{
         child: TextFormField(
 
           controller: _password,
-          obscureText: true,
+          obscureText: _showPassword,
           decoration: InputDecoration(
               hintText: "Password",
               //#2C2C2C
@@ -113,12 +113,14 @@ class _LoginPage extends State<LoginScreen>{
               ),
               suffixIcon: IconButton(
                 icon: Icon(
+
                     _showPassword ? Icons.visibility_off : Icons.visibility),
                 onPressed: () {
                   setState(() {
-                    _showPassword = !_showPassword;
+                    _showPassword = _showPassword?false: true;
                   });
                 },
+                color: Colors.green,
               )),
 
           keyboardType: TextInputType.text,
@@ -143,10 +145,7 @@ class _LoginPage extends State<LoginScreen>{
     return Scaffold(
 
 
-      body:  Stack(
-
-
-        children: <Widget>[
+      body:
 
         SingleChildScrollView(
           child:   Form(
@@ -328,10 +327,7 @@ class _LoginPage extends State<LoginScreen>{
           )
         )
 
-        ],
 
-
-      )
     );
 
 

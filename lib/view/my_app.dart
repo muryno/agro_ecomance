@@ -14,12 +14,12 @@ import 'package:agro_ecomance/view/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-import 'Sign_up_screen.dart';
+import 'onboarding/Sign_up_screen.dart';
 import 'cart/add_address_screen.dart';
 import 'cart/address_screen.dart';
 import 'cart/cart_screen.dart';
 import 'sidebar/shoping.dart';
-import 'login_screen.dart';
+import 'onboarding/login_screen.dart';
 
 
 

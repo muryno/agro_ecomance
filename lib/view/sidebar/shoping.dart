@@ -433,7 +433,7 @@ void dispose() {
                     borderRadius: BorderRadius.all(Radius.circular(4))
                 ),
               ),
-              SizedBox(height: 30,),
+
               Row(
                 children: [
                   Text("Best Sell",style: TextStyle(color: Colors.black,fontFamily: "PoppinsMedium",fontSize: 22),),

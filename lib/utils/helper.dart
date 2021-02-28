@@ -78,6 +78,13 @@ class Helper {
 
   }
 
+  static void toastInfor(String message){
+    configLoading(set : Colors.blueGrey);
+    EasyLoading.showInfo(message);
+
+
+  }
+
 
 
  static void configLoading({Color  set  = Colors.green} ) {

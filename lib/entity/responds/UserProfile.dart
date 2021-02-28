@@ -47,8 +47,9 @@ class UserProfileData {
     String updated_at;
     String username;
     String uuid;
+    String cid;
 
-    UserProfileData({this.avatar_path, this.avatar_url, this.blocked, this.created_at, this.date_of_birth, this.deleted_at, this.delivery_address, this.display_name, this.email, this.email_verified_at, this.final_verified_at, this.first_name, this.id, this.invited_by, this.ip, this.last_login, this.last_name, this.next_of_kin, this.parent_id, this.phone, this.preference, this.referral_code, this.updated_at, this.username, this.uuid});
+    UserProfileData({this.cid,this.avatar_path, this.avatar_url, this.blocked, this.created_at, this.date_of_birth, this.deleted_at, this.delivery_address, this.display_name, this.email, this.email_verified_at, this.final_verified_at, this.first_name, this.id, this.invited_by, this.ip, this.last_login, this.last_name, this.next_of_kin, this.parent_id, this.phone, this.preference, this.referral_code, this.updated_at, this.username, this.uuid});
 
     factory UserProfileData.fromJson(Map<String, dynamic> json) {
         return UserProfileData(
@@ -56,6 +57,7 @@ class UserProfileData {
             avatar_url: json['avatar_url'],
             blocked: json['blocked'],
             created_at: json['created_at'],
+            cid: json['cid'],
             date_of_birth: json['date_of_birth'],
             deleted_at: json['deleted_at'],
             delivery_address: json['delivery_address'] != null ? (json['delivery_address'] as List).map((i) => DeliveryAddres.fromJson(i)).toList() : null,
@@ -88,6 +90,7 @@ class UserProfileData {
         data['blocked'] = this.blocked;
         data['created_at'] = this.created_at;
         data['date_of_birth'] = this.date_of_birth;
+        data['cid'] = this.cid;
         data['deleted_at'] = this.deleted_at;
         data['display_name'] = this.display_name;
         data['email'] = this.email;

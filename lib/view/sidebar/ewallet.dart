@@ -54,7 +54,7 @@ class _EWallet extends State<EWallet> {
   Widget amount = Container(
       child: TextFormField(
 
-        decoration: ReUseAble().inputWithoutIcon(hint: 'Amount',label: 'Amount'),
+        decoration: ReUseAble().inputWithoutIcon(hint: 'Enter Amount',label: 'Amount'),
         keyboardType: TextInputType.text,
         validator: (value){
           if(value.isEmpty   ){

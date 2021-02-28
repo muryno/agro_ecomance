@@ -16,7 +16,7 @@ class RetrofitClientInstance{
 
   reset(){
     StorageUtil.getUser().then((value){
-      _instance = RetrofitClientInstance._internal(value.data.access_token);
+      _instance = RetrofitClientInstance._internal(value?.data?.access_token);
 
     });
   }
@@ -25,7 +25,7 @@ class RetrofitClientInstance{
     _instance = RetrofitClientInstance._internal(str);
   }
 
-  RetrofitClientInstance._internal([String token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvZGV2Lm93bmFmYXJtLmJpelwvYXBpXC92MVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MTEzODYxNTUsImV4cCI6MTc2NjkwNjE1NSwibmJmIjoxNjExMzg2MTU1LCJqdGkiOiJFc0drbFFRYkhTUk56U0V2Iiwic3ViIjo2LCJwcnYiOiI4NGFkNGQ2NmRkNzZiZmQzY2FiZTE1NGM3Y2FkNDBmM2QzZTMxNjRmIiwiYWNjb3VudF90eXBlIjoiZm9vZF9tYXJ0In0.jSfraxeWoA92Mke0U-PB6fBl3vfXOaBvTpyIiD4F_Pk']){
+  RetrofitClientInstance._internal([String token = '']){
 
     _dio = Dio();
     _dio.options.headers["Content-Type"] = "application/x-www-form-urlencoded";

@@ -144,11 +144,10 @@ class _CategoryItemScreenScreen extends State<CategoryItemScreenScreen>{
 
                         if(snapshot.data.length > 0) {
                           return GridView.builder(
-                              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: 400,
-                                  childAspectRatio: 3/ 2,
-                                  crossAxisSpacing: 10,
-                                  mainAxisSpacing: 10),
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount:2,childAspectRatio: (160.0 / 230.0)
+                              ),
+
                               itemCount: snapshot.data.length,
                               itemBuilder: (BuildContext ctx, index) {
                                 return   ReUseAble().homeProductItem(snapshot.data[index],context);

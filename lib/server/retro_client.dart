@@ -59,7 +59,11 @@ abstract class ApiRestClient {
 
 
   @POST("signup/otp/verify")
-  Future<SignUpRes> verifyOtp(@Body() otpReq usr);
+  Future<loginToken> verifyOtp(@Body() otpReq usr);
+
+
+  @POST("auth/user/verify/{id}")
+  Future<UserProfile> verifySignUpPayment(@Path('id') id);
 
 
   @POST("signup/otp/request")
