@@ -7,8 +7,12 @@ import 'dart:convert';
 
 
 
+import 'package:agro_ecomance/entity/db/database.dart';
+import 'package:agro_ecomance/entity/myEntity/WishEntity.dart';
 import 'package:agro_ecomance/entity/request/AddCart.dart';
+import 'package:agro_ecomance/entity/request/AddWishBasket.dart';
 import 'package:agro_ecomance/entity/responds/WishBaskResp.dart';
+import 'package:agro_ecomance/entity/responds/WishListBasketDetails.dart';
 import 'package:agro_ecomance/entity/responds/cart/CartData.dart';
 import 'package:agro_ecomance/entity/responds/cart/CartDataa.dart';
 
@@ -31,10 +35,10 @@ class WishBloc {
 
 
 
+   var myData = List<Wishe>();
 
 
-
-
+//addWishBasket
 
   addWishList( String wish , BuildContext context) {
 
@@ -69,7 +73,41 @@ class WishBloc {
   }
 
 
+  addWishToBasket( String uuid, int quantity, int weight, int product_id , BuildContext context) {
 
+
+
+
+    var addBask = AddWishBasket();
+    addBask.quantity = quantity;
+    addBask.weight = weight;
+    addBask.product_id = product_id;
+
+    Helper.startLoading(context);
+
+
+    try {
+
+
+      RetrofitClientInstance.getInstance().getDataService().addWishBasket(uuid,addBask).then((value)=>{
+
+
+        if(value.status_code == 200 ||value.status_code == 201  ){
+          Helper.loadingSuccessful(value.message),
+          fetchWishBasket(),
+
+
+        } else
+
+          Helper.loadingFailed("Can't add wishes  ")
+
+
+      }).catchError(onError);
+    }catch(e){
+
+      Helper.loadingFailed(e.toString());
+    }
+  }
 
 
   fetchWishBasket() async{
@@ -78,7 +116,19 @@ class WishBloc {
   }
 
 
+  getBasketWishe(int id) async{
+    WishListBasketDetails item = await apiProvider.getDataService().getBasketWishes(id);
 
+
+    myData.forEach((element) {
+      element.thumbnail_url =  element.product.featured_image.thumbnail_url;
+      element.name =  element.product.name;
+      element.price =  element.price;
+    });
+    AppDatabase.getInstance()?.wishDataDao?.nukeWishe();
+    AppDatabase.getInstance()?.wishDataDao?.insertAllWishe(myData);
+
+  }
 
 
 

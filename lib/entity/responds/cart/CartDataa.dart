@@ -2,10 +2,25 @@
 
 import '../ProductResp.dart';
 
+import 'package:json_annotation/json_annotation.dart';
+import 'package:floor/floor.dart';
+
+
+@Entity(tableName: "CartEntity")
+@JsonSerializable()
 class CartDataa {
-    String created_at;
+
+    @PrimaryKey(autoGenerate: false)
     int id;
+
+    String created_at;
+
+
+
+    @ignore
     Product product;
+
+
     int product_id;
     int quantity;
     String updated_at;
@@ -13,10 +28,17 @@ class CartDataa {
     String uuid;
     int weight;
 
-    CartDataa({this.created_at, this.id, this.product, this.product_id, this.quantity, this.updated_at, this.user_id, this.uuid, this.weight});
+    String img_url;
+    String name;
+    String price;
+
+
+
+    CartDataa({this.name,this.price, this.img_url,this.created_at, this.id, this.product, this.product_id, this.quantity, this.updated_at, this.user_id, this.uuid, this.weight});
 
     factory CartDataa.fromJson(Map<String, dynamic> json) {
         return CartDataa(
+            img_url: json['img_url'],
             created_at: json['created_at'],
             id: json['id'],
             product: json['product'] != null ? Product.fromJson(json['product']) : null,
@@ -26,12 +48,21 @@ class CartDataa {
             user_id: json['user_id'],
             uuid: json['uuid'],
             weight: json['weight'],
+
+            name: json['name'],
+            price: json['price'],
         );
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+        //
+        data['img_url'] = this.img_url;
         data['created_at'] = this.created_at;
+
+        data['name'] = this.name;
+        data['price'] = this.price;
+
         data['id'] = this.id;
         data['product_id'] = this.product_id;
         data['quantity'] = this.quantity;
@@ -56,6 +87,7 @@ class Product {
     bool featured;
     FeaturedImage featured_image;
     int featured_image_id;
+    @primaryKey
     int id;
     List<Imagess> images;
     String name;

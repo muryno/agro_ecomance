@@ -650,9 +650,7 @@ class ReUseAble {
             ],
           ),
           decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.white,
-              ),
+
               borderRadius: BorderRadius.all(Radius.circular(15))
           ),
         )

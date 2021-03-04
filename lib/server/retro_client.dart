@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'package:agro_ecomance/entity/request/AddBasicInfoReq.dart';
 import 'package:agro_ecomance/entity/request/AddCart.dart';
 import 'package:agro_ecomance/entity/request/AddDeliveryAddres.dart';
+import 'package:agro_ecomance/entity/request/AddWishBasket.dart';
 import 'package:agro_ecomance/entity/request/addNextOfKin.dart';
 import 'package:agro_ecomance/entity/request/addPersonalInfor.dart';
 import 'package:agro_ecomance/entity/request/addWishBasketReq.dart';
@@ -37,6 +38,7 @@ import 'package:agro_ecomance/entity/responds/cart/CartData.dart';
 import 'package:agro_ecomance/entity/responds/ProfileResp.dart';
 import 'package:agro_ecomance/entity/responds/DeliveryAddressResp.dart';
 import 'package:agro_ecomance/entity/responds/loginToken.dart';
+import 'package:agro_ecomance/entity/responds/withdrawResp.dart';
 import 'package:agro_ecomance/entity/userBase.dart';
 import 'package:agro_ecomance/utils/constants/url_constant.dart';
 
@@ -62,8 +64,8 @@ abstract class ApiRestClient {
   Future<loginToken> verifyOtp(@Body() otpReq usr);
 
 
-  @POST("auth/user/verify/{id}")
-  Future<UserProfile> verifySignUpPayment(@Path('id') id);
+  @POST("auth/user/verify/{id}?gateway={paystack}")
+  Future<UserProfile> verifySignUpPayment(@Path('id') id,@Path('paystack') paystack);
 
 
   @POST("signup/otp/request")
@@ -85,9 +87,7 @@ abstract class ApiRestClient {
   Future<loginToken> refreshToken();
 
 
-  //new
 
-  //-ecommerce/products?featured=1&category=1
 
   @GET("ecommerce/products?featured=1")
   Future<ProductResp> getFeaturedProduct();
@@ -178,7 +178,7 @@ abstract class ApiRestClient {
 
   //-->
   @POST("ecommerce/wish_basket/{id}/wish")
-  Future<WishdataResp> addWishBasket(@Path('id') id);
+  Future<WishdataResp> addWishBasket(@Path('id') id,  @Body() AddWishBasket addWishBasket);
 
   @GET("ecommerce/wish_basket/{id}/wishes")
   Future<WishListBasketDetails> getBasketWishes(@Path('id') id);
@@ -207,6 +207,9 @@ abstract class ApiRestClient {
   @GET("ecommerce/wish_basket")
   Future<WishBaskResp> getBaskets();
 
+
+  @POST("withdraw")
+  Future<withdrawResp>   withdraw(@Body() bankReq usr);
 
 
 

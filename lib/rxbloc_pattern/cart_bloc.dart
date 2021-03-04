@@ -7,6 +7,7 @@ import 'dart:convert';
 
 
 
+import 'package:agro_ecomance/entity/db/database.dart';
 import 'package:agro_ecomance/entity/request/AddCart.dart';
 import 'package:agro_ecomance/entity/responds/cart/CartData.dart';
 import 'package:agro_ecomance/entity/responds/cart/CartDataa.dart';
@@ -34,7 +35,7 @@ class CartBloc {
 
 
 
-  addCartData( int product_id,int weight , BuildContext context) {
+  addCartData( int product_id,int weight, int  quantity, BuildContext context) {
 
 
 
@@ -42,7 +43,7 @@ class CartBloc {
     addBask.product_id = product_id;
     addBask.weight = weight;
 
-    addBask.quantity = 1;
+    addBask.quantity = quantity;
 
     Helper.startLoading(context);
 
@@ -55,6 +56,7 @@ class CartBloc {
 
         if(value.data!= null){
           Helper.loadingSuccessful("success"),
+          getCart(),
           Navigator.of(context).pop(),
 
         } else
@@ -70,12 +72,48 @@ class CartBloc {
   }
 
 
+   updateCartData( int product_id,int weight, int  quantity) {
+
+
+
+     var addBask = AddCart();
+     addBask.product_id = product_id;
+     addBask.weight = weight;
+
+     addBask.quantity = quantity;
+
+   //  Helper.startLoading(context);
+
+
+     try {
+
+
+       RetrofitClientInstance.getInstance().getDataService().addCart(addBask).then((value)=>{
+
+
+         if(value.data!= null){
+           // Helper.loadingSuccessful("success"),
+           // Navigator.of(context).pop(),
+              getCart()
+         }
+
+         //  Helper.loadingFailed("Can't update ")
+
+
+       }).catchError(onError);
+     }catch(e){
+
+      // Helper.loadingFailed(e.toString());
+     }
+   }
 
 
 
 
 
-  deleteCart( String path_id, BuildContext context) {
+
+
+   deleteCart( String path_id, BuildContext context) {
     Helper.startLoading(context);
 
 
@@ -112,8 +150,15 @@ class CartBloc {
   getCart() async{
     CartData item = await apiProvider.getDataService().getCart();
     CartCount  = item.dataa.length;
+    myData = item.dataa;
+    myData.forEach((element) {
+      element.img_url =  element.product.featured_image.thumbnail_url;
+      element.name =  element.product.name;
+      element.price =  element.product.price.toString();
+    });
+    AppDatabase.getInstance()?.cartDataDao?.nukeCart();
+    AppDatabase.getInstance()?.cartDataDao?.insertAllCart(myData);
 
-    _cartDataa.sink.add(item.dataa);
   }
 
 
@@ -122,7 +167,7 @@ class CartBloc {
 
    addIncrementICarts(CartDataa item) async{
 
-     CartDataa sd =  myData.where((element) => element.uuid == item.uuid).first;
+   //  CartDataa sd =  myData.where((element) => element.uuid == item.uuid).single;
      myData.remove(item);
      myData.add(item);
      _cartDataa.sink.add(myData);

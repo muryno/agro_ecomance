@@ -58,6 +58,12 @@ class StorageUtil {
     var str = value != null ? jsonEncode(value) : value;
     prefs.setString(UrlConstant.USER_PREF, str);
   }
+  static Future<void> clearUserToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(UrlConstant.USER_PREF, "");
+    prefs.remove(UrlConstant.USER_PREF);
+    prefs.clear();
+  }
 
   static Future<void> clearUsers(login_request str) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

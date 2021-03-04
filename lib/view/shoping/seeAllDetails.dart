@@ -2,6 +2,7 @@
 
 
 
+import 'package:agro_ecomance/entity/db/database.dart';
 import 'package:agro_ecomance/entity/responds/ProductResp.dart';
 import 'package:agro_ecomance/entity/responds/UserProfile.dart';
 import 'package:agro_ecomance/entity/responds/cart/CartDataa.dart';
@@ -115,7 +116,7 @@ class _DashBoardDetailsScreen extends State<DashBoardDetailsScreen>{
 
                       },
                       child:        StreamBuilder(
-                        stream:cartBloc.fetchCart,
+                        stream:AppDatabase?.getInstance()?.cartDataDao?.findAllCart(),
                         builder: (context, AsyncSnapshot< List<CartDataa> >  snapshot){
                           if(snapshot.hasData ){
 

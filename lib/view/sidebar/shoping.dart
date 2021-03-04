@@ -4,6 +4,7 @@
 
 
 
+import 'package:agro_ecomance/entity/db/database.dart';
 import 'package:agro_ecomance/entity/responds/ProductCategory.dart';
 import 'package:agro_ecomance/entity/responds/ProductResp.dart';
 import 'package:agro_ecomance/entity/responds/Slider.dart';
@@ -169,7 +170,7 @@ void dispose() {
 
                     },
                     child:             StreamBuilder(
-                      stream:cartBloc.fetchCart,
+                      stream:AppDatabase?.getInstance()?.cartDataDao?.findAllCart(),
                       builder: (context, AsyncSnapshot< List<CartDataa> >  snapshot){
                         if(snapshot.hasData ){
 
@@ -520,163 +521,161 @@ void dispose() {
 
             width: MediaQuery.of(context).size.width * 0.7,
             child: Drawer(
-              child: SafeArea(
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [Color(0xFF3ABC16), Color(0xFF66EA96)],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter),
-                  ),
+              child:Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [Color(0xFF3ABC16), Color(0xFF66EA96)],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter),
+                ),
 
 
-                  child: ListView(
-                    children: [
+                child: Column(
+                  children: [
 
-                      Container(
-                        color: Colors.white,
-                        height: 170,
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          children: [
+                    Container(
+                      color: Colors.white,
+                      height: 170,
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        children: [
 
-                            Hero(
-                                tag:UrlConstant.Hero,
-                                child:  Container(
-                                    width: 80,
-                                    height: 80,
-                                    padding: EdgeInsets.symmetric(horizontal: 5),
-                                    child:   CircleAvatar(
-                                        backgroundColor: ReUseAble().getButtonColor(),
-                                        radius: 20,child: Icon(Icons.person,color: Colors.white, size: 60))
-                                )),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                          Hero(
+                              tag:UrlConstant.Hero,
+                              child:  Container(
+                                  width: 80,
+                                  height: 80,
+                                  padding: EdgeInsets.symmetric(horizontal: 5),
+                                  child:   CircleAvatar(
+                                      backgroundColor: ReUseAble().getButtonColor(),
+                                      radius: 20,child: Icon(Icons.person,color: Colors.white, size: 60))
+                              )),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
 
-                                Text("${userProfileData?.username } ",style: TextStyle(fontSize: 20,color: Color(0xff003C5E),fontFamily: 'PoppinsBold'),),
-                                Text("REF ID: 3Y92Q1",style: TextStyle(fontSize: 16,color: Color(0xff003C5E)),)
+                              Text("${userProfileData?.username } ",style: TextStyle(fontSize: 20,color: Color(0xff003C5E),fontFamily: 'PoppinsBold'),),
+                              Text("REF ID: 3Y92Q1",style: TextStyle(fontSize: 16,color: Color(0xff003C5E)),)
 
-                              ],
+                            ],
 
-                            )
+                          )
 
 
 
-                          ],
-                        ),
+                        ],
                       ),
+                    ),
 
-                      GestureDetector(
-                        onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(HomePageDashboard(userProfileData:userProfileData))
-                        );},
-                        child:
-                        ReUseAble().drawerItem( title: "Dashboard",icon: Icons.dashboard),
-                      ),
-
-
-                      GestureDetector(
-                        onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(Commission(userProfileData:userProfileData))
-                        );},
-                        child:
-                        ReUseAble().drawerItem(title: "Commissions",icon: Icons.alternate_email_sharp,),
-                      ),
+                    GestureDetector(
+                      onTap: (){ Navigator.of(context).push(
+                          ReUseAble().getTransition(HomePageDashboard(userProfileData:userProfileData))
+                      );},
+                      child:
+                      ReUseAble().drawerItem( title: "Dashboard",icon: Icons.dashboard),
+                    ),
 
 
-                      GestureDetector(
-                        onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(Purchase(userProfileData:userProfileData))
-                        );},
-                        child:
-                        ReUseAble().drawerItem( title: "Purchases",icon: Icons.shopping_basket, ),
-                      ),
+                    GestureDetector(
+                      onTap: (){ Navigator.of(context).push(
+                          ReUseAble().getTransition(Commission(userProfileData:userProfileData))
+                      );},
+                      child:
+                      ReUseAble().drawerItem(title: "Commissions",icon: Icons.alternate_email_sharp,),
+                    ),
 
 
-
-                      GestureDetector(
-                        onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(NetworkScreen(userProfileData:userProfileData))
-                        );},
-                        child:
-                        ReUseAble().drawerItem( title: "Network",icon: Icons.share, ),
-                      ),
-
-
-                      GestureDetector(
-                        onTap: (){
-                          Navigator.of(context).push(
-                              ReUseAble().getTransition(EWallet(userProfileData:userProfileData))
-                          );
-                        },
-                        child:
-                        ReUseAble().drawerItem(title: "E-wallet",icon: Icons.account_balance_wallet_rounded, ),
-                      ),
+                    GestureDetector(
+                      onTap: (){ Navigator.of(context).push(
+                          ReUseAble().getTransition(Purchase(userProfileData:userProfileData))
+                      );},
+                      child:
+                      ReUseAble().drawerItem( title: "Purchases",icon: Icons.shopping_basket, ),
+                    ),
 
 
 
+                    GestureDetector(
+                      onTap: (){ Navigator.of(context).push(
+                          ReUseAble().getTransition(NetworkScreen(userProfileData:userProfileData))
+                      );},
+                      child:
+                      ReUseAble().drawerItem( title: "Network",icon: Icons.share, ),
+                    ),
 
 
-
-                      GestureDetector(
-                        onTap: (){
-                          Navigator.of(context).push(
-                              ReUseAble().getTransition(SettingScreen(userProfileData:userProfileData))
-                          );
-                        },
-                        child:
-                        ReUseAble().drawerItem(title: "Profile",icon: Icons.person, ),
-                      ),
-
-
-
-                      GestureDetector(
-                        onTap: (){
-
-                          Navigator.of(context).push(
-                              ReUseAble().getTransition(WishListScreen())
-                          );
-
-                        },
-                        child:
-                        ReUseAble().drawerItem(title: "Wish / Bookings",icon: Icons.card_travel_sharp, ),
-                      ),
-
-
-
-
-                      GestureDetector(
-                        onTap: (){
-                          Navigator.of(context).push(
-                              ReUseAble().getTransition(LogoOut())
-                          );
-                        },
-                        child:
-                        ReUseAble().drawerItem(title: "Logout",icon: Icons.exit_to_app_sharp, ),
-                      ),
-
-
-                      Spacer(),
-
-
-                      GestureDetector(
-                        onTap: (){
-                          Navigator.of(context).push(
-                              ReUseAble().getTransition(DashBoardScreen())
-                          );
-                        },
-                        child:
-                        ReUseAble().drawerItem(title: "Continue Shopping",icon: Icons.arrow_back, ),
-                      ),
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(
+                            ReUseAble().getTransition(EWallet(userProfileData:userProfileData))
+                        );
+                      },
+                      child:
+                      ReUseAble().drawerItem(title: "E-wallet",icon: Icons.account_balance_wallet_rounded, ),
+                    ),
 
 
 
 
 
-                    ],
-                  ),
+
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(
+                            ReUseAble().getTransition(SettingScreen(userProfileData:userProfileData))
+                        );
+                      },
+                      child:
+                      ReUseAble().drawerItem(title: "Profile",icon: Icons.person, ),
+                    ),
+
+
+
+                    GestureDetector(
+                      onTap: (){
+
+                        Navigator.of(context).push(
+                            ReUseAble().getTransition(WishListScreen())
+                        );
+
+                      },
+                      child:
+                      ReUseAble().drawerItem(title: "Wish / Bookings",icon: Icons.card_travel_sharp, ),
+                    ),
+
+
+
+
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(
+                            ReUseAble().getTransition(LogoOut())
+                        );
+                      },
+                      child:
+                      ReUseAble().drawerItem(title: "Logout",icon: Icons.exit_to_app_sharp, ),
+                    ),
+
+
+                    Spacer(),
+
+
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(
+                            ReUseAble().getTransition(DashBoardScreen())
+                        );
+                      },
+                      child:
+                      ReUseAble().drawerItem(isActive: true , title: "Continue Shopping",icon: Icons.arrow_back, ),
+                    ),
+
+
+
+
+
+                  ],
                 ),
               ),
             ))

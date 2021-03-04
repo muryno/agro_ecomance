@@ -12,12 +12,14 @@ import 'package:agro_ecomance/entity/request/signUpReq.dart';
 import 'package:agro_ecomance/entity/responds/FailedLogin.dart';
 import 'package:agro_ecomance/entity/responds/errorResponds/SignUpError.dart';
 import 'package:agro_ecomance/entity/responds/errorResponds/otpError.dart';
+
 import 'package:agro_ecomance/server/retrofit_clients.dart';
+import 'package:agro_ecomance/utils/background_utils.dart';
 import 'package:agro_ecomance/utils/constants/page_route_constants.dart';
 import 'package:agro_ecomance/utils/helper.dart';
 import 'package:agro_ecomance/utils/share_pref.dart';
 import 'package:flutter/material.dart';
-import 'package:rxdart/rxdart.dart';
+
 
 
 class LoginBloc {
@@ -162,13 +164,13 @@ class LoginBloc {
 
 
 
-  verifyReference(String reference,BuildContext context) {
+  verifyReference(String reference, String mode,BuildContext context) {
 
     Helper.startLoading(context,"Please wait while we confirm your payment..");
     try {
 
 
-      RetrofitClientInstance.getInstance().getDataService().verifySignUpPayment(reference).then((value)=>{
+      RetrofitClientInstance.getInstance().getDataService().verifySignUpPayment(reference,mode).then((value)=>{
         if (value.data!= null) {
 
 
@@ -226,6 +228,36 @@ class LoginBloc {
   }
 
 
+  refreshToken({BuildContext context}) {
+
+
+    try {
+
+
+      RetrofitClientInstance.getInstance().getDataService().refreshToken().then((value)=>{
+        if (value.data.access_token != null) {
+          //
+
+          print(value.data.toString()),
+
+          StorageUtil.clearUserToken(),
+          StorageUtil.saveUser(value).then((value) =>
+              RetrofitClientInstance.getInstance().reset()),
+          RetrofitClientInstance.getInstance().resets(value.data.access_token),
+
+          BackgroundUtils.getTimers(context: context, times: value.data.expires_in)
+
+        }
+
+
+      }).catchError(onError);
+    }catch(e){
+
+     // Helper.loadingFailed(e.toString());
+    }
+  }
+
+
 
   attempLogin(String type, email_or_phone,String password, BuildContext context) {
 
@@ -253,7 +285,13 @@ class LoginBloc {
 
 
     Helper.startLoading(context,"Wait... loading your data"),
-    getProfile(context,value.data.client)
+    getProfile(context,value.data.client),
+
+
+    BackgroundUtils.getTimers(context: context,times:value.data.expires_in )
+
+
+
       }  else
         {
 

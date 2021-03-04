@@ -29,7 +29,6 @@ class  CheckOutScreen extends StatefulWidget{
  final List<dynamic> snapshotData;
   CheckOutScreen({this.snapshotData});
 
-
   @override
   _CheckOutScreen createState()  =>  _CheckOutScreen();
 
@@ -57,10 +56,11 @@ class _CheckOutScreen extends State<CheckOutScreen>{
   void initState() {
 
     snapshotDta  =  widget.snapshotData[0];
-    cartBloc.addAllIncrementICarts(widget.snapshotData[0]);
     deliveryAddres  =   widget.snapshotData[1];
 
+    snapshotDta.forEach((element) { price  +=( int.parse(element.price ) * element.quantity );
 
+    });
     StorageUtil.getUser().then((value) {
       if (value != null) {
         _token = value;
@@ -83,11 +83,12 @@ class _CheckOutScreen extends State<CheckOutScreen>{
   //List<dynamic> snapshotData = [];
   final formKey = GlobalKey<FormState>();
 
+  var price = 0;
+  var discount = 0;
+
 
   @override
   Widget build(BuildContext context) {
-
-   // snapshotData = ModalRoute.of(context).settings.arguments;
 
 
 
@@ -149,31 +150,6 @@ class _CheckOutScreen extends State<CheckOutScreen>{
 
 
 
-                    // StreamBuilder(
-                    //   stream: cartBloc.fetchCart,
-                    //   builder: (context, AsyncSnapshot< List<CartDataa> >  snapshot){
-                    //     if(snapshot.hasData ){
-                    //
-                    //      // snapshotData = snapshot.data;
-                    //       return   Container(
-                    //           child: ListView.builder(
-                    //               shrinkWrap: true,
-                    //               itemCount: snapshot.data.length,
-                    //               physics: NeverScrollableScrollPhysics(),
-                    //               itemBuilder: (context,index){
-                    //                 return CartDetailsScreen( dat : snapshot.data[index] );
-                    //               })
-                    //       );
-                    //
-                    //
-                    //     }else if(snapshot.hasError) {
-                    //       return Text(snapshot.error.toString());
-                    //     }
-                    //
-                    //     return Center(child: CircularProgressIndicator(),);
-                    //   },
-                    // ),
-
                 Container(
                     child: ListView.builder(
                         shrinkWrap: true,
@@ -186,103 +162,12 @@ class _CheckOutScreen extends State<CheckOutScreen>{
 
 
 
-                    // ...List.generate(2, (index) =>   Container(
-                    //
-                    //   height: 140,
-                    //
-                    //   padding: EdgeInsets.symmetric(vertical: 10),
-                    //   child: Card(
-                    //     child: Row(
-                    //       children: [
-                    //         Image.asset(
-                    //
-                    //           'assets/images/banana.png',
-                    //           width: 90,height: 100,fit: BoxFit.fill,
-                    //         ),
-                    //         SizedBox(width: 15,),
-                    //
-                    //         Container(
-                    //           padding: EdgeInsets.symmetric(vertical: 15),
-                    //           child:  Column(
-                    //             crossAxisAlignment: CrossAxisAlignment.start,
-                    //             children: [
-                    //               Stack(
-                    //                 children: [
-                    //                   Text("Basket of Tomatoes",style: TextStyle(fontFamily: "PoppinsRegular",fontSize: 14),),
-                    //
-                    //
-                    //                   // InkWell(
-                    //                   //   onTap: (){},
-                    //                   //   child:  Align(
-                    //                   //     alignment: Alignment.topRight,
-                    //                   //     child:
-                    //                   //     Icon(Icons.clear),
-                    //                   //   ),
-                    //                   // )
-                    //
-                    //
-                    //                 ],
-                    //               ),
-                    //
-                    //               Text("NGN 500",style: TextStyle(fontFamily: "PoppinsRegular",fontSize: 15,color: Color(0xff3ABB16)),),
-                    //
-                    //
-                    //
-                    //               SizedBox(height: 10,),
-                    //               Expanded(
-                    //                 child:    Container(
-                    //                   color: Colors.grey.withOpacity(0.2),
-                    //
-                    //                   padding: EdgeInsets.symmetric(horizontal: 15),
-                    //                   height: 150,
-                    //                   child:     Row(
-                    //
-                    //                     children: [
-                    //
-                    //
-                    //                       InkWell(
-                    //                         onTap: (){
-                    //                           if(count>  0) {
-                    //                             setState(() {
-                    //                               count = count - 1;
-                    //                             });
-                    //                           }
-                    //                         },
-                    //                         child:  Icon(Icons.remove,size: 12,),
-                    //                       ),
-                    //                       SizedBox(width: 10,),
-                    //                       Text("$count"),
-                    //
-                    //
-                    //                       SizedBox(width: 10,),
-                    //                       InkWell(
-                    //                         onTap: (){
-                    //                           setState(() {
-                    //                             count = count + 1;
-                    //                           });
-                    //                         },
-                    //                         child:   Icon(Icons.add,size: 12,),
-                    //                       ),
-                    //
-                    //
-                    //                     ],
-                    //                   ),
-                    //                 ),
-                    //               )
-                    //             ],
-                    //           ),
-                    //         )
-                    //       ],
-                    //
-                    //     ),
-                    //   ),
-                    // )),
                     SizedBox(height: 21,),
 
                     Container(
                       child: Row(
                         children: [
-                          Text("${deliveryAddres.address}\n${deliveryAddres.state}",style: TextStyle(color: Color(0xff434343),fontFamily:'PoppinsRegular' ,fontSize: 14),),
+                          Text("${deliveryAddres?.address}\n${deliveryAddres?.state}",style: TextStyle(color: Color(0xff434343),fontFamily:'PoppinsRegular' ,fontSize: 14),),
 
                           Spacer(),
 
@@ -298,7 +183,7 @@ class _CheckOutScreen extends State<CheckOutScreen>{
                       children: [
                         Text("Sub Total",style: TextStyle(color: Color(0xff434343),fontFamily:'PoppinsBook' ,fontSize: 13),),
                         Spacer(),
-                        Text("NGN 5000",style: TextStyle(color: Color(0xff434343),fontFamily:'PoppinsRegular' ,fontSize: 15),),
+                        Text("NGN $price",style: TextStyle(color: Color(0xff434343),fontFamily:'PoppinsRegular' ,fontSize: 15),),
 
                       ],
                     ),
@@ -308,21 +193,14 @@ class _CheckOutScreen extends State<CheckOutScreen>{
                       children: [
                         Text("Discount",style: TextStyle(color: Color(0xff434343),fontFamily:'PoppinsBook' ,fontSize: 13),),
                         Spacer(),
-                        Text("5%",style: TextStyle(color: Color(0xff434343),fontFamily:'PoppinsRegular' ,fontSize: 15),),
+                        Text("$discount",style: TextStyle(color: Color(0xff434343),fontFamily:'PoppinsRegular' ,fontSize: 15),),
 
                       ],
                     ),
 
                     SizedBox(height: 10,),
 
-                    Row(
-                      children: [
-                        Text("Shipping",style: TextStyle(color: Color(0xff434343),fontFamily:'PoppinsBook' ,fontSize: 13),),
-                        Spacer(),
-                        Text("NGN400",style: TextStyle(color: Color(0xff434343),fontFamily:'PoppinsRegular' ,fontSize: 15),),
 
-                      ],
-                    ),
 
                     SizedBox(height: 10,),
 
@@ -337,7 +215,7 @@ class _CheckOutScreen extends State<CheckOutScreen>{
                       children: [
                         Text("Total",style: TextStyle(color: Color(0xff434343),fontFamily:'PoppinsBook' ,fontSize: 13),),
                         Spacer(),
-                        Text("NGN5400",style: TextStyle(color: Color(0xff434343),fontFamily:'PoppinsRegular' ,fontSize: 15),),
+                        Text("NGN $price",style: TextStyle(color: Color(0xff434343),fontFamily:'PoppinsRegular' ,fontSize: 15),),
 
                       ],
                     ),

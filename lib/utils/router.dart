@@ -4,6 +4,7 @@
 
 
 import 'package:agro_ecomance/view/cart/payment_screen.dart';
+import 'package:agro_ecomance/view/commision/withdraw_screen.dart';
 import 'package:agro_ecomance/view/onboarding/Signup_payment_screen.dart';
 import 'package:agro_ecomance/view/shoping/CategoriesItems.dart';
 import 'package:agro_ecomance/view/shoping/seeAllDetails.dart';
@@ -49,6 +50,10 @@ class Routers {
       case PageRouteConstants.dashBoardScreen:
         return MaterialPageRoute(builder: (_) => DashBoardScreen());
 
+
+      case PageRouteConstants.withdrawScreen:
+        return MaterialPageRoute(builder: (_) => WithdrawScreen());
+        //
       case PageRouteConstants.dashBoardDetailsScreen:
         return MaterialPageRoute(builder: (_) => DashBoardDetailsScreen());
 

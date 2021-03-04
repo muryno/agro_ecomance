@@ -1,5 +1,7 @@
 
 import 'package:agro_ecomance/entity/responds/UserProfile.dart';
+import 'package:agro_ecomance/utils/RaisedGradientButton.dart';
+import 'package:agro_ecomance/utils/constants/page_route_constants.dart';
 import 'package:agro_ecomance/utils/constants/url_constant.dart';
 import 'package:agro_ecomance/utils/reuseable.dart';
 import 'package:agro_ecomance/view/sidebar/shoping.dart';
@@ -113,98 +115,123 @@ class _Commission extends State<Commission> {
 
           ],
         ),
-        body: SingleChildScrollView(
+        body: Container(
           padding: const EdgeInsets.all(24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+          child: Stack(
             children: [
-              Text(
-                'COMMISSION ',
-                style: TextStyle(
-                    fontSize: 20,
-                    color: Color(0XFFABA3A3),
-                    fontFamily:'PoppinsRegular' ),
-              ),
-
-              SizedBox(
-                height: 16.0,
-              ),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Expanded(
-                    child:  Text(
-                      'FIlter by:  ',
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Color(0XFF3ABC16),
-                          fontFamily:'PoppinsRegular' ),
-                    ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    'COMMISSION ',
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Color(0XFFABA3A3),
+                        fontFamily:'PoppinsRegular' ),
                   ),
 
+                  SizedBox(
+                    height: 16.0,
+                  ),
 
-
-                  Expanded(
-                    child:   DropdownButtonFormField(
-
-                      isDense: true,
-                      hint: new Text('All ',
-                          textAlign: TextAlign.center),
-                      items:_stock.map((value) {
-                        return DropdownMenuItem<String>(
-
-                          value: value.toString(),
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-
-                      },
-
-                      decoration: InputDecoration(
-
-                        border: InputBorder.none,
-                        filled: true,
-                        fillColor: Color(0XFFD8D8D8).withOpacity(0.2),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Expanded(
+                        child:  Text(
+                          'FIlter by:  ',
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Color(0XFF3ABC16),
+                              fontFamily:'PoppinsRegular' ),
+                        ),
                       ),
-                    ),
+
+
+
+                      Expanded(
+                        child:   DropdownButtonFormField(
+
+                          isDense: true,
+                          hint: new Text('All ',
+                              textAlign: TextAlign.center),
+                          items:_stock.map((value) {
+                            return DropdownMenuItem<String>(
+
+                              value: value.toString(),
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+
+                          },
+
+                          decoration: InputDecoration(
+
+                            border: InputBorder.none,
+                            filled: true,
+                            fillColor: Color(0XFFD8D8D8).withOpacity(0.2),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
+                  SizedBox(
+                    height: 16.0,
+                  ),
+
+
+
+                  SizedBox(height: 15,),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8,vertical: 5),
+                    child:  Text("Commission History",style: TextStyle(color: Color(0xff0B2E70),fontFamily:'PoppinsBold',fontSize: 12 ),),
+                  ),
+                  SizedBox(height: 15,),
+
+                  ...List.generate(5, (index) =>
+
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 16,vertical: 15),
+                        child: Row(
+                          children: [
+
+
+                            Text("Bunch of Plantain",style: TextStyle(color: Color(0xff707070),fontFamily:'PoppinsBook',fontSize: 16 ),),
+                            Spacer(),
+                            Text("N50",style: TextStyle(color: Color(0xff707070),fontFamily:'PoppinsBook',fontSize: 16 ),)
+
+
+                          ],
+                        ),
+                      )
+                  )
+
                 ],
               ),
-               SizedBox(
-                height: 16.0,
-              ),
 
 
+              Align(
+                alignment: Alignment.bottomCenter,
+                  child:    Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                    child: RaisedGradientButton(
+                        child: Text(
+                          'Withdraw Commission',
+                          style: TextStyle(fontSize: 18,fontFamily: 'GothamBold',color: Colors.white),
+                        ),
+                        gradient: LinearGradient(
+                          colors: <Color>[Color(0xff3EB120), Colors.greenAccent],
+                        ),
+                        onPressed: (){
+                          Navigator.of(context).pushNamed(PageRouteConstants.withdrawScreen);
 
-              SizedBox(height: 15,),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 8,vertical: 5),
-                child:  Text("Commission History",style: TextStyle(color: Color(0xff0B2E70),fontFamily:'PoppinsBold',fontSize: 12 ),),
-              ),
-              SizedBox(height: 15,),
-
-              ...List.generate(5, (index) =>
-
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16,vertical: 15),
-                    child: Row(
-                      children: [
-
-
-                        Text("Bunch of Plantain",style: TextStyle(color: Color(0xff707070),fontFamily:'PoppinsBook',fontSize: 16 ),),
-                        Spacer(),
-                        Text("N50",style: TextStyle(color: Color(0xff707070),fontFamily:'PoppinsBook',fontSize: 16 ),)
-
-
-                      ],
+                        }
                     ),
-                  )
+                  ),
               )
-
             ],
-          ),
+          )
         ),
         drawer: Container(
 
@@ -212,160 +239,158 @@ class _Commission extends State<Commission> {
 
             width: MediaQuery.of(context).size.width * 0.7,
             child: Drawer(
-              child: SafeArea(
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [Color(0xFF3ABC16), Color(0xFF66EA96)],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter),
-                  ),
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [Color(0xFF3ABC16), Color(0xFF66EA96)],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter),
+                ),
 
 
-                  child: ListView(
-                    children: [
+                child: Column(
+                  children: [
 
-                      Container(
-                        color: Colors.white,
-                        height: 170,
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          children: [
+                    Container(
+                      color: Colors.white,
+                      height: 170,
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        children: [
 
-                            Hero(
-                                tag:UrlConstant.Hero,
-                                child:  Container(
-                                    width: 80,
-                                    height: 80,
-                                    padding: EdgeInsets.symmetric(horizontal: 5),
-                                    child:   CircleAvatar(
-                                        backgroundColor: ReUseAble().getButtonColor(),
-                                        radius: 20,child: Icon(Icons.person,color: Colors.white, size: 60))
-                                )),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                          Hero(
+                              tag:UrlConstant.Hero,
+                              child:  Container(
+                                  width: 80,
+                                  height: 80,
+                                  padding: EdgeInsets.symmetric(horizontal: 5),
+                                  child:   CircleAvatar(
+                                      backgroundColor: ReUseAble().getButtonColor(),
+                                      radius: 20,child: Icon(Icons.person,color: Colors.white, size: 60))
+                              )),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
 
-                                Text("${widget?.userProfileData?.username}",style: TextStyle(fontSize: 20,color: Color(0xff003C5E),fontFamily: 'PoppinsBold'),),
-                                Text("REF ID: 3Y92Q1",style: TextStyle(fontSize: 16,color: Color(0xff003C5E)),)
+                              Text("${widget?.userProfileData?.username}",style: TextStyle(fontSize: 20,color: Color(0xff003C5E),fontFamily: 'PoppinsBold'),),
+                              Text("REF ID: 3Y92Q1",style: TextStyle(fontSize: 16,color: Color(0xff003C5E)),)
 
-                              ],
+                            ],
 
-                            )
+                          )
 
 
 
-                          ],
-                        ),
+                        ],
                       ),
+                    ),
 
-                      GestureDetector(
-                        onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(HomePageDashboard(userProfileData:widget.userProfileData))
-                        );},
-                        child:
-                        ReUseAble().drawerItem(title: "Dashboard",icon: Icons.dashboard),
-                      ),
+                    GestureDetector(
+                      onTap: (){ Navigator.of(context).push(
+                          ReUseAble().getTransition(HomePageDashboard(userProfileData:widget.userProfileData))
+                      );},
+                      child:
+                      ReUseAble().drawerItem(title: "Dashboard",icon: Icons.dashboard),
+                    ),
 
-                      GestureDetector(
-                        onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(Commission(userProfileData:widget.userProfileData))
-                        );},
-                        child:
-                        ReUseAble().drawerItem(isActive:true,title: "Commissions",icon: Icons.alternate_email_sharp,),
-                      ),
-
-
-                      GestureDetector(
-                        onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(Purchase(userProfileData:widget.userProfileData))
-                        );},
-                        child:
-                        ReUseAble().drawerItem( title: "Purchases",icon: Icons.shopping_basket, ),
-                      ),
+                    GestureDetector(
+                      onTap: (){ Navigator.of(context).push(
+                          ReUseAble().getTransition(Commission(userProfileData:widget.userProfileData))
+                      );},
+                      child:
+                      ReUseAble().drawerItem(isActive:true,title: "Commissions",icon: Icons.alternate_email_sharp,),
+                    ),
 
 
-
-                      GestureDetector(
-                        onTap: (){ Navigator.of(context).push(
-                            ReUseAble().getTransition(NetworkScreen(userProfileData:widget.userProfileData))
-                        );},
-                        child:
-                        ReUseAble().drawerItem( title: "Network",icon: Icons.share, ),
-                      ),
-
-
-                      GestureDetector(
-                        onTap: (){
-                          Navigator.of(context).push(
-                              ReUseAble().getTransition(EWallet(userProfileData:widget.userProfileData))
-                          );
-                          },
-                        child:
-                        ReUseAble().drawerItem(title: "E-wallet",icon: Icons.account_balance_wallet_rounded, ),
-                      ),
+                    GestureDetector(
+                      onTap: (){ Navigator.of(context).push(
+                          ReUseAble().getTransition(Purchase(userProfileData:widget.userProfileData))
+                      );},
+                      child:
+                      ReUseAble().drawerItem( title: "Purchases",icon: Icons.shopping_basket, ),
+                    ),
 
 
 
+                    GestureDetector(
+                      onTap: (){ Navigator.of(context).push(
+                          ReUseAble().getTransition(NetworkScreen(userProfileData:widget.userProfileData))
+                      );},
+                      child:
+                      ReUseAble().drawerItem( title: "Network",icon: Icons.share, ),
+                    ),
 
 
-
-                      GestureDetector(
-                        onTap: (){
-                          Navigator.of(context).push(
-                              ReUseAble().getTransition(SettingScreen(userProfileData:widget.userProfileData))
-                          );
-                        },
-                        child:
-                        ReUseAble().drawerItem(title: "Profile",icon: Icons.person, ),
-                      ),
-
-
-
-                      GestureDetector(
-                        onTap: (){
-                          Navigator.of(context).push(
-                              ReUseAble().getTransition(WishListScreen())
-                          );
-                        },
-                        child:
-                        ReUseAble().drawerItem(title: "Wish / Bookings",icon: Icons.card_travel_sharp, ),
-                      ),
-
-
-
-
-                      GestureDetector(
-                        onTap: (){
-                          Navigator.of(context).push(
-                              ReUseAble().getTransition(LogoOut())
-                          );
-                        },
-                        child:
-                        ReUseAble().drawerItem(title: "Logout",icon: Icons.exit_to_app_sharp, ),
-                      ),
-
-
-                      Spacer(),
-
-
-                      GestureDetector(
-                        onTap: (){
-                          Navigator.of(context).push(
-                              ReUseAble().getTransition(DashBoardScreen())
-                          );
-                        },
-                        child:
-                        ReUseAble().drawerItem(title: "Continue Shopping",icon: Icons.arrow_back, ),
-                      ),
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(
+                            ReUseAble().getTransition(EWallet(userProfileData:widget.userProfileData))
+                        );
+                      },
+                      child:
+                      ReUseAble().drawerItem(title: "E-wallet",icon: Icons.account_balance_wallet_rounded, ),
+                    ),
 
 
 
 
 
-                    ],
-                  ),
+
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(
+                            ReUseAble().getTransition(SettingScreen(userProfileData:widget.userProfileData))
+                        );
+                      },
+                      child:
+                      ReUseAble().drawerItem(title: "Profile",icon: Icons.person, ),
+                    ),
+
+
+
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(
+                            ReUseAble().getTransition(WishListScreen())
+                        );
+                      },
+                      child:
+                      ReUseAble().drawerItem(title: "Wish / Bookings",icon: Icons.card_travel_sharp, ),
+                    ),
+
+
+
+
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(
+                            ReUseAble().getTransition(LogoOut())
+                        );
+                      },
+                      child:
+                      ReUseAble().drawerItem(title: "Logout",icon: Icons.exit_to_app_sharp, ),
+                    ),
+
+
+                    Spacer(),
+
+
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).push(
+                            ReUseAble().getTransition(DashBoardScreen())
+                        );
+                      },
+                      child:
+                      ReUseAble().drawerItem(title: "Continue Shopping",icon: Icons.arrow_back, ),
+                    ),
+
+
+
+
+
+                  ],
                 ),
               ),
             ))

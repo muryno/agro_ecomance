@@ -4,6 +4,7 @@
 
 
 
+import 'package:agro_ecomance/entity/db/database.dart';
 import 'package:agro_ecomance/entity/responds/ProductResp.dart';
 import 'package:agro_ecomance/entity/responds/UserProfile.dart';
 import 'package:agro_ecomance/entity/responds/cart/CartDataa.dart';
@@ -117,7 +118,7 @@ class _ItemDashBoardDetailsScreen extends State<ShopingDetails>{
 
                       },
                       child:             StreamBuilder(
-                        stream:cartBloc.fetchCart,
+                        stream:AppDatabase?.getInstance()?.cartDataDao?.findAllCart(),
                         builder: (context, AsyncSnapshot< List<CartDataa> >  snapshot){
                           if(snapshot.hasData ){
 
@@ -295,7 +296,7 @@ class _ItemDashBoardDetailsScreen extends State<ShopingDetails>{
 
                               if(userProfileData?.email!= null) {
                                 Navigator.of(context).push(
-                                    ReUseAble().getTransition(WishListScreen())
+                                    ReUseAble().getTransition(WishListScreen(productRespData: productRespData,))
                                 );
                               }else{
                                 Navigator.of(context).pushNamed(PageRouteConstants.view_page);}
@@ -330,7 +331,7 @@ class _ItemDashBoardDetailsScreen extends State<ShopingDetails>{
 
                               if(userProfileData?.email!= null) {
                                 RetrofitClientInstance.getInstance().reset();
-                                cartBloc.addCartData(productRespData.id, quatity, context);
+                                cartBloc.addCartData(productRespData.id, quatity,1, context);
                               }else{
                                 Navigator.of(context).pushNamed(PageRouteConstants.view_page);}
 

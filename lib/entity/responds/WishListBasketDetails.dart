@@ -1,4 +1,5 @@
 
+import 'package:agro_ecomance/entity/myEntity/WishEntity.dart';
 import 'package:agro_ecomance/entity/responds/Reminder.dart';
 
 class WishListBasketDetails {
@@ -472,50 +473,3 @@ class Product {
 }
 
 
-
-class Wishe {
-    String created_at;
-    int discounted_price;
-    int id;
-    int price;
-    Product product;
-    int product_id;
-    int quantity;
-    String updated_at;
-    int user_id;
-    String uuid;
-
-    Wishe({this.created_at, this.discounted_price, this.id, this.price, this.product, this.product_id, this.quantity, this.updated_at, this.user_id, this.uuid});
-
-    factory Wishe.fromJson(Map<String, dynamic> json) {
-        return Wishe(
-            created_at: json['created_at'],
-            discounted_price: json['discounted_price'],
-            id: json['id'],
-            price: json['price'],
-            product: json['product'] != null ? Product.fromJson(json['product']) : null,
-            product_id: json['product_id'],
-            quantity: json['quantity'],
-            updated_at: json['updated_at'],
-            user_id: json['user_id'],
-            uuid: json['uuid'],
-        );
-    }
-
-    Map<String, dynamic> toJson() {
-        final Map<String, dynamic> data = new Map<String, dynamic>();
-        data['created_at'] = this.created_at;
-        data['discounted_price'] = this.discounted_price;
-        data['id'] = this.id;
-        data['price'] = this.price;
-        data['product_id'] = this.product_id;
-        data['quantity'] = this.quantity;
-        data['updated_at'] = this.updated_at;
-        data['user_id'] = this.user_id;
-        data['uuid'] = this.uuid;
-        if (this.product != null) {
-            data['product'] = this.product.toJson();
-        }
-        return data;
-    }
-}

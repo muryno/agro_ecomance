@@ -5,42 +5,49 @@
 
 
 import 'package:agro_ecomance/entity/db/database.dart';
+import 'package:agro_ecomance/entity/myEntity/WishEntity.dart';
+import 'package:agro_ecomance/entity/responds/WishBaskResp.dart';
 import 'package:agro_ecomance/entity/responds/cart/CartData.dart';
 import 'package:agro_ecomance/entity/responds/cart/CartDataa.dart';
 import 'package:agro_ecomance/rxbloc_pattern/cart_bloc.dart';
+import 'package:agro_ecomance/rxbloc_pattern/wish_bloc.dart';
 import 'package:agro_ecomance/utils/RaisedGradientButton.dart';
 import 'package:agro_ecomance/utils/constants/page_route_constants.dart';
 import 'package:agro_ecomance/utils/helper.dart';
 import 'package:agro_ecomance/utils/reuseable.dart';
+import 'package:agro_ecomance/view/cart/cart_screen_details.dart';
+import 'package:agro_ecomance/view/wish_list/wish_screen_details.dart';
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-import 'cart_screen_details.dart';
 
 
 
 
 
 
-class CartScreen extends StatefulWidget{
 
+class WishListItemDetailsScreen extends StatefulWidget{
+
+  final WishBaskData wishBaskData;
+  WishListItemDetailsScreen({this.wishBaskData });
 
   @override
-  _CartScreen createState()  =>  _CartScreen();
+  _WishListItemDetailsScreen createState()  =>  _WishListItemDetailsScreen();
 
 
 }
 
 
-class _CartScreen extends State<CartScreen>{
+class _WishListItemDetailsScreen extends State<WishListItemDetailsScreen>{
 
 
   @override
   void initState() {
-    cartBloc.getCart();
+    wishBloc.getBasketWishe(widget?.wishBaskData?.id);
     super.initState();
   }
 
@@ -49,7 +56,7 @@ class _CartScreen extends State<CartScreen>{
   @override
   void dispose() {
 
-    cartBloc.dispose();
+    wishBloc.dispose();
     super.dispose();
   }
 
@@ -90,34 +97,7 @@ class _CartScreen extends State<CartScreen>{
 
                         Spacer(),
 
-                        InkWell(
-                          onTap: (){
-                          },
-                          child:             StreamBuilder(
-                            stream:AppDatabase?.getInstance()?.cartDataDao?.findAllCart(),
-                            builder: (context, AsyncSnapshot< List<CartDataa> >  snapshot){
-                              if(snapshot.hasData ){
 
-
-                                return     Badge(
-                                  badgeColor: Colors.green,
-                                  badgeContent: Text('${snapshot.data.length}',style: TextStyle(color: Colors.white),),
-                                  child:  Icon(Icons.shopping_basket,color: Colors.green,),
-                                );
-                              }
-
-                              return    Badge(
-                                badgeColor: Colors.green,
-                                badgeContent: Text('0',style: TextStyle(color: Colors.white),),
-                                child:  Icon(Icons.shopping_basket,color: Colors.green,),
-                              );
-                            },
-                          ),
-
-
-
-
-                        ),
                         SizedBox(width: 5,),
                       ],
                     ),
@@ -129,25 +109,25 @@ class _CartScreen extends State<CartScreen>{
 
 
 
-                    Text("Cart",style: TextStyle(fontFamily: "PoppinsRegular",fontSize: 30,color: Color(0xff3ABB16)),),
+                    Text("Shopping for ${widget?.wishBaskData?.title}",style: TextStyle(fontFamily: "PoppinsRegular",fontSize: 30,color: Color(0xff3ABB16)),),
 
 
 
 
 
                     StreamBuilder(
-                      stream:    AppDatabase?.getInstance()?.cartDataDao?.findAllCart(),
-                      builder: (context, AsyncSnapshot< List<CartDataa> >  snapshot){
+                      stream:    AppDatabase?.getInstance()?.wishDataDao?.findAllWish(),
+                      builder: (context, AsyncSnapshot< List<Wishe> >  snapshot){
                         if(snapshot.hasData ){
 
-                          snapshotData = snapshot.data;
+
                           return   Container(
                               child: ListView.builder(
                                   shrinkWrap: true,
                                   itemCount: snapshot.data.length,
                                   physics: NeverScrollableScrollPhysics(),
                                   itemBuilder: (context,index){
-                                    return CartDetailsScreen( dat : snapshot.data[index] );
+                                    return WishDetailsScreen( dat : snapshot.data[index] );
                                   })
                           );
 

@@ -210,7 +210,7 @@ class _PaymentScreen extends State<SignUpPaymentScreen>{
 
                         onPressed: () {
                           usePayCode?
-                          loginBloc.verifyReference(refController.text  , context)
+                          loginBloc.verifyReference(refController.text ,"paycode" , context)
                          : Helper.toastInfo("loading payment method...");
                           chargeCard(int.parse(this.amount));
                         },
@@ -312,7 +312,7 @@ class _PaymentScreen extends State<SignUpPaymentScreen>{
     if (response.status == true) {
 
 
-      loginBloc.verifyReference(response.reference  , context);
+      loginBloc.verifyReference(response.reference ,"paystack" , context);
 
      // Navigator.of(context).popAndPushNamed(PageRouteConstants.confirmPaymentScreen);
 

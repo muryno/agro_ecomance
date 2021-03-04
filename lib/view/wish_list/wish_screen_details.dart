@@ -5,6 +5,7 @@
 
 
 import 'package:agro_ecomance/entity/db/database.dart';
+import 'package:agro_ecomance/entity/myEntity/WishEntity.dart';
 import 'package:agro_ecomance/entity/responds/cart/CartData.dart';
 import 'package:agro_ecomance/entity/responds/cart/CartDataa.dart';
 import 'package:agro_ecomance/rxbloc_pattern/cart_bloc.dart';
@@ -23,11 +24,11 @@ import 'package:flutter/material.dart';
 
 
 
-class CartDetailsScreen extends StatefulWidget{
+class WishDetailsScreen extends StatefulWidget{
 
 
-  final CartDataa dat;
-  CartDetailsScreen({@required this.dat  });
+  final Wishe dat;
+  WishDetailsScreen({@required this.dat  });
   @override
   _CartDetailsScreen createState()  =>  _CartDetailsScreen();
 
@@ -35,11 +36,11 @@ class CartDetailsScreen extends StatefulWidget{
 }
 
 
-class _CartDetailsScreen extends State<CartDetailsScreen>{
+class _CartDetailsScreen extends State<WishDetailsScreen>{
 
 int count = 1 ;
 
-CartDataa acts ;
+Wishe acts ;
 @override
   void initState () {
   acts = widget.dat;
@@ -68,7 +69,7 @@ CartDataa acts ;
                 height: 100,
                 width: 100,
                 child: CachedNetworkImage(
-                  imageUrl: '${widget.dat.img_url}',
+                  imageUrl: '${widget.dat.thumbnail_url}',
                   imageBuilder: (context, imageProvider) =>
                       Container(
                         decoration: BoxDecoration(
@@ -121,7 +122,7 @@ CartDataa acts ;
                       height: 150,
                       child:                Listener(
                           onPointerDown: (_) =>{
-                            BackgroundUtils.updateCart( product_id : widget.dat.id, weight : widget.dat.weight,   quantity :  count)
+                            BackgroundUtils.updateCart( product_id : widget.dat.product_id, weight : widget.dat.weight,   quantity :  count)
                           },
                           child:  Row(
 

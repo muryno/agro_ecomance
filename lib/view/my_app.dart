@@ -1,5 +1,7 @@
 
 
+import 'package:agro_ecomance/entity/db/database.dart';
+import 'package:agro_ecomance/utils/background_utils.dart';
 import 'package:agro_ecomance/utils/login_custom_dialog.dart';
 import 'package:agro_ecomance/utils/navigation_service.dart';
 import 'package:agro_ecomance/utils/router.dart';
@@ -44,8 +46,8 @@ class _SplashScreenState extends State<MyApp>{
   @override
   Widget build(BuildContext context) {
 
-    // AppDatabase.init();
 
+    AppDatabase.init();
     NavigationService();
 
 

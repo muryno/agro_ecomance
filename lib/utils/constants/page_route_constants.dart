@@ -29,6 +29,8 @@ class PageRouteConstants {
   static const String categoryItemScreenScreen = '/CategoryItemScreenScreen';
 
   static const String signUpPaymentScreen = '/SignUpPaymentScreen';
+
+  static const String withdrawScreen = '/WithdrawScreen';
 //
 
 //paymentScreen
