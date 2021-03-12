@@ -23,6 +23,7 @@ import 'package:agro_ecomance/entity/responds/DashboardResp.dart';
 import 'package:agro_ecomance/entity/responds/NetworkResp.dart';
 import 'package:agro_ecomance/entity/responds/NewWishList.dart';
 import 'package:agro_ecomance/entity/responds/NextKinResp.dart';
+import 'package:agro_ecomance/entity/responds/PickupAddress.dart';
 import 'package:agro_ecomance/entity/responds/ProductCategory.dart';
 import 'package:agro_ecomance/entity/responds/ProductResp.dart';
 import 'package:agro_ecomance/entity/responds/Reminder.dart';
@@ -128,7 +129,7 @@ abstract class ApiRestClient {
   Future<AddCartResp> addCart(@Body() AddCart usr);
 
   @GET("ecommerce/cart")
-  Future<CartData> getCart();
+  Future<CartDataBase> getCart();
 
   @DELETE("ecommerce/cart/{id}")
   Future<BaseResp> deleteCart(@Path('id') id);
@@ -183,7 +184,8 @@ abstract class ApiRestClient {
   @GET("ecommerce/wish_basket/{id}/wishes")
   Future<WishListBasketDetails> getBasketWishes(@Path('id') id);
   //<--
-
+  @POST("ecommerce/wish_basket/{id}/buy")
+  Future<CartDataBase> convertWishToCart(@Path('id') id);
 
 
   @POST("ecommerce/wish_basket/{id}/reminder")
@@ -197,10 +199,10 @@ abstract class ApiRestClient {
 
 
   @GET("wish_basket/wish/{id}")
-  Future<CartData> fetchWishes(@Path('id') id);
+  Future<CartDataBase> fetchWishes(@Path('id') id);
 
 
-  @GET("/ecommerce/wish_basket/")
+  @GET("ecommerce/wish_basket/")
   Future<WishBaskResp> getSingleBasket();
 
 
@@ -212,5 +214,29 @@ abstract class ApiRestClient {
   Future<withdrawResp>   withdraw(@Body() bankReq usr);
 
 
+  @GET("ecommerce/cart/pickup-locations?lat={lat}&long={lon}")
+  Future<PickupAddress> fetchPickupLocation(@Path('lat') lat,@Path('lon') lon);
 
+
+  @PATCH("ecommerce/cart/delivery")
+  Future<CartDataBase> setDeliveryAddress(@Body() Map<String,String> usr);
+
+
+  @PATCH("ecommerce/cart/pickup")
+  Future<CartDataBase> setPickUpAddress(@Body() Map<String,int> usr);
+
+
+  @PATCH("ecommerce/cart/set-payment")
+  Future<CartDataBase> payForCart(@Body() Map<String,String> usr);
+
+
+  @POST("ecommerce/order/make-order")
+  Future<withdrawResp>   makeOrder();
+
+
+  @GET("ecommerce/order/requests")
+  Future<CartDataBase> getOrderRequest();
+
+
+//ecommerce/order/requests
 }

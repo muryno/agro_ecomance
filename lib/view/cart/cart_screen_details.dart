@@ -27,7 +27,8 @@ class CartDetailsScreen extends StatefulWidget{
 
 
   final CartDataa dat;
-  CartDetailsScreen({@required this.dat  });
+  final bool  fromCheckout;
+  CartDetailsScreen({@required this.dat ,this.fromCheckout = false});
   @override
   _CartDetailsScreen createState()  =>  _CartDetailsScreen();
 
@@ -58,7 +59,7 @@ CartDataa acts ;
 
       height: 140,
 
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 6),
       child: Card(
         child: Row(
           children: [
@@ -113,7 +114,7 @@ CartDataa acts ;
                   SizedBox(height: 10,),
 
 
-                  Expanded(
+                  widget.fromCheckout? Wrap():   Expanded(
                     child: Container(
                       color: Colors.grey.withOpacity(0.2),
 
@@ -172,7 +173,7 @@ CartDataa acts ;
             ),
 
             Spacer(),
-            InkWell(
+            widget.fromCheckout? Wrap(): InkWell(
               onTap: (){
 
                 cartBloc.deleteCart(widget.dat.uuid, context);

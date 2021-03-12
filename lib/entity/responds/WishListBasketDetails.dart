@@ -35,7 +35,7 @@ class WishListBasketDetails {
 class Basket {
     String created_at;
     int id;
-    List<Reminder> reminder;
+    Reminder reminder;
     String title;
     String updated_at;
     int user_id;
@@ -47,7 +47,8 @@ class Basket {
         return Basket(
             created_at: json['created_at'],
             id: json['id'],
-            reminder: json['reminder'] != null ? (json['reminder'] as List).map((i) => Reminder.fromJson(i)).toList() : null,
+            reminder: json['reminder'] != null ? Reminder.fromJson(json['reminder']) : null,
+
             title: json['title'],
             updated_at: json['updated_at'],
             user_id: json['user_id'],
@@ -63,9 +64,11 @@ class Basket {
         data['updated_at'] = this.updated_at;
         data['user_id'] = this.user_id;
         data['uuid'] = this.uuid;
+
         if (this.reminder != null) {
-            data['reminder'] = this.reminder.map((v) => v.toJson()).toList();
+            data['reminder'] = this.reminder.toJson();
         }
+
         return data;
     }
 }
@@ -76,7 +79,7 @@ class Category {
     String deleted_at;
     String description;
     int id;
-    String image_id;
+    var image_id;
     String max_amount;
     String min_amount;
     String name;
@@ -349,11 +352,11 @@ class PivotX {
 
 
 class PriceDistribution {
-    int discount;
-    int price;
-    int profit;
-    String unit;
-    int weight;
+    var discount;
+    var price;
+    var profit;
+    var unit;
+    var weight;
 
     PriceDistribution({this.discount, this.price, this.profit, this.unit, this.weight});
 

@@ -75,14 +75,20 @@ class _EWallet extends State<EWallet> {
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(
-              Icons.menu,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              _scaffoldKey.currentState.openDrawer();
-            },
+          leading: InkWell(
+
+              onTap: (){
+                _scaffoldKey.currentState.openDrawer();
+              },
+
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 14),
+                child:    Image.asset(
+                  'assets/images/menu.png',
+                  width: 24,height: 24,color: Colors.black,
+                ),
+              )
+
           ),
           backgroundColor: Colors.white,
           actions: [
@@ -102,8 +108,9 @@ class _EWallet extends State<EWallet> {
             ),
             InkWell(
                 onTap: (){
-                  ReUseAble().getTransition(SettingScreen(userProfileData:widget.userProfileData));
-
+                  Navigator.of(context).push(
+                      ReUseAble().getTransition(SettingScreen(userProfileData:widget?.userProfileData))
+                  );
                 },
                 child:    Padding(
                   padding: const EdgeInsets.only(right: 16.0, left: 14.0),
@@ -129,235 +136,246 @@ class _EWallet extends State<EWallet> {
             )
           ],
         ),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-
-              const SizedBox(
-                height: 8.0,
-              ),
-              Text(
-                "E-wallet",
-                style: TextStyle(
-                    fontSize: 20,
-                    color: Color(0XFF707070),
-                    fontFamily:'PoppinsBook' ),
-              ),
-               SizedBox(
-                height: 24.0,
-              ),
-
-
-              Row(
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Container(
-                    height: 100,
-                    width: MediaQuery.of(context).size.width/2 -30,
 
-                    child:    Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      elevation: 5,
-                      child: Column(
-                        children: [
-                          SizedBox(height: 15,),
-                          Text("Approved Commission",style: TextStyle(color: Color(0xff0B2E70),fontFamily:'PoppinsBold',fontSize: 12 ),),
-                          SizedBox(height: 15,),
-                          Text("N1,200,111.08",style: TextStyle(color: Color(0xff3ABC16),fontFamily:'PoppinsBold',fontSize: 16 ),)
 
-                        ],
-                      ) ,
-                    ),
+                  SizedBox(height: 35,),
+                  const SizedBox(
+                    height: 8.0,
                   ),
-                  Spacer(),
-                  Container(
-                    height: 100,
-                    width: MediaQuery.of(context).size.width/2 -30,
-
-                    child:    Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      elevation: 5,
-                      child: Column(
-                        children: [
-                          SizedBox(height: 15,),
-                          Text("Pending Commission",style: TextStyle(color: Color(0xff0B2E70),fontFamily:'PoppinsBold',fontSize: 12 ),),
-                          SizedBox(height: 15,),
-                          Text("N84,715.40",style: TextStyle(color: Color(0xff3ABC16),fontFamily:'PoppinsBold',fontSize: 16 ),)
-
-                        ],
-                      ) ,
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 24.0,
-              ),
-
-              Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
+                  Text(
+                    "E-wallet",
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Color(0XFF707070),
+                        fontFamily:'PoppinsBook' ),
+                  ),
+                  SizedBox(
+                    height: 24.0,
                   ),
 
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
 
-                         SizedBox(
-                          height: 8.0,
-                        ),
-                        Text(
-                          "Top-up Wallet",
-                          style: TextStyle(
-                             fontSize: 12,
-                            color: Color(0xff0B2E70),
-                            fontFamily:'PoppinsBold'
+                  Row(
+                    children: [
+                      Container(
+                        height: 100,
+                        width: MediaQuery.of(context).size.width/2 -30,
+
+                        child:    Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
                           ),
+                          elevation: 5,
+                          child: Column(
+                            children: [
+                              SizedBox(height: 15,),
+                              Text("Ledger Balance",style: TextStyle(color: Color(0xff0B2E70),fontFamily:'PoppinsBold',fontSize: 12 ),),
+                              SizedBox(height: 15,),
+                              Text("N 0",style: TextStyle(color: Color(0xff3ABC16),fontFamily:'PoppinsBold',fontSize: 16 ),)
+
+                            ],
+                          ) ,
                         ),
+                      ),
+                      Spacer(),
+                      Container(
+                        height: 100,
+                        width: MediaQuery.of(context).size.width/2 -30,
 
+                        child:    Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          elevation: 5,
+                          child: Column(
+                            children: [
+                              SizedBox(height: 15,),
+                              Text("Withdrawable",style: TextStyle(color: Color(0xff0B2E70),fontFamily:'PoppinsBold',fontSize: 12 ),),
+                              SizedBox(height: 15,),
+                              Text("N 0",style: TextStyle(color: Color(0xff3ABC16),fontFamily:'PoppinsBold',fontSize: 16 ),)
 
-                        SizedBox(
-                          height: 10.0,
+                            ],
+                          ) ,
                         ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 24.0,
+                  ),
 
-                        amount,
+                  Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
 
-                        SizedBox(
-                          height: 10.0,
-                        ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 20.0, horizontal: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
 
-
-                        Container(
-                          width: 120,
-                          child:       ButtonTheme(
-
-                            minWidth: 120,
-                            height: 35,
-                            child: RaisedButton(
-                              elevation: 0.0,
-                              textColor: Colors.white,
-                              color: Color(0XFF3ABC16),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0)),
-                              child: Text("TOP-UP"),
-                              onPressed: () {
-
-
-                              },
+                            SizedBox(
+                              height: 8.0,
                             ),
-                          ),
-                        ),
-
-                        SizedBox(
-                          height: 18.0,
-                        ),
-
-
-                      ],
-                    ),
-                  )),
-
-              SizedBox(
-                height: 24.0,
-              ),
-              Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 12.0, horizontal: 16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-
-                        const SizedBox(
-                          height: 8.0,
-                        ),
-                        Text(
-                          "Wallet distributor",
-                          style: TextStyle(
-                            // fontSize: 18,
-                            color: Color(0XFF707070),
-                          ),
-                        ),
-
-                        AspectRatio(
-                          aspectRatio: 1.90,
-                          child: Container(
-                            decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(18),
-                                ),
-                                color: Colors.white),
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 18.0, left: 12.0, top: 24, bottom: 12),
-                              child: LineChart(
-                                mainData(),
+                            Text(
+                              "Top-up Wallet",
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xff0B2E70),
+                                  fontFamily:'PoppinsBold'
                               ),
                             ),
-                          ),
+
+
+                            SizedBox(
+                              height: 10.0,
+                            ),
+
+                            amount,
+
+                            SizedBox(
+                              height: 10.0,
+                            ),
+
+
+                            Container(
+                              width: 120,
+                              child:       ButtonTheme(
+
+                                minWidth: 120,
+                                height: 35,
+                                child: RaisedButton(
+                                  elevation: 0.0,
+                                  textColor: Colors.white,
+                                  color: Color(0XFF3ABC16),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0)),
+                                  child: Text("TOP-UP"),
+                                  onPressed: () {
+
+
+                                  },
+                                ),
+                              ),
+                            ),
+
+                            SizedBox(
+                              height: 18.0,
+                            ),
+
+
+                          ],
                         ),
+                      )),
 
-
-
-
-
-                      ],
-                    ),
-                  )),
-
-              SizedBox(height: 35,),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                child: RaisedGradientButton(
-                    child: Text(
-                      'Make a Withdraw',
-                      style: TextStyle(fontSize: 18,fontFamily: 'GothamBold',color: Colors.white),
-                    ),
-                    gradient: LinearGradient(
-                      colors: <Color>[Color(0xff3EB120), Colors.greenAccent],
-                    ),
-                    onPressed: (){
-
-                    }
-                ),
-              ),
-              SizedBox(height: 35,),
-
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-
-                  SizedBox(height: 15,),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8,vertical: 5),
-                    child:  Text("New Downlines",style: TextStyle(color: Color(0xff0B2E70),fontFamily:'PoppinsBold',fontSize: 12 ),),
+                  SizedBox(
+                    height: 24.0,
                   ),
-                  SizedBox(height: 15,),
+                  Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
 
-                  ...List.generate(5, (index) =>
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12.0, horizontal: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
 
+                            const SizedBox(
+                              height: 8.0,
+                            ),
+                            Text(
+                              "Wallet distributor",
+                              style: TextStyle(
+                                // fontSize: 18,
+                                color: Color(0XFF707070),
+                              ),
+                            ),
+
+                            AspectRatio(
+                              aspectRatio: 1.90,
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(18),
+                                    ),
+                                    color: Colors.white),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 18.0, left: 12.0, top: 24, bottom: 12),
+                                  child: LineChart(
+                                    mainData(),
+                                  ),
+                                ),
+                              ),
+                            ),
+
+
+
+
+
+                          ],
+                        ),
+                      )),
+
+                  SizedBox(height: 35,),
+
+
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+
+                      SizedBox(height: 15,),
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 16,vertical: 13),
-                        child:   Text("Wallet Deposit",style: TextStyle(color: Color(0xff707070),fontFamily:'PoppinsBook',fontSize: 16 ),),
+                        padding: EdgeInsets.symmetric(horizontal: 8,vertical: 5),
+                        child:  Text("New Downlines",style: TextStyle(color: Color(0xff0B2E70),fontFamily:'PoppinsBold',fontSize: 12 ),),
+                      ),
+                      SizedBox(height: 15,),
 
+                      ...List.generate(5, (index) =>
+
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 16,vertical: 13),
+                            child:   Text("Wallet Deposit",style: TextStyle(color: Color(0xff707070),fontFamily:'PoppinsBook',fontSize: 16 ),),
+
+                          )
                       )
-                  )
 
+                    ],
+                  ) ,
                 ],
-              ) ,
-            ],
-          ),
+              ),
+            ),
+
+           Align(
+             alignment: Alignment.bottomCenter
+             ,
+             child:  Container(
+               margin: EdgeInsets.symmetric(horizontal: 20,vertical: 40),
+               child: RaisedGradientButton(
+                   child: Text(
+                     'Top up',
+                     style: TextStyle(fontSize: 18,fontFamily: 'GothamBold',color: Colors.white),
+                   ),
+                   gradient: LinearGradient(
+                     colors: <Color>[Color(0xff3EB120), Colors.greenAccent],
+                   ),
+                   onPressed: (){
+
+                   }
+               ),
+             ),
+           )
+          ],
         ),
         drawer: Container(
 

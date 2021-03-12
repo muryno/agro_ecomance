@@ -5,7 +5,7 @@ import 'package:agro_ecomance/entity/responds/cart/CartData.dart';
 class WishdataResp {
     String message;
     int status_code;
-    CartData wishdata;
+    CartDatas wishdata;
 
     WishdataResp({this.message, this.status_code, this.wishdata});
 
@@ -13,7 +13,7 @@ class WishdataResp {
         return WishdataResp(
             message: json['message'], 
             status_code: json['status_code'], 
-            wishdata: json['wishdata'] != null ? CartData.fromJson(json['wishdata']) : null,
+            wishdata: json['wishdata'] != null ? CartDatas.fromJson(json['wishdata']) : null,
         );
     }
 

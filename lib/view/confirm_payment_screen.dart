@@ -1,4 +1,5 @@
 import 'package:agro_ecomance/entity/request/login_request.dart';
+import 'package:agro_ecomance/rxbloc_pattern/cartPayment_bloc.dart';
 import 'package:agro_ecomance/utils/RaisedGradientButton.dart';
 import 'package:agro_ecomance/utils/constants/page_route_constants.dart';
 import 'package:agro_ecomance/utils/reuseable.dart';
@@ -31,6 +32,7 @@ class _ConfirmPaymentScreen extends State<ConfirmPaymentScreen>{
 
   @override
   Widget build(BuildContext context) {
+
     final size = MediaQuery
         .of(context)
         .size;
@@ -84,16 +86,15 @@ class _ConfirmPaymentScreen extends State<ConfirmPaymentScreen>{
               margin: EdgeInsets.symmetric(horizontal: 20,vertical: 60),
               child: RaisedGradientButton(
                   child: Text(
-                    'Back to Home',
+                    'Make Order Now!',
                     style: TextStyle(fontSize: 18,fontFamily: 'GothamBold',color: Colors.white),
                   ),
                   gradient: LinearGradient(
                     colors: <Color>[Color(0xff3EB120), Colors.greenAccent],
                   ),
                   onPressed: (){
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                        PageRouteConstants.dashBoardScreen, (r) => false
-                    );
+
+                    cartPaymentBloc.makeOrderNow(context);
                   }
               ),
             ),

@@ -2,6 +2,7 @@
 
 
 
+import 'package:agro_ecomance/entity/request/openBefore.dart';
 import 'package:agro_ecomance/server/retrofit_clients.dart';
 import 'package:agro_ecomance/utils/constants/page_route_constants.dart';
 import 'package:agro_ecomance/utils/share_pref.dart';
@@ -32,7 +33,9 @@ class _SplashScreenStates extends State<SplashScreens>
   void initState() {
     super.initState();
 
-    RetrofitClientInstance.getInstance().reset();
+    StorageUtil.openedApp().then((value) {
+      ups = value;
+    });
 
 
     _startAnimation();
@@ -40,6 +43,14 @@ class _SplashScreenStates extends State<SplashScreens>
 
 
   }
+
+
+
+  openBefore  ups;
+
+
+
+
 
 
 
@@ -53,9 +64,39 @@ class _SplashScreenStates extends State<SplashScreens>
       ..addListener(() {
         if (animationController.isCompleted) {
 
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              PageRouteConstants.dashBoardScreen, (r) => false
-          );
+
+          StorageUtil.getUser().then((value) {
+            if (value != null){
+              RetrofitClientInstance.getInstance().reset();
+
+
+              if (value?.data?.access_token != null){
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    PageRouteConstants.dashBoardScreen,(r)=>false);
+
+              }
+              else{
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    PageRouteConstants.stepperPage,(r)=>false);
+              }
+
+            }
+            else
+            if (value == null && ups != null && ups.openned == true ){
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  PageRouteConstants.view_page, (r) => false
+              );
+            }else {
+
+
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  PageRouteConstants.stepperPage, (r) => false
+              );
+            }
+
+          });
+
+
 
 
         }

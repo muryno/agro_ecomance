@@ -21,6 +21,7 @@ import 'package:agro_ecomance/view/shoping/shoping_details.dart';
 import 'package:agro_ecomance/view/onboarding/login_screen.dart';
 import 'package:agro_ecomance/view/payment_screen.dart';
 import 'package:agro_ecomance/view/onboarding/verifyotp.dart';
+import 'package:agro_ecomance/view/splash/splash_pager.dart';
 import 'package:agro_ecomance/view/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -71,8 +72,10 @@ class Routers {
       case PageRouteConstants.addAddressScreen:
         return MaterialPageRoute(builder: (_) => AddAddressScreen());
 
+      case PageRouteConstants.stepperPage:
+        return MaterialPageRoute(builder: (_) => StepperPage());
 
-
+//
       case PageRouteConstants.checkOutScreen:
         return MaterialPageRoute(builder: (_) => CheckOutScreen(),settings: RouteSettings( arguments: settings.arguments));
 

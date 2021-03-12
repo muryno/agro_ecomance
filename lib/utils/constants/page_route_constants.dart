@@ -31,6 +31,9 @@ class PageRouteConstants {
   static const String signUpPaymentScreen = '/SignUpPaymentScreen';
 
   static const String withdrawScreen = '/WithdrawScreen';
+
+  static const String stepperPage = '/stepperPage';
+
 //
 
 //paymentScreen

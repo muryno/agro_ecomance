@@ -17,15 +17,15 @@ abstract class WishDataDao {
 
 
 
-  @Query("Wishe CartEntity SET quantity = :quantity WHERE id = :tid")
+  @Query("update WishEntity SET quantity = :quantity WHERE id = :tid")
   Future<void> updateQuantity(int quantity,int tid);
 
 
 
-  @Query("select * from Wishe")
+  @Query("select * from WishEntity")
   Stream<List<Wishe>> findAllWish();
 
-  @Query("DELETE from Wishe")
+  @Query("DELETE from WishEntity")
   Future<void> nukeWishe();
 
 

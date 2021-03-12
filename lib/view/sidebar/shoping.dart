@@ -519,7 +519,7 @@ void dispose() {
 
 
 
-            width: MediaQuery.of(context).size.width * 0.7,
+            width: MediaQuery.of(context).size.width * 0.9,
             child: Drawer(
               child:Container(
                 decoration: BoxDecoration(
@@ -556,7 +556,8 @@ void dispose() {
                             children: [
 
                               Text("${userProfileData?.username } ",style: TextStyle(fontSize: 20,color: Color(0xff003C5E),fontFamily: 'PoppinsBold'),),
-                              Text("REF ID: 3Y92Q1",style: TextStyle(fontSize: 16,color: Color(0xff003C5E)),)
+                              Text("REF ID: ${userProfileData?.referral_code }",style: TextStyle(fontSize: 16,color: Color(0xff003C5E)),),
+
 
                             ],
 

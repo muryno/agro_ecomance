@@ -5,11 +5,13 @@ import 'package:agro_ecomance/entity/userBase.dart';
 import 'package:agro_ecomance/rxbloc_pattern/delivery_bloc.dart';
 import 'package:agro_ecomance/utils/RaisedGradientButton.dart';
 import 'package:agro_ecomance/utils/constants/page_route_constants.dart';
+import 'package:agro_ecomance/utils/helper.dart';
 import 'package:agro_ecomance/utils/reuseable.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:local_auth/local_auth.dart';
 
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -34,11 +36,13 @@ class  AddressScreen extends StatefulWidget{
 class _AddressScreen extends State<AddressScreen>{
 
   final progressKey = GlobalKey();
+  var addresss = TextEditingController();
 
+  int selectedPickup = 0;
 
   @override
   void initState() {
-    deliveryBloc.getAddress();
+    deliveryBloc.emptyAddress();
     super.initState();
   }
 
@@ -54,7 +58,10 @@ class _AddressScreen extends State<AddressScreen>{
   final formKey = GlobalKey<FormState>();
 
   List<CartDataa>   snapshotData;
-  DeliveryAddres  deliveryAddres;
+  DeliveryAddres  deliveryToCustomerAddress;
+  DeliveryAddres  deliveryToPickUp;
+  int deliveryType = 0;
+
   @override
   Widget build(BuildContext context) {
 
@@ -65,6 +72,10 @@ class _AddressScreen extends State<AddressScreen>{
 
 
 
+
+    //    //'Select delivery type'  == 0
+    //    //'"Deliver to pick-up"  == 2
+    //    //"Deliver to customer",  == 1
 
 
 
@@ -115,45 +126,82 @@ class _AddressScreen extends State<AddressScreen>{
 
                     Text("Delivery type",style: TextStyle(color: Color(0xff3CBE1B),fontFamily:'PoppinsRegular' ,fontSize: 16),),
 
-                    Expanded(
-                      child:   DropdownButtonFormField(
+                    DropdownButtonFormField(
 
-                        isDense: true,
-                        hint: new Text('Select delivery type',
-                            textAlign: TextAlign.center),
-                        items:["Deliver to my hou"].map((value) {
-                          return DropdownMenuItem<String>(
+                      isDense: true,
+                      hint: new Text('Select delivery type',
+                          textAlign: TextAlign.center),
+                      items:["Deliver to customer","Deliver to pick-up"].map((value) {
+                        return DropdownMenuItem<String>(
 
-                            value: value.toString(),
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
+                          value: value.toString(),
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
 
+                        if (value == "Deliver to pick-up") {
+                          deliveryBloc.emptyAddress();
+                          deliveryToCustomerAddress = DeliveryAddres();
+                          deliveryToPickUp =  DeliveryAddres();
+
+                          setState(() {
+                            deliveryType = 2;
+                          });
+
+                        } else if (value == "Deliver to customer") {
+
+                          deliveryBloc.getAddress();
+                          deliveryToCustomerAddress   =   DeliveryAddres();
+                          deliveryToPickUp   =   DeliveryAddres();
 
 
                           setState(() {
-
-
-
-
-
+                            deliveryType = 1 ;
+                          });
+                        }else{
+                          setState(() {
+                            deliveryType = 0 ;
                           });
 
+                        }
 
-                        },
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          filled: true,
-                          fillColor: Color(0XFFD8D8D8).withOpacity(0.2),
-                        ),
+
+
+
+                      },
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        filled: true,
+                        fillColor: Color(0XFFD8D8D8).withOpacity(0.2),
                       ),
                     ),
+
                     SizedBox(height: 20,),
+                    deliveryType ==2 ?   GestureDetector(
+                        onTap: ()=>{  showPlacePicker(context) },
+                        child:    Container(
+                            child: TextFormField(
+                              enabled: false,
+                              controller: addresss,
+                              decoration: InputDecoration(
+                                hintText: "Select your nearest location",
+                                hintStyle: TextStyle(color:  Color(0xff3CBE1B)),
+                                labelStyle: TextStyle(color:  Color(0xff3CBE1B)),
+                                fillColor: Colors.blueGrey,
+                              ),
 
-                    Text("Select Address",style: TextStyle(color: Color(0xff3CBE1B),fontFamily:'PoppinsRegular' ,fontSize: 16),),
+                            )
+                        )
+                    ):Container(),
 
-                    StreamBuilder(
+
+                    SizedBox(height: 20,),
+                    deliveryType ==1 ?   Text("Select your delivery address",style: TextStyle(color: Color(0xff3CBE1B),fontFamily:'PoppinsRegular' ,fontSize: 16),):Wrap(),
+
+                    deliveryType ==2 ?   Text("Select your pick-up address",style: TextStyle(color: Color(0xff3CBE1B),fontFamily:'PoppinsRegular' ,fontSize: 16),):Wrap(),
+
+                    deliveryType !=0 ?   StreamBuilder(
                       stream: deliveryBloc.fetchAddress,
                       builder: (context, AsyncSnapshot< List<DeliveryAddres> >  snapshot){
                         if(snapshot.hasData ){
@@ -165,16 +213,14 @@ class _AddressScreen extends State<AddressScreen>{
 
                           if(snapshot.data.length > 0) {
 
-                            deliveryAddres =    snapshot.data.where((element) => element.defaults ).first;
                             return        Container(
                                 child: ListView.builder(
                                     shrinkWrap: true,
-                                    itemCount: snapshot.data
-                                        .length,
+                                    itemCount: snapshot.data.length,
                                     physics: NeverScrollableScrollPhysics(),
                                     itemBuilder: (context,
                                         index) {
-                                      return  addrUi(add: snapshot.data[index]);
+                                      return  snapshot.data[0].defaults!= null ?  addrUi(add: snapshot.data[index]) :  addPickUpItem(add: snapshot.data[index]);///;
                                     })
                             );
 
@@ -191,19 +237,19 @@ class _AddressScreen extends State<AddressScreen>{
                           return Text(snapshot.error.toString());
                         }
 
-                        return Container(
+                        return deliveryType == 1 ?Container(
                           alignment: Alignment.center,
                           child: CircularProgressIndicator(),
-                        );
+                        ): Wrap();
                       },
-                    ),
+                    ): Container(),
 
 
 
 
 
                     Spacer(),
-                    Container(
+                    deliveryType ==1  ? Container(
                       margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
                       child:    ButtonTheme(
                         height: 50,
@@ -230,35 +276,13 @@ class _AddressScreen extends State<AddressScreen>{
 
                         ),
                       ),
-                    ),
+                    ): Wrap(),
+
+
+                    btnToShow(deliveryType ),
 
 
 
-
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                      child: RaisedGradientButton(
-                          child: Text(
-                            'Proceed to checkout',
-                            style: TextStyle(fontSize: 18,fontFamily: 'GothamBold',color: Colors.white),
-                          ),
-                          gradient: LinearGradient(
-                            colors: <Color>[Color(0xff3EB120), Colors.greenAccent],
-                          ),
-                          onPressed: (){
-                               List<dynamic> dfr = [];
-                                dfr.add(snapshotData);
-                                dfr.add(deliveryAddres);
-
-
-                               Navigator.of(context).push(
-                                   ReUseAble().getTransition(CheckOutScreen(snapshotData: dfr))
-                               );
-                           // Navigator.of(context).pushNamed(PageRouteConstants.checkOutScreen,arguments:dfr );
-
-                          }
-                      ),
-                    ),
                     SizedBox(
                       height: 80,
                     )
@@ -282,9 +306,72 @@ class _AddressScreen extends State<AddressScreen>{
 
 
   addrUi({DeliveryAddres add,int index}){
-    return   Slidable(
-      actionPane: SlidableDrawerActionPane(),
-      actionExtentRatio: 0.25,
+    deliveryToCustomerAddress = add.defaults ? add : DeliveryAddres();
+
+
+    return InkWell(
+      onTap: (){
+        deliveryBloc.addDefaultAddres(add.uuid, context);
+      },
+      child:    Slidable(
+        actionPane: SlidableDrawerActionPane(),
+        actionExtentRatio: 0.25,
+        child:    Container(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          child: Row(
+            children: [
+              Text("${add.address}\n${add.state}",style: TextStyle(color: Color(0xff434343),fontFamily:'PoppinsRegular' ,fontSize: 14),),
+
+              Spacer(),
+
+
+              add.defaults? Icon(Icons.my_location,color: Color(0xff3ABC16),)    : Icon(Icons.location_searching_sharp,color: Color(0xff3ABC16),)
+
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          IconSlideAction(
+              caption: 'Set default ',
+              color: Colors.green,
+              icon: Icons.my_location,
+              onTap: () => {
+                deliveryBloc.addDefaultAddres(add.uuid, context)
+              }
+          ),
+
+        ],
+        secondaryActions: <Widget>[
+
+          IconSlideAction(
+            caption: 'Delete',
+            color: Colors.red,
+            icon: Icons.delete,
+            onTap: () => {
+              deliveryBloc.deleteAddres(add.uuid, context)
+
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+
+
+
+  addPickUpItem({DeliveryAddres add,int index}){
+
+    return   InkWell(
+      onTap: (){
+        deliveryToPickUp = add;
+
+        setState(() {
+          selectedPickup = add.id;
+
+        });
+      },
+
       child:    Container(
         padding: EdgeInsets.symmetric(vertical: 10),
         child: Row(
@@ -294,36 +381,129 @@ class _AddressScreen extends State<AddressScreen>{
             Spacer(),
 
 
-            add.defaults? Icon(Icons.my_location,color: Color(0xff3ABC16),)    : Icon(Icons.location_searching_sharp,color: Color(0xff3ABC16),)
+            selectedPickup ==add.id?  Icon(Icons.my_location,color: Color(0xff3ABC16),)    :   Icon(Icons.location_searching_sharp,color: Color(0xff3ABC16),)
 
           ],
         ),
       ),
-      actions: <Widget>[
-        IconSlideAction(
-          caption: 'Set default ',
-          color: Colors.green,
-          icon: Icons.my_location,
-          onTap: () => {
-          deliveryBloc.addDefaultAddres(add.uuid, context)
-          }
-        ),
 
-      ],
-      secondaryActions: <Widget>[
-
-        IconSlideAction(
-          caption: 'Delete',
-          color: Colors.red,
-          icon: Icons.delete,
-          onTap: () => {
-            deliveryBloc.deleteAddres(add.uuid, context)
-
-          },
-        ),
-      ],
     );
   }
 
+  void showPlacePicker(BuildContext context) async {
 
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PlacePicker(
+          apiKey: "AIzaSyCKKPsJXYbDt4noigWs-KiYVK4-Bia7B34",
+          useCurrentLocation: true,
+
+          onPlacePicked: (result) {
+            print(result);
+            Navigator.of(context).pop();
+
+
+            addresss.text = result.formattedAddress.split(',')[0];
+            deliveryBloc.getPickupAddress( result.geometry.location.lat??6.5244, result.geometry.location.lng??3.3792,context);
+
+
+          },
+          forceSearchOnZoomChanged: true,
+          automaticallyImplyAppBarLeading: true,
+          autocompleteLanguage: "en",
+          region: 'NG',
+          usePlaceDetailSearch: true,
+          usePinPointingSearch:true,
+          enableMapTypeButton: true,
+
+        ),
+      ),
+    );
+
+
+  }
+
+  btnToShow(int akt){
+
+    switch(akt){
+      case 0 : return Container();
+
+      case 1 : return  Container(
+        margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+        child: RaisedGradientButton(
+            child: Text('Deliver to customer',
+              style: TextStyle(fontSize: 18,fontFamily: 'GothamBold',color: Colors.white),
+            ),
+            gradient: LinearGradient(
+              colors: <Color>[Color(0xff3EB120), Colors.greenAccent],
+            ),
+            onPressed: (){
+
+              if(deliveryToCustomerAddress?.uuid !=  null) {
+
+                List<dynamic> dfr = [];
+                dfr.add(snapshotData);
+                dfr.add( deliveryToCustomerAddress );
+
+                deliveryBloc.setDeliveryAddress(deliveryToCustomerAddress?.uuid,dfr, context);
+              }else{
+                Helper.toastError("No Address is selected");
+              }
+
+              //
+              //
+              // List<dynamic> dfr = [];
+              // dfr.add(snapshotData);
+              // dfr.add(deliveryAddres);
+              //
+              //
+              //
+              // Navigator.of(context).push(
+              //     ReUseAble().getTransition(CheckOutScreen(snapshotData: dfr))
+              // );
+
+
+
+            }
+        ),
+      );
+
+      case 2 : return  Container(
+
+        margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+
+        child: RaisedGradientButton(
+
+            child: Text('Deliver to pick-up',
+              style: TextStyle(fontSize: 18,fontFamily: 'GothamBold',color: Colors.white),
+            ),
+            gradient: LinearGradient(
+              colors: <Color>[Color(0xff3EB120), Colors.greenAccent],
+            ),
+            onPressed: (){
+
+              if(deliveryToPickUp?.id !=  null) {
+
+
+                List<dynamic> dfr = [];
+                dfr.add(snapshotData);
+                dfr.add( deliveryToPickUp);
+                deliveryBloc.setPickUpAddress(deliveryToPickUp?.id,dfr , context);
+
+
+              }else{
+
+                Helper.toastError("No Address is selected");
+              }
+
+            }
+        ),
+      );
+
+
+
+    }
+  }
 }//

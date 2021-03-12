@@ -16,6 +16,7 @@ import 'package:agro_ecomance/utils/settings/bank_dialog.dart';
 import 'package:agro_ecomance/utils/settings/nextKin_dialog.dart';
 import 'package:agro_ecomance/utils/settings/personal_dialog.dart';
 import 'package:agro_ecomance/utils/settings/security_dialog.dart';
+import 'package:agro_ecomance/view/wish_list/addMoreWish_dialog.dart';
 import 'package:agro_ecomance/view/wish_list/addWishList_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -551,6 +552,14 @@ class ReUseAble {
     return   showDialog(context: context,
         builder: (BuildContext context){
           return AddWishDialogBox();
+        }
+    );
+  }
+
+  addMoreWishDialogBox(BuildContext context){
+    return   showDialog(context: context,
+        builder: (BuildContext context){
+          return AddMoreWishDialogBox();
         }
     );
   }

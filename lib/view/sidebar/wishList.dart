@@ -85,14 +85,20 @@ class _WishListScreen extends State<WishListScreen> {
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(
-              Icons.menu,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              _scaffoldKey.currentState.openDrawer();
-            },
+          leading: InkWell(
+
+              onTap: (){
+                _scaffoldKey.currentState.openDrawer();
+              },
+
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 14),
+                child:    Image.asset(
+                  'assets/images/menu.png',
+                  width: 24,height: 24,color: Colors.black,
+                ),
+              )
+
           ),
           backgroundColor: Colors.white,
           actions: [
@@ -112,7 +118,10 @@ class _WishListScreen extends State<WishListScreen> {
             ),
             InkWell(
                 onTap: (){
-                ReUseAble().getTransition(SettingScreen(userProfileData:widget.userProfileData));
+                  Navigator.of(context).push(
+                      ReUseAble().getTransition(SettingScreen(userProfileData:widget?.userProfileData))
+                  );
+
                 },
                 child:    Padding(
                   padding: const EdgeInsets.only(right: 16.0, left: 14.0),

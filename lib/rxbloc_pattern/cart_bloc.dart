@@ -148,9 +148,9 @@ class CartBloc {
 
 
   getCart() async{
-    CartData item = await apiProvider.getDataService().getCart();
-    CartCount  = item.dataa.length;
-    myData = item.dataa;
+    CartDataBase item = await apiProvider.getDataService().getCart();
+    CartCount  = item.datad?.dataa?.length;
+    myData = item.datad.dataa;
     myData.forEach((element) {
       element.img_url =  element.product.featured_image.thumbnail_url;
       element.name =  element.product.name;

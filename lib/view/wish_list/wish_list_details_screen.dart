@@ -45,6 +45,8 @@ class WishListItemDetailsScreen extends StatefulWidget{
 class _WishListItemDetailsScreen extends State<WishListItemDetailsScreen>{
 
 
+  String uuid;
+
   @override
   void initState() {
     wishBloc.getBasketWishe(widget?.wishBaskData?.id);
@@ -119,7 +121,7 @@ class _WishListItemDetailsScreen extends State<WishListItemDetailsScreen>{
                       stream:    AppDatabase?.getInstance()?.wishDataDao?.findAllWish(),
                       builder: (context, AsyncSnapshot< List<Wishe> >  snapshot){
                         if(snapshot.hasData ){
-
+                          uuid = snapshot.data[0].parentUuid;
 
                           return   Container(
                               child: ListView.builder(
@@ -144,38 +146,79 @@ class _WishListItemDetailsScreen extends State<WishListItemDetailsScreen>{
               ),
 
 
+
+
               Align(
                 alignment: Alignment.bottomCenter,
-                child: Container(
+                child: Row(
+                  children: [
 
-                  margin: EdgeInsets.symmetric(horizontal: 20,vertical: 30),
-                  child: RaisedGradientButton(
-                      height: 55,
-                      child: Text(
-                        'Continue',
-                        style: TextStyle(fontSize: 18,fontFamily: 'GothamBold',color: Colors.white),
-                      ),
-                      gradient: LinearGradient(
-                        colors: <Color>[Color(0xff3EB120), Colors.greenAccent],
-                      ),
-                      onPressed: (){
+                    Expanded(
 
-                        snapshotData.forEach((element) {
-                          if(element!= null && element.quantity>0){
-                            Navigator.of(context).pushNamed(PageRouteConstants.addressScreen,arguments:snapshotData );
-                          }else{
 
-                            Helper.toastError("Select number of quantity you want");
-                          }
-                        });
+                        child: Container(
+                          height: 55,
+                          child: RaisedButton(
 
 
 
-                      }
-                  ),
+                              onPressed: () {
+
+
+
+                                uuid!= null?
+                                wishBloc.convertWishToCarts(uuid, context)
+                                : Helper.toastInfo("No Item in your wish list");
+                              },
+
+
+
+
+
+                              child: Text("BUY NOW",style: TextStyle(
+                                  color: Colors.white
+                              ),),
+                              color: Color(0xff3ABC16)
+                          ),
+                        )
+                    ),
+
+                    Expanded(
+
+
+                        child:Container(
+                          height: 55,
+                          child:  RaisedButton(
+
+
+
+
+
+                              onPressed: () {
+
+
+                                ReUseAble().addMoreWishDialogBox(context);
+
+                              },
+
+
+
+
+                              child: Text("More",style: TextStyle(
+                                  color: Colors.white
+                              ),),
+                              color: Colors.grey
+                          ),
+
+                        )
+                    ),
+                  ],
                 ),
-              )
+              ),
 
+              SizedBox(
+                height: 60,
+              )
 
             ],
           )

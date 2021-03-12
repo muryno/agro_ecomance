@@ -146,6 +146,7 @@ class Preference {
 
 
 class DeliveryAddres {
+    var id;
     String address;
     String city;
     bool defaults;
@@ -158,11 +159,20 @@ class DeliveryAddres {
     String phone;
     String state;
     String uuid;
+    var distance;
+    String display_name;
 
-    DeliveryAddres({this.address, this.city, this.defaults, this.email, this.first_name, this.last_name, this.lat, this.long, this.nearest_bus_stop, this.phone, this.state, this.uuid});
+
+
+    DeliveryAddres({this.id, this.display_name,this.distance,this.address, this.city, this.defaults, this.email, this.first_name, this.last_name, this.lat, this.long, this.nearest_bus_stop, this.phone, this.state, this.uuid});
 
     factory DeliveryAddres.fromJson(Map<String, dynamic> json) {
         return DeliveryAddres(
+
+            id: json['id'],
+            display_name: json['display_name'],
+            distance: json['distance'],
+
             address: json['address'],
             city: json['city'],
             defaults: json['default'],
@@ -180,6 +190,11 @@ class DeliveryAddres {
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+
+        data['id'] = this.id;
+
+        data['display_name'] = this.display_name;
+        data['distance'] = this.distance;
         data['address'] = this.address;
         data['city'] = this.city;
         data['default'] = this.defaults;

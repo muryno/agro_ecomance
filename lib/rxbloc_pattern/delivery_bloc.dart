@@ -12,6 +12,7 @@ import 'package:agro_ecomance/entity/request/addNextOfKin.dart';
 import 'package:agro_ecomance/entity/request/addPersonalInfor.dart';
 import 'package:agro_ecomance/entity/request/bankReq.dart';
 import 'package:agro_ecomance/entity/responds/BankRes.dart';
+import 'package:agro_ecomance/entity/responds/PickupAddress.dart';
 import 'package:agro_ecomance/entity/responds/ProductResp.dart';
 import 'package:agro_ecomance/entity/responds/Slider.dart';
 import 'package:agro_ecomance/entity/responds/UserProfile.dart';
@@ -20,6 +21,8 @@ import 'package:agro_ecomance/entity/responds/cart/CartDataa.dart';
 
 import 'package:agro_ecomance/server/retrofit_clients.dart';
 import 'package:agro_ecomance/utils/helper.dart';
+import 'package:agro_ecomance/utils/reuseable.dart';
+import 'package:agro_ecomance/view/cart/checkout_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -38,11 +41,115 @@ class DeliveryBloc {
 
 
 
+  emptyAddress() async{
+   // UserProfile item = await apiProvider.getDataService().getUserProfile();
+    _addressData.drain();
+    _addressData.sink.add(dfr);
+  }
+
   getAddress() async{
     UserProfile item = await apiProvider.getDataService().getUserProfile();
+    _addressData.drain();
     _addressData.sink.add(item.data.delivery_address != null ? item.data.delivery_address  :dfr );
   }
 
+  getPickupAddress(double lat  ,double lon,BuildContext context) async{
+    Helper.startLoading(context);
+    try {
+      PickupAddress item = await apiProvider.getDataService()
+          .fetchPickupLocation(lat.toString(), lon.toString());
+      _addressData.drain();
+      _addressData.sink.add(item.delivery_address != null ? item.delivery_address : dfr);
+
+      Helper.loadingSuccessful("");
+    }catch(e){
+      Helper.loadingFailed(e.toString());
+    }
+  }
+
+
+  //
+
+
+  setDeliveryAddress( String uuid, List<dynamic> dyn , BuildContext context) {
+
+
+   var addBask  = {"address":uuid};
+
+    Helper.startLoading(context);
+
+    try {
+
+
+      RetrofitClientInstance.getInstance().getDataService().setDeliveryAddress(addBask).then((value)=>{
+
+
+        if(value.status_code == 200 || value.status_code == 201){
+
+          Helper.loadingSuccessful("success"),
+       //   Navigator.of(context).pop(),
+
+          Navigator.of(context).push(
+              ReUseAble().getTransition(CheckOutScreen(snapshotData: dyn))
+          )
+
+
+        } else
+
+          Helper.loadingFailed("Can't update ")
+
+
+      }).catchError(onError);
+    }catch(e){
+
+      Helper.loadingFailed(e.toString());
+    }
+  }
+
+
+  setPickUpAddress( int uuid,List<dynamic> dyn, BuildContext context) {
+
+
+    var addBask  = {"distributor_id":uuid};
+
+
+
+
+
+    Helper.startLoading(context);
+
+    try {
+
+
+      RetrofitClientInstance.getInstance().getDataService().setPickUpAddress(addBask).then((value)=>{
+
+
+        if(value.status_code == 200 || value.status_code == 201){
+
+          Helper.loadingSuccessful("success"),
+          //   Navigator.of(context).pop(),
+
+
+          Navigator.of(context).push(
+              ReUseAble().getTransition(CheckOutScreen(snapshotData: dyn))
+          )
+
+
+
+
+    } else
+
+          Helper.loadingFailed("Can't update ")
+
+
+      }).catchError(onError);
+    }catch(e){
+
+      Helper.loadingFailed(e.toString());
+    }
+
+
+  }
 
 
 

@@ -2,6 +2,7 @@
 
 
 import 'dart:convert';
+import 'dart:typed_data';
 
 
 
@@ -120,15 +121,50 @@ class WishBloc {
     WishListBasketDetails item = await apiProvider.getDataService().getBasketWishes(id);
 
 
-    myData.forEach((element) {
+    item.wishes.forEach((element) {
       element.thumbnail_url =  element.product.featured_image.thumbnail_url;
       element.name =  element.product.name;
       element.price =  element.price;
+      element.parentUuid =  item.basket.uuid;
     });
+
+
+    myData = item.wishes;
     AppDatabase.getInstance()?.wishDataDao?.nukeWishe();
     AppDatabase.getInstance()?.wishDataDao?.insertAllWishe(myData);
 
   }
+
+  convertWishToCarts(String uuid, BuildContext context) {
+
+    Helper.startLoading(context);
+    try {
+
+
+
+      RetrofitClientInstance.getInstance().getDataService().convertWishToCart(uuid).then((value)=>{
+
+        if (value !=null ) {
+
+          Helper.loadingSuccessful("Items added to cart successfully"),
+
+
+
+        }  else
+          {
+
+            Helper.loadingFailed("Items adding to cart failed")
+          }
+
+
+      }).catchError(onError);
+    }catch(e){
+
+      Helper.loadingFailed(e.toString());
+    }
+  }
+
+
 
 
 

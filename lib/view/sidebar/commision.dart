@@ -58,15 +58,25 @@ class _Commission extends State<Commission> {
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(
-              Icons.menu,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              _scaffoldKey.currentState.openDrawer();
-            },
+          leading: InkWell(
+
+              onTap: (){
+                _scaffoldKey.currentState.openDrawer();
+              },
+
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 14),
+                child:    Image.asset(
+                  'assets/images/menu.png',
+                  width: 24,height: 24,color: Colors.black,
+                ),
+              )
+
           ),
+
+
+
+
           backgroundColor: Colors.white,
           actions: [
 
@@ -86,7 +96,9 @@ class _Commission extends State<Commission> {
 
             InkWell(
                 onTap: (){
-                  ReUseAble().getTransition(SettingScreen(userProfileData:widget.userProfileData));
+                  Navigator.of(context).push(
+                      ReUseAble().getTransition(SettingScreen(userProfileData:widget?.userProfileData))
+                  );
 
                 },
                 child:    Padding(
