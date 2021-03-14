@@ -4,6 +4,7 @@ import 'package:agro_ecomance/entity/responds/UserProfile.dart';
 import 'package:agro_ecomance/rxbloc_pattern/network_bloc.dart';
 import 'package:agro_ecomance/utils/constants/url_constant.dart';
 import 'package:agro_ecomance/utils/reuseable.dart';
+import 'package:agro_ecomance/view/nextwork/Network_details.dart';
 import 'package:agro_ecomance/view/sidebar/logout.dart';
 import 'package:agro_ecomance/view/sidebar/purchase.dart';
 import 'package:agro_ecomance/view/sidebar/setting.dart';
@@ -366,51 +367,114 @@ class _NetworkScreen extends State<NetworkScreen> {
   networkItem({NetworkData networkData,Meta meta}){
     return     GestureDetector(
       onTap: (){
-        ReUseAble().curvesProfileDialog(context,networkData,meta);
+        Navigator.of(context).push(
+            ReUseAble().getTransition(NetworkDtailsScreen(networkData: networkData,))
+        );
 
         },
-      child:   Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-
-        child: Container(
-
-          padding: EdgeInsets.symmetric(vertical: 10,horizontal: 15),
-          child: Row(
-            children: [
+      child:  Container(
 
 
-              Container(
-                child: CircleAvatar(
-                    backgroundColor: ReUseAble().getButtonColor(),
-                    radius: 20,child: networkData.avatar_url!= null ?Image.network(networkData.avatar_url) : Icon(Icons.person,color: Colors.white, size: 30)),
-              ),
-              SizedBox(width: 10,),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("${networkData.display_name}",
-                    style: TextStyle(
-                        fontSize: 10,
-                        color: Color(0XFF707070),
-                        fontFamily:'PoppinsBold' ),),
 
-                  Text("${networkData.referral_code}",
-                    style: TextStyle(
-                        fontSize: 8,
-                        color: Color(0XFF3ABC16),
-                        fontFamily:'PoppinsBold' ),),
-                  Text("${networkData.phone}",
-                    style: TextStyle(
-                        fontSize: 10,
-                        color: Color(0XFF707070),
-                        fontFamily:'PoppinsBold' ),),
-
-                ],
-              )
-            ],
+        margin: EdgeInsets.symmetric(
+            vertical: 20,
           ),
+
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+
+
+
+            Row(
+              children: [
+                Container(
+                  width: 80,
+                  height: 80,
+                  child: CircleAvatar(
+                      backgroundColor: ReUseAble().getButtonColor(),
+                      radius: 20,child: networkData.avatar_url!= null ? Image.network(networkData.avatar_url): Icon(Icons.person,color: Colors.white, size: 30)),
+                ),
+
+                SizedBox(width: 30,),
+
+                Column(
+
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+
+                    SizedBox(height: 5,),
+                    Text(
+                      '${networkData?.display_name}Chuchwu akpan ',
+                      style: TextStyle(
+                          fontSize: 15,
+                          color: Color(0XFF707070),
+                          fontFamily:'PoppinsBold' ),
+                    ),
+
+                    SizedBox(height: 5,),
+                    Text(
+                      '${networkData.referral_code}',
+                      style: TextStyle(
+                          fontSize: 10,
+                          color: Color(0XFF3ABC16),
+                          fontFamily:'PoppinsBold' ),
+                    ),
+
+                    SizedBox(height: 5,),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+
+                      children: [
+
+                        Container(
+                          alignment: Alignment.center,
+                          width: 15,
+                          height: 15,
+                          color: Colors.green,
+                          child: Text("L.V.S",style: TextStyle(color: Colors.white),),
+                        ),
+                        SizedBox(width: 10,),
+
+                        Container(
+                          alignment: Alignment.center,
+                          width: 15,
+                          height: 15,
+                          color: Colors.green,
+                          child: Text('${meta.level}',style: TextStyle(color: Colors.white),),
+                        ),
+
+
+                      ],
+                    ),
+                    SizedBox(height: 15,),
+                  ],
+                )
+              ],
+            ),
+
+            Container(
+              height: 25,
+              alignment: Alignment.center,
+
+
+              child: Text("${networkData.phone}"),
+
+              decoration:  BoxDecoration(
+                  color: Color(0xffDEDFE2),
+                  borderRadius:  BorderRadius.only(
+                      bottomLeft:    Radius.circular(20.0),
+                      bottomRight:   Radius.circular(20.0))
+              ),
+            )
+          ],
         ),
       ),
     );

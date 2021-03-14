@@ -187,7 +187,7 @@ abstract class ApiRestClient {
   Future<WishListBasketDetails> getBasketWishes(@Path('id') id);
   //<--
   @POST("ecommerce/wish_basket/{id}/buy")
-  Future<CartDataBase> convertWishToCart(@Path('id') id);
+  Future<GeneralResp> convertWishToCart(@Path('id') id);
 
 
   @POST("ecommerce/wish_basket/{id}/reminder")

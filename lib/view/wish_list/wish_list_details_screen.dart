@@ -166,8 +166,8 @@ class _WishListItemDetailsScreen extends State<WishListItemDetailsScreen>{
 
 
 
-                                uuid!= null?
-                                wishBloc.convertWishToCarts(uuid, context)
+                              widget?.wishBaskData?.uuid!= null?
+                                wishBloc.buyWishToCarts(  widget?.wishBaskData?.uuid, context)
                                 : Helper.toastInfo("No Item in your wish list");
                               },
 

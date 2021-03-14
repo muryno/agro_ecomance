@@ -137,7 +137,7 @@ class WishBloc {
 
   }
 
-  convertWishToCarts(String uuid, BuildContext context) {
+  buyWishToCarts(String uuid, BuildContext context) {
 
     Helper.startLoading(context);
     try {
@@ -148,14 +148,16 @@ class WishBloc {
 
         if (value !=null ) {
 
-          Helper.loadingSuccessful("Items added to cart successfully"),
+          Helper.loadingSuccessful(value?.message),
 
 
+          Navigator.of(context).pop(),
+          fetchWishBasket()
 
         }  else
           {
 
-            Helper.loadingFailed("Items adding to cart failed")
+            Helper.loadingFailed(value?.message)
           }
 
 

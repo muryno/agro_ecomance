@@ -53,7 +53,7 @@ class NetworkBloc {
 
 
 
-  getDashBoardGraph(String uuid) async{
+  getNetworkDecendent(String uuid) async{
 
     NetworkResp item = await apiProvider.getDataService().getDecentNetwork(uuid);
     _networkDataDetails.sink.add(item?.data);

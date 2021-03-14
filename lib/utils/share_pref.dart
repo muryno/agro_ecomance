@@ -5,6 +5,7 @@ import 'dart:convert';
 
 
 
+import 'package:agro_ecomance/entity/db/database.dart';
 import 'package:agro_ecomance/entity/request/login_request.dart';
 import 'package:agro_ecomance/entity/request/openBefore.dart';
 import 'package:agro_ecomance/entity/responds/BankRes.dart';
@@ -66,19 +67,23 @@ class StorageUtil {
   }
 
   static Future<void> clearUsers(login_request str) async {
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(UrlConstant.USER_PREF, "");
+    prefs.setString(UrlConstant.USER_PREF, null);
     prefs.remove(UrlConstant.USER_PREF);
+    prefs.getKeys().clear();
     prefs.clear();
 
     SharedPreferences pres = await SharedPreferences.getInstance();
-    pres.setString(UrlConstant.USER_PROF_PREF, "");
+    pres.setString(UrlConstant.USER_PROF_PREF, null);
     pres.remove(UrlConstant.USER_PROF_PREF);
+    pres.getKeys().clear();
     pres.clear();
 
     SharedPreferences prs = await SharedPreferences.getInstance();
-    prs.setString(UrlConstant.Bank_Data, "");
+    prs.setString(UrlConstant.Bank_Data, null);
     prs.remove(UrlConstant.Bank_Data);
+    prs.getKeys().clear();
     prs.clear();
 
     // SharedPreferences prss = await SharedPreferences.getInstance();
@@ -87,6 +92,7 @@ class StorageUtil {
     // prs.clear();
 
 
+    AppDatabase.getInstance().close();
     StorageUtil.userDataBiometric(str);
 
   }

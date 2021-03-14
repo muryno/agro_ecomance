@@ -56,6 +56,7 @@ class CartBloc {
 
         if(value.data!= null){
           Helper.loadingSuccessful("success"),
+          AppDatabase.getInstance().cartDataDao.nukeCart(),
           getCart(),
           Navigator.of(context).pop(),
 
@@ -126,7 +127,8 @@ class CartBloc {
         if(value.status_code== 200){
           Helper.loadingSuccessful("${value.message}"),
 
-       getCart()
+          AppDatabase.getInstance().cartDataDao.nukeCart(),
+            getCart()
 
 
         } else

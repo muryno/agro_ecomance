@@ -114,11 +114,11 @@ class StepperSlide extends StatelessWidget {
             Container(
                 width:   double.infinity,
 
-                height: MediaQuery.of(context).size.height/2-30,
+                height: MediaQuery.of(context).size.height/2-20,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(imagePath),
-                    fit: BoxFit.fill,
+                    fit: BoxFit.cover,
                   ),
                 )
             ),
