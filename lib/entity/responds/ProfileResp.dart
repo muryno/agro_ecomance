@@ -33,11 +33,11 @@ class ProfileData {
     List<DeliveryAddres> delivery_address;
     var display_name;
     var email;
-    String email_verified_at;
-    String final_verified_at;
-    String first_name;
-    int id;
-    String invited_by;
+    var email_verified_at;
+    var final_verified_at;
+    var first_name;
+    var id;
+    var invited_by;
     var ip;
     var last_login;
     var last_name;
@@ -120,11 +120,11 @@ class NextOfKin {
     String address;
     String city;
     String email;
-    String lat;
-    String lga;
-    double long;
+    var lat;
+    var lga;
+    var long;
     String name;
-    int phone;
+    var phone;
     String state;
 
     NextOfKin({this.address, this.city, this.email, this.lat, this.lga, this.long, this.name, this.phone, this.state});

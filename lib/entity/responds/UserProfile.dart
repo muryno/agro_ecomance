@@ -4,11 +4,18 @@ import 'package:agro_ecomance/entity/responds/NextKinResp.dart';
 class UserProfile {
     UserProfileData data;
 
-    UserProfile({this.data});
+    UserProfile({this.data,this.status_code,this.message});
+
+    int status_code;
+    String message;
+
+
 
     factory UserProfile.fromJson(Map<String, dynamic> json) {
         return UserProfile(
             data: json['data'] != null ? UserProfileData.fromJson(json['data']) : null,
+            status_code: json['status_code'],
+            message: json['message'],
         );
     }
 
@@ -17,6 +24,7 @@ class UserProfile {
         if (this.data != null) {
             data['data'] = this.data.toJson();
         }
+        data['status_code'] = this.status_code;
         return data;
     }
 }
@@ -36,18 +44,18 @@ class UserProfileData {
     String first_name;
     int id;
     String invited_by;
-    String ip;
+    var ip;
     String last_login;
     String last_name;
     NextOfKin next_of_kin;
-    String parent_id;
-    String phone;
+    var parent_id;
+    var phone;
     Preference preference;
     String referral_code;
     String updated_at;
     String username;
-    String uuid;
-    String cid;
+    var uuid;
+    var cid;
 
     UserProfileData({this.cid,this.avatar_path, this.avatar_url, this.blocked, this.created_at, this.date_of_birth, this.deleted_at, this.delivery_address, this.display_name, this.email, this.email_verified_at, this.final_verified_at, this.first_name, this.id, this.invited_by, this.ip, this.last_login, this.last_name, this.next_of_kin, this.parent_id, this.phone, this.preference, this.referral_code, this.updated_at, this.username, this.uuid});
 
@@ -162,13 +170,16 @@ class DeliveryAddres {
     var distance;
     String display_name;
 
+    int deliverType;
 
 
-    DeliveryAddres({this.id, this.display_name,this.distance,this.address, this.city, this.defaults, this.email, this.first_name, this.last_name, this.lat, this.long, this.nearest_bus_stop, this.phone, this.state, this.uuid});
+    DeliveryAddres({this.deliverType,this.id, this.display_name,this.distance,this.address, this.city, this.defaults, this.email, this.first_name, this.last_name, this.lat, this.long, this.nearest_bus_stop, this.phone, this.state, this.uuid});
 
     factory DeliveryAddres.fromJson(Map<String, dynamic> json) {
         return DeliveryAddres(
+//
 
+            deliverType: json['deliverType'],
             id: json['id'],
             display_name: json['display_name'],
             distance: json['distance'],
@@ -193,6 +204,8 @@ class DeliveryAddres {
 
         data['id'] = this.id;
 
+
+        data['deliverType'] = this.deliverType;
         data['display_name'] = this.display_name;
         data['distance'] = this.distance;
         data['address'] = this.address;

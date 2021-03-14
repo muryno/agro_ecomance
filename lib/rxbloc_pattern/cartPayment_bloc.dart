@@ -112,6 +112,43 @@ class CartPaymentBloc {
   }
 
 
+  payForPayStackCart( String paymentType,String reference, BuildContext context) {
+
+
+    var addBask  = {
+      "payment_type":paymentType,
+      "reference":reference,
+    };
+
+    Helper.startLoading(context);
+
+    try {
+
+
+      RetrofitClientInstance.getInstance().getDataService().payForCart(addBask).then((value)=>{
+
+
+        if(value.status_code == 200 || value.status_code == 201){
+
+          Helper.loadingSuccessful("success"),
+          //   Navigator.of(context).pop(),
+
+
+          Navigator.of(context).pushNamedAndRemoveUntil(PageRouteConstants.confirmPaymentScreen,(r)=>false),
+
+
+
+        } else
+
+          Helper.loadingFailed("Can't update ")
+
+
+      }).catchError(onError);
+    }catch(e){
+
+      Helper.loadingFailed(e.toString());
+    }
+  }
 
 
 

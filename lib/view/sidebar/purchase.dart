@@ -1,7 +1,10 @@
 
 import 'package:agro_ecomance/entity/responds/UserProfile.dart';
+import 'package:agro_ecomance/entity/responds/purchased/PurchaseResp.dart';
+import 'package:agro_ecomance/rxbloc_pattern/purchase_bloc.dart';
 import 'package:agro_ecomance/utils/constants/url_constant.dart';
 import 'package:agro_ecomance/utils/custom_dialog.dart';
+import 'package:agro_ecomance/utils/helper.dart';
 import 'package:agro_ecomance/utils/reuseable.dart';
 import 'package:agro_ecomance/view/sidebar/setting.dart';
 import 'package:agro_ecomance/view/sidebar/wishList.dart';
@@ -45,12 +48,18 @@ class _Purchase extends State<Purchase> {
 
   @override
   void initState() {
-
-
-
+    purchaseBloc.getPurchase();
     super.initState();
 
 
+  }
+
+  @override
+  void dispose() {
+
+    purchaseBloc.dispose();
+
+    super.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -99,23 +108,20 @@ class _Purchase extends State<Purchase> {
                 },
                 child:    Padding(
                   padding: const EdgeInsets.only(right: 16.0, left: 14.0),
-                  child:   Container(
-                      width: 40,
-                      height: 40,
-                      child:  this?.avr!= null ?
-                      Container(
-                          width: 40.0,
-                          height: 40.0,
-                          decoration: new BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: new DecorationImage(
-                                  fit: BoxFit.fill,
-                                  image: new NetworkImage(
-                                      "${this?.avr}")
-                              )
-                          )): CircleAvatar(
+                  child:       Container(
+                      width: 50,
+                      height: 50,
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      child:   CircleAvatar(
                           backgroundColor: ReUseAble().getButtonColor(),
-                          radius: 20,child: Icon(Icons.person,color: Colors.white, size: 30))
+                          radius: 20,
+                          child:widget.userProfileData?.avatar_url != null ?
+
+                          CircleAvatar(
+                            radius: 95.0,
+                            backgroundImage: NetworkImage("${widget.userProfileData?.avatar_url}"),
+                            backgroundColor: Colors.transparent,
+                          ): Icon(Icons.person,color: Colors.white, size: 25))
                   ),
                 )
             )
@@ -193,22 +199,80 @@ class _Purchase extends State<Purchase> {
               ),
               SizedBox(height: 15,),
 
-              ...List.generate(5, (index) =>
+              Row(
 
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16,vertical: 15),
-                    child: Row(
-                      children: [
-
-
-                        Text("Order ID 2812",style: TextStyle(color: Color(0xff707070),fontFamily:'PoppinsBook',fontSize: 16 ),),
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Order ID  ",style: TextStyle(color: Color(0xff0B2E70),fontFamily:'PoppinsRegular',fontSize: 16 ),),
+                  Text("Date",style: TextStyle(color: Color(0xff0B2E70),fontFamily:'PoppinsRegular',fontSize: 16 ),),
+                  Text("Amount (₦)  ",style: TextStyle(color: Color(0xff0B2E70),fontFamily:'PoppinsRegular',fontSize: 16 ),),
 
 
+                ],
+              ),
 
-                      ],
-                    ),
-                  )
-              )
+              SizedBox(height: 15,),
+
+              StreamBuilder(
+                stream: purchaseBloc.fetchPurchaseRespData,
+                builder: (context, AsyncSnapshot< List<PurchaseRespData> >  snapshot){
+                  if(snapshot.hasData ){
+
+                    if(snapshot.data.length > 0) {
+                      return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment
+                              .center,
+                          children: [
+
+                            ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: snapshot.data.length,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+
+                                    onTap: (){
+
+                                      ReUseAble().purchaseDialogBox(context,  snapshot.data[index]);
+                                    },
+                                    child:   Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 8,vertical: 15),
+                                      child:          Row(
+
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("${snapshot.data[index].id} ",style: TextStyle(color: Color(0xff808080),fontFamily:'PoppinsRegular',fontSize: 16 ),),
+                                          Text("${snapshot.data[index].created_at.split(" ")[0]}",style: TextStyle(color: Color(0xff808080),fontFamily:'PoppinsRegular',fontSize: 16 ),),
+                                          Text("${snapshot.data[index].total_price}",style: TextStyle(color: Color(0xff808080),fontFamily:'PoppinsRegular',fontSize: 16 ),),
+
+
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                })
+
+                          ]);
+                    }else{
+                      return Center(child: Text("No Request Order available"),);
+                    }
+
+
+
+                  }else if(snapshot.hasError) {
+                    return Text(snapshot.error.toString());
+                  }
+
+                  return Container(
+                    alignment: Alignment.center,
+                    child: CircularProgressIndicator(),
+                  );
+                },
+              ),
+
+
+
 
             ],
           ),
@@ -217,16 +281,16 @@ class _Purchase extends State<Purchase> {
 
 
 
-            width: MediaQuery.of(context).size.width * 0.7,
+
+            width: MediaQuery.of(context).size.width * 0.9,
             child: Drawer(
-              child:  Container(
+              child:Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                       colors: [Color(0xFF3ABC16), Color(0xFF66EA96)],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter),
+                      begin: Alignment.topLeft,
+                      end: Alignment.topRight),
                 ),
-
 
                 child: Column(
                   children: [
@@ -239,36 +303,55 @@ class _Purchase extends State<Purchase> {
                         children: [
 
 
-                          Hero(
-                            tag:UrlConstant.Hero,
-                            child:    Container(
-                                width: 80,
-                                height: 80,
-                                padding: EdgeInsets.symmetric(horizontal: 5),
-                                child:   CircleAvatar(
-                                    backgroundColor: ReUseAble().getButtonColor(),
-                                    radius: 20,child: Icon(Icons.person,color: Colors.white, size: 60))
-                            ),
+                          Container(
+                              width: 95,
+                              height: 95,
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              child:   CircleAvatar(
+                                  backgroundColor: ReUseAble().getButtonColor(),
+                                  radius: 20,
+                                  child:widget.userProfileData?.avatar_url != null ?
+
+                                  CircleAvatar(
+                                    radius: 95.0,
+                                    backgroundImage: NetworkImage("${widget.userProfileData?.avatar_url}"),
+                                    backgroundColor: Colors.transparent,
+                                  ): Icon(Icons.person,color: Colors.white, size: 60))
                           ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              Flexible(
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width * 0.5,
+                                    child: Text('${widget.userProfileData?.display_name }',style: TextStyle(fontSize: 20,color: Color(0xff003C5E),fontFamily: 'PoppinsBold'),      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,),
+                                  )
+                              ),
 
-                              Text("${widget?.userProfileData?.username}",style: TextStyle(fontSize: 20,color: Color(0xff003C5E),fontFamily: 'PoppinsBold'),),
-                              Text("REF ID: 3Y92Q1",style: TextStyle(fontSize: 16,color: Color(0xff003C5E)),)
+                              Text("REF ID: ${widget.userProfileData?.referral_code }",style: TextStyle(fontSize: 16,color: Color(0xff003C5E)),),
+
 
                             ],
 
                           )
 
 
-
                         ],
                       ),
                     ),
 
-                    GestureDetector(
+
+                    Expanded(
+                        flex: 1,
+                        child: ListView(
+
+                            children: [
+
+
+
+                              GestureDetector(
                       onTap: (){ Navigator.of(context).push(
                           ReUseAble().getTransition(HomePageDashboard(userProfileData:widget.userProfileData))
                       );},
@@ -334,7 +417,7 @@ class _Purchase extends State<Purchase> {
                     GestureDetector(
                       onTap: (){
                         Navigator.of(context).push(
-                            ReUseAble().getTransition(WishListScreen())
+                            ReUseAble().getTransition(WishListScreen(userProfileData:widget.userProfileData ))
                         );
                       },
                       child:
@@ -370,7 +453,7 @@ class _Purchase extends State<Purchase> {
 
 
 
-
+                  ]))
 
                   ],
                 ),

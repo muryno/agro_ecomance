@@ -1,5 +1,6 @@
 
 import 'package:agro_ecomance/entity/responds/UserProfile.dart';
+import 'package:agro_ecomance/rxbloc_pattern/ewallet_bloc.dart';
 import 'package:agro_ecomance/utils/RaisedGradientButton.dart';
 import 'package:agro_ecomance/utils/constants/url_constant.dart';
 import 'package:agro_ecomance/utils/reuseable.dart';
@@ -44,12 +45,14 @@ class _EWallet extends State<EWallet> {
   @override
   void initState() {
 
-
+    ewalletBloc.getDashBoard();
 
     super.initState();
 
 
   }
+
+
 
   Widget amount = Container(
       child: TextFormField(
@@ -66,6 +69,12 @@ class _EWallet extends State<EWallet> {
   );
 
 
+
+  @override
+  void dispose() {
+    ewalletBloc.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,23 +123,20 @@ class _EWallet extends State<EWallet> {
                 },
                 child:    Padding(
                   padding: const EdgeInsets.only(right: 16.0, left: 14.0),
-                  child:   Container(
-                      width: 40,
-                      height: 40,
-                      child:  this?.avr!= null ?
-                      Container(
-                          width: 40.0,
-                          height: 40.0,
-                          decoration: new BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: new DecorationImage(
-                                  fit: BoxFit.fill,
-                                  image: new NetworkImage(
-                                      "${this?.avr}")
-                              )
-                          )): CircleAvatar(
+                  child:       Container(
+                      width: 50,
+                      height: 50,
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      child:   CircleAvatar(
                           backgroundColor: ReUseAble().getButtonColor(),
-                          radius: 20,child: Icon(Icons.person,color: Colors.white, size: 30))
+                          radius: 20,
+                          child:widget.userProfileData?.avatar_url != null ?
+
+                          CircleAvatar(
+                            radius: 95.0,
+                            backgroundImage: NetworkImage("${widget.userProfileData?.avatar_url}"),
+                            backgroundColor: Colors.transparent,
+                          ): Icon(Icons.person,color: Colors.white, size: 25))
                   ),
                 )
             )
@@ -177,7 +183,21 @@ class _EWallet extends State<EWallet> {
                               SizedBox(height: 15,),
                               Text("Ledger Balance",style: TextStyle(color: Color(0xff0B2E70),fontFamily:'PoppinsBold',fontSize: 12 ),),
                               SizedBox(height: 15,),
-                              Text("N 0",style: TextStyle(color: Color(0xff3ABC16),fontFamily:'PoppinsBold',fontSize: 16 ),)
+
+                              StreamBuilder(
+                                stream: ewalletBloc.fetchWithdrawBalance,
+                                builder: (context, AsyncSnapshot< String >  snapshot){
+                                  if(snapshot.hasData ){
+                                    return  Text("N ${snapshot.data}",style: TextStyle(color: Color(0xff3ABC16),fontFamily:'PoppinsBold',fontSize: 16 ),);
+                                  }else if(snapshot.hasError) {
+                                    return Text(snapshot.error.toString());
+                                  }
+
+                                  return CircularProgressIndicator();
+                                },
+                              ),
+
+                              //ewalletBloc
 
                             ],
                           ) ,
@@ -196,9 +216,22 @@ class _EWallet extends State<EWallet> {
                           child: Column(
                             children: [
                               SizedBox(height: 15,),
-                              Text("Withdrawable",style: TextStyle(color: Color(0xff0B2E70),fontFamily:'PoppinsBold',fontSize: 12 ),),
+                              Text("Agropoint",style: TextStyle(color: Color(0xff0B2E70),fontFamily:'PoppinsBold',fontSize: 12 ),),
                               SizedBox(height: 15,),
-                              Text("N 0",style: TextStyle(color: Color(0xff3ABC16),fontFamily:'PoppinsBold',fontSize: 16 ),)
+
+                              StreamBuilder(
+                                stream: ewalletBloc.fetchaAgroPoint,
+                                builder: (context, AsyncSnapshot< String >  snapshot){
+                                  if(snapshot.hasData ){
+                                    return  Text("${snapshot.data}",style: TextStyle(color: Color(0xff3ABC16),fontFamily:'PoppinsBold',fontSize: 16 ),);
+                                  }else if(snapshot.hasError) {
+                                    return Text(snapshot.error.toString());
+                                  }
+
+                                  return CircularProgressIndicator();
+                                },
+                              ),
+
 
                             ],
                           ) ,
@@ -381,15 +414,17 @@ class _EWallet extends State<EWallet> {
 
 
 
-            width: MediaQuery.of(context).size.width * 0.7,
+
+            width: MediaQuery.of(context).size.width * 0.9,
             child: Drawer(
-              child: Container(
+              child:Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                       colors: [Color(0xFF3ABC16), Color(0xFF66EA96)],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter),
+                      begin: Alignment.topLeft,
+                      end: Alignment.topRight),
                 ),
+
 
 
                 child: Column(
@@ -402,33 +437,54 @@ class _EWallet extends State<EWallet> {
                       child: Row(
                         children: [
 
-                          Hero(
-                              tag:UrlConstant.Hero,
-                              child:  Container(
-                                  width: 80,
-                                  height: 80,
-                                  padding: EdgeInsets.symmetric(horizontal: 5),
-                                  child:   CircleAvatar(
-                                      backgroundColor: ReUseAble().getButtonColor(),
-                                      radius: 20,child: Icon(Icons.person,color: Colors.white, size: 60))
-                              )),
+
+                          Container(
+                              width: 95,
+                              height: 95,
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              child:   CircleAvatar(
+                                  backgroundColor: ReUseAble().getButtonColor(),
+                                  radius: 20,
+                                  child:widget.userProfileData?.avatar_url != null ?
+
+                                  CircleAvatar(
+                                    radius: 95.0,
+                                    backgroundImage: NetworkImage("${widget.userProfileData?.avatar_url}"),
+                                    backgroundColor: Colors.transparent,
+                                  ): Icon(Icons.person,color: Colors.white, size: 60))
+                          ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              Flexible(
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width * 0.5,
+                                    child: Text('${widget.userProfileData?.display_name }',style: TextStyle(fontSize: 20,color: Color(0xff003C5E),fontFamily: 'PoppinsBold'),      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,),
+                                  )
+                              ),
 
-                              Text("${widget?.userProfileData?.username}",style: TextStyle(fontSize: 20,color: Color(0xff003C5E),fontFamily: 'PoppinsBold'),),
-                              Text("REF ID: 3Y92Q1",style: TextStyle(fontSize: 16,color: Color(0xff003C5E)),)
+                              Text("REF ID: ${widget.userProfileData?.referral_code }",style: TextStyle(fontSize: 16,color: Color(0xff003C5E)),),
+
 
                             ],
 
                           )
 
 
-
                         ],
                       ),
                     ),
+
+
+                    Expanded(
+                        flex: 1,
+                        child: ListView(
+
+                          children: [
+
+
 
                     GestureDetector(
                       onTap: (){ Navigator.of(context).push(
@@ -496,7 +552,7 @@ class _EWallet extends State<EWallet> {
                     GestureDetector(
                       onTap: (){
                         Navigator.of(context).push(
-                            ReUseAble().getTransition(WishListScreen())
+                            ReUseAble().getTransition(WishListScreen(userProfileData:widget.userProfileData ))
                         );
                       },
                       child:
@@ -531,7 +587,8 @@ class _EWallet extends State<EWallet> {
                     ),
 
 
-
+                          ],
+                        ))
 
 
                   ],

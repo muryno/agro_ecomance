@@ -16,13 +16,15 @@ import 'package:agro_ecomance/entity/request/passReq.dart';
 import 'package:agro_ecomance/entity/responds/BankRes.dart';
 import 'package:agro_ecomance/entity/responds/ProductResp.dart';
 import 'package:agro_ecomance/entity/responds/Slider.dart';
+import 'package:agro_ecomance/entity/responds/UserProfile.dart';
 
 import 'package:agro_ecomance/server/retrofit_clients.dart';
+import 'package:agro_ecomance/utils/constants/url_constant.dart';
 import 'package:agro_ecomance/utils/helper.dart';
 import 'package:agro_ecomance/utils/share_pref.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-
+import 'package:dio/dio.dart';
 
 class SettingsBloc {
 
@@ -82,6 +84,57 @@ class SettingsBloc {
     }
   }
 
+
+
+  uploadProfile(String means_id,String client,String token, BuildContext context) async {
+
+    if(means_id == null){
+      Helper.loadingFailed("Kindly select or snap means of identification");
+      return ;
+    }
+
+    // final bytes = (await File(means_id).readAsBytes()).toList();
+    // var multipart = http.MultipartFile.fromBytes("images[][file]", bytes, filename: "images.png");
+
+
+
+
+
+
+
+
+    Helper.startLoading(context,"Uploading your image...");
+    try {
+
+      String fileName = means_id.split('/').last;
+
+      FormData data = FormData.fromMap({
+        "avatar": await MultipartFile.fromFile(
+          means_id,
+          filename: fileName,
+        ),
+      });
+
+      Dio dio = new Dio();
+
+      dio.options.headers["Authorization"] = 'Bearer$token';
+      dio.options.responseType = ResponseType.json;
+      dio.interceptors.add(LogInterceptor(responseBody: true, requestBody: true, request: true, error: true));
+      dio.post("https://dev.ownafarm.biz/api/v1/account/avatar", data: data)
+          .then((value)=>onResponds(value.data,context))
+          .catchError(onError);
+
+
+
+
+
+
+      //  RetrofitClientInstances.getInstance().getDataService().uploadGalleryImages( multipart).then((value)=>onResponds(value,type,context)).catchError(onError);
+    }catch(e){
+
+      Helper.loadingFailed(UrlConstant.connectionFails);
+    }
+  }
 
 
 
@@ -253,7 +306,14 @@ class SettingsBloc {
   getProfile() async{
     RetrofitClientInstance.getInstance().getDataService().getUserProfile().then(
             (value) => {
-          StorageUtil.saveProfileUser(value.data),
+
+              if(value.data != null){
+                StorageUtil.saveProfileUser(value.data),
+
+                Helper.loadingSuccessful("success"),
+              }else{
+                Helper.loadingFailed("failed"),
+              }
 
         }
 
@@ -274,6 +334,25 @@ class SettingsBloc {
 
 
   }
+
+  onResponds(Map<String, dynamic>  value,BuildContext context) {
+
+    //  final Map parsed = json.decode(value);
+
+    var resp =  UserProfile.fromJson(value);
+
+
+
+    if (resp.status_code == 200|| resp.status_code == 201) {
+
+
+      getProfile();
+    }
+    else
+      Helper.loadingFailed(resp.message);
+  }
+
+
 
   onError(e) {
   var ad =  jsonDecode(e.toString());

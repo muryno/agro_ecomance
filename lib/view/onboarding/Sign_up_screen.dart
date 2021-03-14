@@ -70,16 +70,15 @@ class _SignUpScreen extends State<SignUpScreen>{
     return Scaffold(
 
 
-      body:
-        SingleChildScrollView(
+      body: Container(
           child:   Form(
             key: formKey,
             child: Container (
                 width: size.width,
                 height: size.height,
-                margin: EdgeInsets.only(top: 50),
+                margin: EdgeInsets.only(top: 30),
 
-                child: Stack(
+                child: ListView(
                   children: [
 
                     Padding(
@@ -103,7 +102,7 @@ class _SignUpScreen extends State<SignUpScreen>{
 
                             },
                           ),
-                          SizedBox(height: 30,),
+                          SizedBox(height: 10,),
 
 
 

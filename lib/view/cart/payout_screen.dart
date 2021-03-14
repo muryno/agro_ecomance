@@ -212,7 +212,7 @@ class _PayOutScreen extends State<PayOutScreen>{
                   child: TextFormField(
 
                     onChanged: (e){
-                      if(e.length >2){
+                      if(e.length >9){
                         setState(() {
                           showText = true;
                         });
@@ -236,8 +236,9 @@ class _PayOutScreen extends State<PayOutScreen>{
               ): Container(),
 
 
+              SizedBox(height: 35,),
 
-              Spacer(),
+
               Container(
                 child: Row(
                   children: [
@@ -393,7 +394,9 @@ class _PayOutScreen extends State<PayOutScreen>{
     );
     if (response.status == true) {
 
-      Navigator.of(context).popAndPushNamed(PageRouteConstants.confirmPaymentScreen);
+      cartPaymentBloc.payForPayCodeCart("paystack", response.reference, context);
+
+
 
 
     } else {
@@ -417,11 +420,12 @@ class _PayOutScreen extends State<PayOutScreen>{
             ),
             onPressed: (){
 
-              cartPaymentBloc.payForPayCodeCart("e-wallet", paycode?.text, context);
+              cartPaymentBloc.payForPayCodeCart("paycode", paycode?.text, context);
             }
         ): Wrap(),
       ); break;
-      case PaymentType.CARD : return Container(
+      case PaymentType.CARD : return
+        Container(
         margin: EdgeInsets.symmetric(vertical: 10),
         child: RaisedGradientButton(
             child: Text(

@@ -7,7 +7,9 @@ import 'dart:convert';
 import 'package:agro_ecomance/entity/responds/NetworkResp.dart';
 import 'package:agro_ecomance/entity/responds/ProductCategory.dart';
 import 'package:agro_ecomance/entity/responds/ProductResp.dart';
+import 'package:agro_ecomance/entity/responds/WishBaskResp.dart';
 import 'package:agro_ecomance/entity/responds/addCartResp/CategoryDataResp.dart';
+import 'package:agro_ecomance/entity/responds/purchased/PurchaseResp.dart';
 import 'package:agro_ecomance/rxbloc_pattern/products_slider_bloc.dart';
 import 'package:agro_ecomance/utils/pin_dialog.dart';
 import 'package:agro_ecomance/utils/profile_dialog.dart';
@@ -16,6 +18,7 @@ import 'package:agro_ecomance/utils/settings/bank_dialog.dart';
 import 'package:agro_ecomance/utils/settings/nextKin_dialog.dart';
 import 'package:agro_ecomance/utils/settings/personal_dialog.dart';
 import 'package:agro_ecomance/utils/settings/security_dialog.dart';
+import 'package:agro_ecomance/view/purchase/purchas_dialog.dart';
 import 'package:agro_ecomance/view/wish_list/addMoreWish_dialog.dart';
 import 'package:agro_ecomance/view/wish_list/addWishList_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -556,14 +559,24 @@ class ReUseAble {
     );
   }
 
-  addMoreWishDialogBox(BuildContext context){
+  addMoreWishDialogBox(BuildContext context,WishBaskData uuid){
     return   showDialog(context: context,
         builder: (BuildContext context){
-          return AddMoreWishDialogBox();
+          return AddMoreWishDialogBox(wishBaskData: uuid,);
         }
     );
   }
 //
+
+
+  purchaseDialogBox(BuildContext context,PurchaseRespData respData){
+    return   showDialog(context: context,
+        builder: (BuildContext context){
+          return PurchaseDialogBox(respData:respData );
+        }
+    );
+  }
+
 
 
   homeProductItem(ProductRespData dat,BuildContext context){
@@ -630,7 +643,7 @@ class ReUseAble {
                 height: 65,
                 width: 114,
                child: CachedNetworkImage(
-                  imageUrl: '${dat.image.file_url}',
+                  imageUrl: '${dat?.image?.thumbnail_url}',
                   imageBuilder: (context, imageProvider) => Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(

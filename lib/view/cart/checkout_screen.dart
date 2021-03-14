@@ -44,6 +44,7 @@ class _CheckOutScreen extends State<CheckOutScreen>{
   List<CartDataa>   snapshotDta;
   DeliveryAddres  deliveryAddres;
 
+  int transport = 0;
 
 
   loginToken _token;
@@ -54,6 +55,8 @@ class _CheckOutScreen extends State<CheckOutScreen>{
     deliveryAddres  =   widget.snapshotData[1];
 
     snapshotDta.forEach((element) { price  +=( int.parse(element.price ) * element.quantity );
+    deliveryAddres.deliverType == 1 ?transport =  500 :transport =  0;
+
 
     });
 
@@ -77,10 +80,11 @@ class _CheckOutScreen extends State<CheckOutScreen>{
   var discount = 0;
 
 
+
   @override
   Widget build(BuildContext context) {
 
-
+   // price =  transport+price;
 
     final size = MediaQuery
         .of(context)
@@ -181,7 +185,14 @@ class _CheckOutScreen extends State<CheckOutScreen>{
                   Text("Discount",style: TextStyle(color: Color(0xff434343),fontFamily:'PoppinsBook' ,fontSize: 13),),
                   Spacer(),
                   Text("$discount",style: TextStyle(color: Color(0xff434343),fontFamily:'PoppinsRegular' ,fontSize: 15),),
-
+                ],
+              ),
+              SizedBox(height: 5,),
+              Row(
+                children: [
+                  Text("Transport",style: TextStyle(color: Color(0xff434343),fontFamily:'PoppinsBook' ,fontSize: 13),),
+                  Spacer(),
+                  Text("$transport",style: TextStyle(color: Color(0xff434343),fontFamily:'PoppinsRegular' ,fontSize: 15),),
                 ],
               ),
 
@@ -198,7 +209,7 @@ class _CheckOutScreen extends State<CheckOutScreen>{
                 children: [
                   Text("Total",style: TextStyle(color: Color(0xff434343),fontFamily:'PoppinsBook' ,fontSize: 13),),
                   Spacer(),
-                  Text("NGN $price",style: TextStyle(color: Color(0xff434343),fontFamily:'PoppinsRegular' ,fontSize: 15),),
+                  Text("NGN ${price+transport}",style: TextStyle(color: Color(0xff434343),fontFamily:'PoppinsRegular' ,fontSize: 15),),
 
                 ],
               ),

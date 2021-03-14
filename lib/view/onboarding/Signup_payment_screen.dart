@@ -117,16 +117,39 @@ class _PaymentScreen extends State<SignUpPaymentScreen>{
                 children: <Widget>[
 
                   SizedBox(
-                    height: 80,
-                  ),
-
-
-
-
-                  Text("Membership registration \npayment",style: TextStyle(color: Color(0xff3ABC16),fontSize: 26,fontFamily: 'PoppinsBold'),),
-                  SizedBox(
                     height: 40,
                   ),
+
+
+
+                  Container(
+                      width:   double.infinity,
+
+                      height: MediaQuery.of(context).size.height/2-50,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage("assets/images/c5.png"),
+                          fit: BoxFit.contain,
+                        ),
+                      )
+                  ),
+
+
+
+
+                  Wrap(
+                    children: [
+                      Text("*Items are available for pickup at our Agroinnovate Office",style: TextStyle(color: Colors.red,fontSize: 16,fontFamily: 'PoppinsBold'),softWrap: true,textAlign: TextAlign.center,),
+
+                    ],
+                  ),
+
+                  SizedBox(
+                    height: 30,
+                  ),
+
+
+
                   Text("Select a Payment Method",style: TextStyle(color: Color(0xff858585),fontSize: 16,fontFamily: 'PoppinsBold'),),
 
                   SizedBox(
@@ -148,7 +171,7 @@ class _PaymentScreen extends State<SignUpPaymentScreen>{
                           width: 20,
                         ),
 
-                        Text("Use Debit Card",style: TextStyle(color: Color(0xff858585),fontSize: 21,fontFamily: 'PoppinsRegular'),),
+                        Text("Use Debit Card",style: TextStyle(color: Color(0xff3CBE1B),fontSize: 21,fontFamily: 'PoppinsRegular'),),
 
                       ],
                     ),

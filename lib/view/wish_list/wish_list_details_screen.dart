@@ -121,12 +121,12 @@ class _WishListItemDetailsScreen extends State<WishListItemDetailsScreen>{
                       stream:    AppDatabase?.getInstance()?.wishDataDao?.findAllWish(),
                       builder: (context, AsyncSnapshot< List<Wishe> >  snapshot){
                         if(snapshot.hasData ){
-                          uuid = snapshot.data[0].parentUuid;
+                         // uuid = snapshot?.data[0]?.parentUuid;
 
                           return   Container(
                               child: ListView.builder(
                                   shrinkWrap: true,
-                                  itemCount: snapshot.data.length,
+                                  itemCount: snapshot?.data?.length,
                                   physics: NeverScrollableScrollPhysics(),
                                   itemBuilder: (context,index){
                                     return WishDetailsScreen( dat : snapshot.data[index] );
@@ -197,7 +197,7 @@ class _WishListItemDetailsScreen extends State<WishListItemDetailsScreen>{
                               onPressed: () {
 
 
-                                ReUseAble().addMoreWishDialogBox(context);
+                                ReUseAble().addMoreWishDialogBox(context,widget?.wishBaskData);
 
                               },
 

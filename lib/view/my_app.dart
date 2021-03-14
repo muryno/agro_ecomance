@@ -60,8 +60,24 @@ class _SplashScreenState extends State<MyApp>{
 
     );
 
+//{
+//     "payment_type": "paycode",
+//     "paycode": "4596955164",
+//
+// }
+
+  //{
+    //     "payment_type": "e-wallet",
+    //
+    // }
 
 
+    //{
+    //     "payment_type": "paystack",
+    //
+
+    //     "reference": "9vk1o1zbam"
+    // }
 
 
   }

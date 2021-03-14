@@ -5,7 +5,7 @@ import 'CartDataa.dart';
 
 class CartDataBase {
     CartDatas datad;
-    int status_code;
+    var status_code;
 
     CartDataBase({this.datad, this.status_code});
 

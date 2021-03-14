@@ -125,23 +125,20 @@ class _WishListScreen extends State<WishListScreen> {
                 },
                 child:    Padding(
                   padding: const EdgeInsets.only(right: 16.0, left: 14.0),
-                  child:   Container(
-                      width: 40,
-                      height: 40,
-                      child:  this?.avr!= null ?
-                      Container(
-                          width: 40.0,
-                          height: 40.0,
-                          decoration: new BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: new DecorationImage(
-                                  fit: BoxFit.fill,
-                                  image: new NetworkImage(
-                                      "${this?.avr}")
-                              )
-                          )): CircleAvatar(
+                  child:       Container(
+                      width: 50,
+                      height: 50,
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      child:   CircleAvatar(
                           backgroundColor: ReUseAble().getButtonColor(),
-                          radius: 20,child: Icon(Icons.person,color: Colors.white, size: 30))
+                          radius: 20,
+                          child:widget.userProfileData?.avatar_url != null ?
+
+                          CircleAvatar(
+                            radius: 95.0,
+                            backgroundImage: NetworkImage("${widget.userProfileData?.avatar_url}"),
+                            backgroundColor: Colors.transparent,
+                          ): Icon(Icons.person,color: Colors.white, size: 25))
                   ),
                 )
             )
@@ -252,16 +249,16 @@ class _WishListScreen extends State<WishListScreen> {
         drawer: Container(
 
 
-
-            width: MediaQuery.of(context).size.width * 0.7,
+            width: MediaQuery.of(context).size.width * 0.9,
             child: Drawer(
-              child: Container(
+              child:Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                       colors: [Color(0xFF3ABC16), Color(0xFF66EA96)],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter),
+                      begin: Alignment.topLeft,
+                      end: Alignment.topRight),
                 ),
+
 
 
                 child: Column(
@@ -274,134 +271,154 @@ class _WishListScreen extends State<WishListScreen> {
                       child: Row(
                         children: [
 
-                          Hero(
-                              tag:UrlConstant.Hero,
-                              child:  Container(
-                                  width: 80,
-                                  height: 80,
-                                  padding: EdgeInsets.symmetric(horizontal: 5),
-                                  child:   CircleAvatar(
-                                      backgroundColor: ReUseAble().getButtonColor(),
-                                      radius: 20,child: Icon(Icons.person,color: Colors.white, size: 60))
-                              )),
+
+                          Container(
+                              width: 95,
+                              height: 95,
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              child:   CircleAvatar(
+                                  backgroundColor: ReUseAble().getButtonColor(),
+                                  radius: 20,
+                                  child:widget.userProfileData?.avatar_url != null ?
+
+                                  CircleAvatar(
+                                    radius: 95.0,
+                                    backgroundImage: NetworkImage("${widget.userProfileData?.avatar_url}"),
+                                    backgroundColor: Colors.transparent,
+                                  ): Icon(Icons.person,color: Colors.white, size: 60))
+                          ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              Flexible(
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width * 0.5,
+                                    child: Text('${widget.userProfileData?.display_name }',style: TextStyle(fontSize: 20,color: Color(0xff003C5E),fontFamily: 'PoppinsBold'),      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,),
+                                  )
+                              ),
 
-                              Text("${userProfileData?.username}",style: TextStyle(fontSize: 20,color: Color(0xff003C5E),fontFamily: 'PoppinsBold'),),
-                              Text("REF ID: 3Y92Q1",style: TextStyle(fontSize: 16,color: Color(0xff003C5E)),)
+                              Text("REF ID: ${widget.userProfileData?.referral_code }",style: TextStyle(fontSize: 16,color: Color(0xff003C5E)),),
+
 
                             ],
 
                           )
 
 
-
                         ],
                       ),
                     ),
 
-                    GestureDetector(
-                      onTap: (){ Navigator.of(context).push(
-                          ReUseAble().getTransition(HomePageDashboard(userProfileData:userProfileData))
-                      );},
-                      child:
-                      ReUseAble().drawerItem(title: "Dashboard",icon: Icons.dashboard),
-                    ),
 
-                    GestureDetector(
-                      onTap: (){ Navigator.of(context).push(
-                          ReUseAble().getTransition(Commission(userProfileData:userProfileData))
-                      );},
-                      child:
-                      ReUseAble().drawerItem(title: "Commissions",icon: Icons.alternate_email_sharp,),
-                    ),
+                    Expanded(
+                        child: ListView(
+                          children: [
 
+                            GestureDetector(
+                              onTap: (){ Navigator.of(context).push(
+                                  ReUseAble().getTransition(HomePageDashboard(userProfileData:userProfileData))
+                              );},
+                              child:
+                              ReUseAble().drawerItem(title: "Dashboard",icon: Icons.dashboard),
+                            ),
 
-                    GestureDetector(
-                      onTap: (){ Navigator.of(context).push(
-                          ReUseAble().getTransition(Purchase(userProfileData:userProfileData))
-                      );},
-                      child:
-                      ReUseAble().drawerItem( title: "Purchases",icon: Icons.shopping_basket, ),
-                    ),
+                            GestureDetector(
+                              onTap: (){ Navigator.of(context).push(
+                                  ReUseAble().getTransition(Commission(userProfileData:userProfileData))
+                              );},
+                              child:
+                              ReUseAble().drawerItem(title: "Commissions",icon: Icons.alternate_email_sharp,),
+                            ),
 
 
-
-                    GestureDetector(
-                      onTap: (){ Navigator.of(context).push(
-                          ReUseAble().getTransition(NetworkScreen(userProfileData:userProfileData))
-                      );},
-                      child:
-                      ReUseAble().drawerItem( title: "Network",icon: Icons.share, ),
-                    ),
-
-
-                    GestureDetector(
-                      onTap: (){
-                        Navigator.of(context).push(
-                            ReUseAble().getTransition(EWallet(userProfileData:userProfileData))
-                        );
-                      },
-                      child:
-                      ReUseAble().drawerItem(title: "E-wallet",icon: Icons.account_balance_wallet_rounded, ),
-                    ),
+                            GestureDetector(
+                              onTap: (){ Navigator.of(context).push(
+                                  ReUseAble().getTransition(Purchase(userProfileData:userProfileData))
+                              );},
+                              child:
+                              ReUseAble().drawerItem( title: "Purchases",icon: Icons.shopping_basket, ),
+                            ),
 
 
 
+                            GestureDetector(
+                              onTap: (){ Navigator.of(context).push(
+                                  ReUseAble().getTransition(NetworkScreen(userProfileData:userProfileData))
+                              );},
+                              child:
+                              ReUseAble().drawerItem( title: "Network",icon: Icons.share, ),
+                            ),
 
 
-
-                    GestureDetector(
-                      onTap: (){
-                        Navigator.of(context).push(
-                            ReUseAble().getTransition(SettingScreen(userProfileData:userProfileData))
-                        );
-                      },
-                      child:
-                      ReUseAble().drawerItem(title: "Profile",icon: Icons.person, ),
-                    ),
-
-
-
-                    GestureDetector(
-                      onTap: (){
-                        Navigator.of(context).pop();
-                      },
-                      child:
-                      ReUseAble().drawerItem(isActive: true, title: "Wish / Bookings",icon: Icons.card_travel_sharp, ),
-                    ),
+                            GestureDetector(
+                              onTap: (){
+                                Navigator.of(context).push(
+                                    ReUseAble().getTransition(EWallet(userProfileData:userProfileData))
+                                );
+                              },
+                              child:
+                              ReUseAble().drawerItem(title: "E-wallet",icon: Icons.account_balance_wallet_rounded, ),
+                            ),
 
 
 
 
-                    GestureDetector(
-                      onTap: (){
-                        Navigator.of(context).push(
-                            ReUseAble().getTransition(LogoOut())
-                        );
-                      },
-                      child:
-                      ReUseAble().drawerItem(title: "Logout",icon: Icons.exit_to_app_sharp, ),
-                    ),
 
 
-                    Spacer(),
-
-
-                    GestureDetector(
-                      onTap: (){
-                        Navigator.of(context).push(
-                            ReUseAble().getTransition(DashBoardScreen())
-                        );
-                      },
-                      child:
-                      ReUseAble().drawerItem(title: "Continue Shopping",icon: Icons.arrow_back, ),
-                    ),
+                            GestureDetector(
+                              onTap: (){
+                                Navigator.of(context).push(
+                                    ReUseAble().getTransition(SettingScreen(userProfileData:userProfileData))
+                                );
+                              },
+                              child:
+                              ReUseAble().drawerItem(title: "Profile",icon: Icons.person, ),
+                            ),
 
 
 
+                            GestureDetector(
+                              onTap: (){
+                                Navigator.of(context).pop();
+                              },
+                              child:
+                              ReUseAble().drawerItem(isActive: true, title: "Wish / Bookings",icon: Icons.card_travel_sharp, ),
+                            ),
+
+
+
+
+                            GestureDetector(
+                              onTap: (){
+                                Navigator.of(context).push(
+                                    ReUseAble().getTransition(LogoOut())
+                                );
+                              },
+                              child:
+                              ReUseAble().drawerItem(title: "Logout",icon: Icons.exit_to_app_sharp, ),
+                            ),
+
+
+                            Spacer(),
+
+
+                            GestureDetector(
+                              onTap: (){
+                                Navigator.of(context).push(
+                                    ReUseAble().getTransition(DashBoardScreen())
+                                );
+                              },
+                              child:
+                              ReUseAble().drawerItem(title: "Continue Shopping",icon: Icons.arrow_back, ),
+                            ),
+
+
+
+                          ],
+                        )
+                    )
 
 
                   ],

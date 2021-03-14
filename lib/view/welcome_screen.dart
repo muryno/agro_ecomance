@@ -130,8 +130,10 @@ class _WelcomeScreen extends State<WelcomeScreen>{
                     Navigator.of(context).pushNamed(PageRouteConstants.dashBoardScreen);
                   },
                   child:      Text("Go back home",style: TextStyle(fontSize: 14,fontFamily: 'PoppinsBook',color: Colors.black),),
-                )
+                ),
 
+
+                SizedBox(height: 20,),
               ],
                   ),
                 ),

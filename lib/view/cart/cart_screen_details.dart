@@ -113,6 +113,11 @@ CartDataa acts ;
 
                   SizedBox(height: 10,),
 
+                  widget.fromCheckout?    Text("X ${  widget.dat.quantity}", style: TextStyle(
+                      fontFamily: "PoppinsRegular",
+                      fontSize: 15,
+                      color: Color(0xff3ABB16)),): Wrap(),
+
 
                   widget.fromCheckout? Wrap():   Expanded(
                     child: Container(
@@ -122,7 +127,7 @@ CartDataa acts ;
                       height: 150,
                       child:                Listener(
                           onPointerDown: (_) =>{
-                            BackgroundUtils.updateCart( product_id : widget.dat.id, weight : widget.dat.weight,   quantity :  count)
+                            BackgroundUtils.updateCart( product_id : widget.dat.product_id, weight : widget.dat.weight,   quantity :  count)
                           },
                           child:  Row(
 

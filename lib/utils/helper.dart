@@ -47,7 +47,7 @@ class Helper {
 
   static void startLoading(BuildContext context, [String message = "Please wait..."]){
     if( EasyLoading.isShow) {EasyLoading.dismiss();}
-    configLoading(set : Colors.black);
+    configLoading(set : Colors.green);
     EasyLoading.show(status: message);
   }
 
@@ -89,7 +89,7 @@ class Helper {
 
  static void configLoading({Color  set  = Colors.green} ) {
    EasyLoading.instance
-     ..indicatorType = EasyLoadingIndicatorType.cubeGrid
+     ..indicatorType = EasyLoadingIndicatorType.circle
      ..loadingStyle = EasyLoadingStyle.custom
      ..indicatorSize = 45.0
      ..radius = 10.0

@@ -86,7 +86,7 @@ class _ConfirmPaymentScreen extends State<ConfirmPaymentScreen>{
               margin: EdgeInsets.symmetric(horizontal: 20,vertical: 60),
               child: RaisedGradientButton(
                   child: Text(
-                    'Make Order Now!',
+                    'Go to home screen!',
                     style: TextStyle(fontSize: 18,fontFamily: 'GothamBold',color: Colors.white),
                   ),
                   gradient: LinearGradient(
@@ -94,7 +94,10 @@ class _ConfirmPaymentScreen extends State<ConfirmPaymentScreen>{
                   ),
                   onPressed: (){
 
-                    cartPaymentBloc.makeOrderNow(context);
+                    Navigator.of(context).pushNamedAndRemoveUntil(PageRouteConstants.dashBoardScreen,(r)=>false);
+
+
+                    //cartPaymentBloc.makeOrderNow(context);
                   }
               ),
             ),

@@ -147,183 +147,168 @@ class _LoginPage extends State<LoginScreen>{
 
       body:
 
-        SingleChildScrollView(
+        Container(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            margin: EdgeInsets.only(top: 40),
           child:   Form(
             key: formKey,
-            child: Container (
-                width: size.width,
-                height: size.height,
-                margin: EdgeInsets.only(top: 50),
+            child:ListView(
 
-                child: Stack(
-                  children: [
 
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      child:  Column(
+            children: [
 
-                        crossAxisAlignment: CrossAxisAlignment.start,
+              Column(
 
-                        children: <Widget>[
-                          SizedBox(height: 25,),
+                crossAxisAlignment: CrossAxisAlignment.start,
 
-                          InkWell(
-                            child:    Icon(
-                              Icons.arrow_back_outlined,
-                              color: Colors.black,
-                              size: 30,
-                            ),
-                            onTap: (){
-                              Navigator.of(context).pop();
+                children: <Widget>[
+                  SizedBox(height: 25,),
 
-                            },
-                          ),
-                          SizedBox(height: 30,),
+                  InkWell(
+                    child:    Icon(
+                      Icons.arrow_back_outlined,
+                      color: Colors.black,
+                      size: 30,
+                    ),
+                    onTap: (){
+                      Navigator.of(context).pop();
 
-                          Container(
-                              padding: EdgeInsets.only(top: 40,bottom: 15),
-                              child:  Text("Login",style: TextStyle(color: Color(0xff3EB120),fontWeight: FontWeight.bold,fontSize: 25),)
-                          ),
+                    },
+                  ),
+                  SizedBox(height: 30,),
+
+                  Container(
+                      padding: EdgeInsets.only(top: 40,bottom: 15),
+                      child:  Text("Login",style: TextStyle(color: Color(0xff3EB120),fontWeight: FontWeight.bold,fontSize: 25),)
+                  ),
 
 
 
-                          SizedBox(height: 15,),
-                          userName,
-                          SizedBox(height: 15,),
-                          password,
-                          SizedBox(height: 35,),
+                  SizedBox(height: 15,),
+                  userName,
+                  SizedBox(height: 15,),
+                  password,
+                  SizedBox(height: 35,),
 
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                            child: RaisedGradientButton(
-                                child: Text(
-                                  'Login',
-                                  style: TextStyle(fontSize: 18,fontFamily: 'GothamBold',color: Colors.white),
-                                ),
-                                gradient: LinearGradient(
-                                  colors: <Color>[Color(0xff3EB120), Colors.greenAccent],
-                                ),
-                                onPressed: (){
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                    child: RaisedGradientButton(
+                        child: Text(
+                          'Login',
+                          style: TextStyle(fontSize: 18,fontFamily: 'GothamBold',color: Colors.white),
+                        ),
+                        gradient: LinearGradient(
+                          colors: <Color>[Color(0xff3EB120), Colors.greenAccent],
+                        ),
+                        onPressed: (){
 
-                                  if (formKey.currentState.validate()) {
+                          if (formKey.currentState.validate()) {
 
-                                    //String first_name,String last_name,String phone,String password,
-                                    loginBloc.attempLogin("user",  this._email.text,this._password.text, context);
-                                  }
+                            //String first_name,String last_name,String phone,String password,
+                            loginBloc.attempLogin("user",  this._email.text,this._password.text, context);
+                          }
 
-                                  // Navigator.of(context).pushNamedAndRemoveUntil(
-                                  //     PageRouteConstants.dashBoardScreen, (r) => false
-                                  // );
+                          // Navigator.of(context).pushNamedAndRemoveUntil(
+                          //     PageRouteConstants.dashBoardScreen, (r) => false
+                          // );
 
-                                }
-                            ),
-                          ),
-
-
-                          const SizedBox(
-                            height: 12.0,
-                          ),
+                        }
+                    ),
+                  ),
 
 
-                          Center(
-                              child: InkWell(
-                                onTap: ()=>{
-                                },
-                                child: RichText(
-                                  text: TextSpan(
-                                      text: "Don’t have an account ? ",
-                                      children: <InlineSpan>[
-                                        TextSpan(
-                                          text: " Sign Up",
-                                          recognizer: TapGestureRecognizer()
-                                            ..onTap = () {
-                                              Navigator.of(context).pushNamed(PageRouteConstants.signUpScreen);
-                                            },
-                                          style: TextStyle(
-                                            color: Color(0XFF3ABC16),
-                                          ),
-                                        )
-                                      ],
-                                      style: TextStyle(color: Colors.black)),
-                                ),
-                              )
-                          ),
+                  const SizedBox(
+                    height: 12.0,
+                  ),
 
 
-                          SizedBox(
-                            height: 20,
-                          ),
+                  Center(
+                      child: InkWell(
+                        onTap: ()=>{
+                        },
+                        child: RichText(
+                          text: TextSpan(
+                              text: "Don’t have an account ? ",
+                              children: <InlineSpan>[
+                                TextSpan(
+                                  text: " Sign Up",
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      Navigator.of(context).pushNamed(PageRouteConstants.signUpScreen);
+                                    },
+                                  style: TextStyle(
+                                    color: Color(0XFF3ABC16),
+                                  ),
+                                )
+                              ],
+                              style: TextStyle(color: Colors.black)),
+                        ),
+                      )
+                  ),
 
 
-                          Center(
-                            child:   Text(
-                              "OR",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0XFF3ABC17),
-                                  fontFamily: 'PoppinsBold'),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
+                  SizedBox(
+                    height: 20,
+                  ),
 
 
-
-                          Align(
-
-                            alignment: Alignment.bottomCenter,
-
-                            child: Container(
-                              margin: EdgeInsets.only(bottom: 60),
-
-                              child: InkWell(
-                                hoverColor: Color(0XFF3ABC16),
-                                onTap: ()=>{
-
-                                  if (usr!=null ){
-                                    _authenticate(usr,context)
-                                  }else{
-                                    ReUseAble().curvesDialog(context,"Not Available","TouchID / FaceID is not available for use. Login using username and password to activate", "ok")
-                                  }
+                  Center(
+                    child:   Text(
+                      "OR",
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Color(0XFF3ABC17),
+                          fontFamily: 'PoppinsBold'),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
 
 
 
-                                },
-                                child: Icon(
-                                  Icons.fingerprint,
-                                  color: Color(0XFF3ABC16),
-                                  size: 80,
-                                ),
-                              ),
-                            ),
-                          ),
+                  Align(
 
-                          Align(
+                    alignment: Alignment.bottomCenter,
 
-                              alignment: Alignment.bottomCenter,
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 60),
 
-                              child: Text("Sign in using biometrics",style: TextStyle(color: Color(0xFF3ABC17),fontSize: 16),)
-                          ),
-                        ],
+                      child: InkWell(
+                        hoverColor: Color(0XFF3ABC16),
+                        onTap: ()=>{
 
+                          if (usr!=null ){
+                            _authenticate(usr,context)
+                          }else{
+                            ReUseAble().curvesDialog(context,"Not Available","TouchID / FaceID is not available for use. Login using username and password to activate", "ok")
+                          }
+
+
+
+                        },
+                        child: Icon(
+                          Icons.fingerprint,
+                          color: Color(0XFF3ABC16),
+                          size: 80,
+                        ),
                       ),
                     ),
+                  ),
 
+                  Align(
 
+                      alignment: Alignment.bottomCenter,
 
+                      child: Text("Sign in using biometrics",style: TextStyle(color: Color(0xFF3ABC17),fontSize: 16),)
+                  ),
+                ],
 
+              ),
+            ],
 
-
-
-//#
-
-
-
-                  ],
-                )
-            ),
+            )
           )
         )
 

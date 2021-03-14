@@ -186,9 +186,10 @@ class _AddressScreen extends State<AddressScreen>{
                               controller: addresss,
                               decoration: InputDecoration(
                                 hintText: "Select your nearest location",
-                                hintStyle: TextStyle(color:  Color(0xff3CBE1B)),
-                                labelStyle: TextStyle(color:  Color(0xff3CBE1B)),
+                                hintStyle: TextStyle(color:  Color(0xffABA3A3)),
+                                labelStyle: TextStyle(color:  Color(0xffABA3A3)),
                                 fillColor: Colors.blueGrey,
+                                prefixIcon: Icon(Icons.place)
                               ),
 
                             )
@@ -446,7 +447,7 @@ class _AddressScreen extends State<AddressScreen>{
                 List<dynamic> dfr = [];
                 dfr.add(snapshotData);
                 dfr.add( deliveryToCustomerAddress );
-
+                deliveryToCustomerAddress.deliverType = deliveryType;
                 deliveryBloc.setDeliveryAddress(deliveryToCustomerAddress?.uuid,dfr, context);
               }else{
                 Helper.toastError("No Address is selected");
@@ -487,9 +488,11 @@ class _AddressScreen extends State<AddressScreen>{
               if(deliveryToPickUp?.id !=  null) {
 
 
+                deliveryToPickUp.deliverType = deliveryType;
                 List<dynamic> dfr = [];
                 dfr.add(snapshotData);
                 dfr.add( deliveryToPickUp);
+
                 deliveryBloc.setPickUpAddress(deliveryToPickUp?.id,dfr , context);
 
 

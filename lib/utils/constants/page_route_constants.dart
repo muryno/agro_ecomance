@@ -34,6 +34,16 @@ class PageRouteConstants {
 
   static const String stepperPage = '/stepperPage';
 
+
+  static const String AddresssScreen = '/AddresssScreen';
+
+  static const String NextKinScreen = '/NextKinScreen';
+
+  static const String PersonalInforScreen = '/PersonalInforScreen';
+
+  static const String SecurityScreen = '/SecurityScreen';
+
+  static const String cardSettingScreen = '/cardSettingScreen';
 //
 
 //paymentScreen

@@ -1,5 +1,30 @@
 
 
+
+class GeneralResp {
+    String message;
+    int status_code;
+
+
+    GeneralResp({this.message, this.status_code});
+
+    factory GeneralResp.fromJson(Map<String, dynamic> json) {
+        return GeneralResp(
+            message: json['message'],
+            status_code: json['status_code'],
+        );
+    }
+
+    Map<String, dynamic> toJson() {
+        final Map<String, dynamic> data = new Map<String, dynamic>();
+        data['message'] = this.message;
+        data['status_code'] = this.status_code;
+
+        return data;
+    }
+}
+
+
 class withdrawResp {
     String message;
     int status_code;

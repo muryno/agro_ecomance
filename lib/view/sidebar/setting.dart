@@ -2,8 +2,10 @@
 
 import 'package:agro_ecomance/entity/responds/UserProfile.dart';
 import 'package:agro_ecomance/rxbloc_pattern/setting_bloc.dart';
+import 'package:agro_ecomance/utils/constants/page_route_constants.dart';
 import 'package:agro_ecomance/utils/constants/url_constant.dart';
 import 'package:agro_ecomance/utils/reuseable.dart';
+import 'package:agro_ecomance/utils/share_pref.dart';
 import 'package:agro_ecomance/view/sidebar/purchase.dart';
 import 'package:agro_ecomance/view/sidebar/wishList.dart';
 import 'package:flutter/cupertino.dart';
@@ -42,6 +44,21 @@ class _Screen15State extends State<SettingScreen> {
 
   @override
   void initState() {
+
+    StorageUtil.getUser().then((value) {
+      if (value != null){
+
+        setState(() {
+          _str = '${value?.data?.client } ';
+          token = '${value?.data?.access_token } ';
+        });
+
+
+      }
+
+    });
+
+
  settingsBloc.getBankDetails();
     super.initState();
   }
@@ -106,13 +123,24 @@ class _Screen15State extends State<SettingScreen> {
                   );
 
                   },
-                child:     Container(
-                    width: 40,
-                    height: 40,
-                    child:  CircleAvatar(
-                      backgroundColor: ReUseAble().getButtonColor(),
-                        radius: 20,child: Icon(Icons.person,color: Colors.white, size: 30))
-                ),
+                  child:    Padding(
+                    padding: const EdgeInsets.only(right: 16.0, left: 14.0),
+                    child:       Container(
+                        width: 50,
+                        height: 50,
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        child:   CircleAvatar(
+                            backgroundColor: ReUseAble().getButtonColor(),
+                            radius: 20,
+                            child:widget.userProfileData?.avatar_url != null ?
+
+                            CircleAvatar(
+                              radius: 95.0,
+                              backgroundImage: NetworkImage("${widget.userProfileData?.avatar_url}"),
+                              backgroundColor: Colors.transparent,
+                            ): Icon(Icons.person,color: Colors.white, size: 25))
+                    ),
+                  )
               ) ,
             )
           ],
@@ -120,212 +148,215 @@ class _Screen15State extends State<SettingScreen> {
 
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
+          child:Container(
+            color: Colors.white,
+            child:  Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
 
 
 
-              Text(
-                "PROFILE",
-                style: TextStyle(
-                    fontSize: 20,
-                    color: Color(0XFFABA3A3),
-                    fontFamily:'PoppinsBold' ),
-              ),
-               SizedBox(
-                height: 24.0,
-              ),
+                Text(
+                  "PROFILE",
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: Color(0XFFABA3A3),
+                      fontFamily:'PoppinsBold' ),
+                ),
+                SizedBox(
+                  height: 24.0,
+                ),
 
-              Row(
-                children: [
+                Row(
+                  children: [
 
-                  Container(
+                    Container(
 
-
-                    padding: EdgeInsets.symmetric(horizontal: 5),
-                    width: 97,
-                    height: 97,
-                    child:    Stack(
-                      children: [
-
-                        Container(
-                            width: 97,
-                            height: 97,
-                            child:  CircleAvatar(
-                                radius: 60,child: Icon(Icons.person, size: 30))
-                        ),
+                      color: Colors.white,
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      width: 97,
+                      height: 97,
+                      child:    Stack(
+                        children: [
 
 
+                          Container(
+                              width: 97,
+                              height: 97,
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              child:   CircleAvatar(
+                                  backgroundColor: ReUseAble().getButtonColor(),
+                                  radius: 20,
+                                  child:widget.userProfileData?.avatar_url != null ?
 
-                        InkWell(
-                          onTap: ()=>{
-                            showApp(context)
-                          },
-                          child:   Align(
-                            alignment: AlignmentDirectional.bottomEnd,
-                            child:
-                            CircleAvatar(
-                              radius: 12,
-                              backgroundColor: ReUseAble().getButtonColor(),
-                              child:Icon(
-                                Icons.party_mode,
-                                size: 10,
-                                color: Colors.white,
+                                  CircleAvatar(
+                                    radius: 97.0,
+                                    backgroundImage: NetworkImage("${widget.userProfileData?.avatar_url}"),
+                                    backgroundColor: Colors.transparent,
+                                  ): Icon(Icons.person,color: Colors.white, size: 25))
+                          ),
+
+
+
+
+                          InkWell(
+                            onTap: ()=>{
+                              showApp(context)
+                            },
+                            child:   Align(
+                              alignment: AlignmentDirectional.bottomEnd,
+                              child:
+                              CircleAvatar(
+                                radius: 12,
+                                backgroundColor: ReUseAble().getButtonColor(),
+                                child:Icon(
+                                  Icons.party_mode,
+                                  size: 10,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
-                          ),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 25,),
+                    Wrap(
+                      children: [
+                        Text(
+                          "${widget.userProfileData?.display_name}\n${widget.userProfileData?.referral_code}",
+                          style:  TextStyle(fontSize: 14,fontFamily: 'GothamRegular'),
                         )
                       ],
+                    )
+                  ],
+                ),
+
+
+                SizedBox(
+                  height: 24.0,
+                ),
+
+
+
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 10.0),
+
+
+                    SizedBox(height: 20.0),
+
+                    InkWell(
+                      child:
+                      ListTile(
+                        tileColor: Colors.grey.withOpacity(0.1),
+                        title: Text("Personal Information"),
+                      ),
+                      onTap: ()=>{
+
+                        Navigator.of(context).pushNamed(PageRouteConstants.PersonalInforScreen)
+                        // ReUseAble().personalDialogBox(context)
+                      },
                     ),
-                  ),
-                  SizedBox(width: 25,),
-                  Wrap(
-                    children: [
-                      Text(
-                        "Account Created\nJanuary 15, 2021",
-                        style:  TextStyle(fontSize: 8,fontFamily: 'GothamRegular'),
-                      )
-                    ],
-                  )
-                ],
-              ),
+                    SizedBox(height: 8.0),
+                    InkWell(
+                      child:
+                      ListTile(
+                        tileColor:Colors.grey.withOpacity(0.1),
+                        title: Text("Address"),
 
 
-              SizedBox(
-                height: 24.0,
-              ),
-
-
-
-              Card(
-                  margin: EdgeInsets.only(bottom: 12.0),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 10.0),
-
-
-                        SizedBox(height: 20.0),
-
-                        InkWell(
-                          child:
-                          ListTile(
-                              tileColor: Colors.black.withOpacity(0.05),
-                              title: Text("Personal Information"),
-                              trailing: Icon(
-                                Icons.arrow_forward_ios,
-                                size: 20,
-                              )
-                          ),
-                            onTap: ()=>{
-                              ReUseAble().personalDialogBox(context)
-                            },
-                        ),
-                         SizedBox(height: 8.0),
-                        InkWell(
-                          child:
-                          ListTile(
-                              tileColor: Colors.black.withOpacity(0.05),
-                              title: Text("Address"),
-                              trailing: Icon(
-                                Icons.arrow_forward_ios,
-                                size: 20,
-                              )),
-                          onTap: ()=>{
-                            ReUseAble().addressDialogBox(context)
-                          },
-                        ),
-                        SizedBox(height: 8.0),
-                        InkWell(
-                          child:
-                          ListTile(
-                              tileColor: Colors.black.withOpacity(0.05),
-                              title: Text("Security"),
-                              trailing: Icon(
-                                Icons.arrow_forward_ios,
-                                size: 20,
-                              )),
-                          onTap: ()=>{
-                            ReUseAble().securityDialogBox(context)
-                          },
-                        ),
-                        SizedBox(height: 8.0),
-                        InkWell(
-                          child:
-                          ListTile(
-                              tileColor: Colors.black.withOpacity(0.05),
-                              title: Text("Bank Information"),
-                              trailing: Icon(
-                                Icons.arrow_forward_ios,
-                                size: 20,
-                              )),
-                          onTap: ()=>{
-                            ReUseAble().bankDialogBox(context)
-
-                          },
-                        ),
-                        SizedBox(height: 8.0),
-
-                        InkWell(
-                          child:
-                          ListTile(
-                              tileColor: Colors.black.withOpacity(0.05),
-                              title: Text("Next of Kin Details"),
-                              trailing: Icon(
-                                Icons.arrow_forward_ios,
-                                size: 20,
-                              )),
-                          onTap: ()=>{
-                            ReUseAble().nextKinDialogBox(context)
-                          },
-                        ),
-
-                         SizedBox(height: 36.0),
-                        Text(
-                          "Your Preferences",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Color(0Xff0B2E70),
-                          ),
-                        ),
-                         SizedBox(height: 8.0),
-                        ListTile(
-                            tileColor: Colors.black.withOpacity(0.05),
-                            title: Text("Notifications"),
-                            trailing:
-                                CupertinoSwitch(
-                                  
-                                  value: _isNotification, onChanged: (val) {
-                                  setState(() {
-                                    _isNotification = val;
-                                  });
-                                })),
-
-                      ],
+                      ),
+                      onTap: ()=>{
+                        Navigator.of(context).pushNamed(PageRouteConstants.AddresssScreen)
+                        //ReUseAble().addressDialogBox(context)
+                      },
                     ),
-                  )),
-            ],
-          ),
+                    SizedBox(height: 8.0),
+                    InkWell(
+                      child:
+                      ListTile(
+                        tileColor: Colors.grey.withOpacity(0.1),
+                        title: Text("Security"),
+                      ),
+                      onTap: ()=>{
+                        Navigator.of(context).pushNamed(PageRouteConstants.SecurityScreen)
+                        //  ReUseAble().securityDialogBox(context)
+                      },
+                    ),
+                    SizedBox(height: 8.0),
+                    InkWell(
+                      child:
+                      ListTile(
+                        tileColor:Colors.grey.withOpacity(0.1),
+                        title: Text("Card Information"),
+
+                      ),
+                      onTap: ()=>{
+                        Navigator.of(context).pushNamed(PageRouteConstants.cardSettingScreen)
+
+                      },
+                    ),
+                    SizedBox(height: 8.0),
+
+                    InkWell(
+                      child:
+                      ListTile(
+                        tileColor:Colors.grey.withOpacity(0.1),
+                        title: Text("Next of Kin Details"),
+                      ),
+                      onTap: ()=>{
+                        Navigator.of(context).pushNamed(PageRouteConstants.NextKinScreen)
+
+                        // ReUseAble().nextKinDialogBox(context)
+                      },
+                    ),
+
+                    SizedBox(height: 36.0),
+                    Text(
+                      "Your Preferences",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Color(0Xff0B2E70),
+
+                        fontFamily: 'PoppinsBold'
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    ListTile(
+                        tileColor: Colors.black.withOpacity(0.05),
+                        title: Text("Notifications"),
+                        trailing:
+                        CupertinoSwitch(
+
+                            value: _isNotification, onChanged: (val) {
+                          setState(() {
+                            _isNotification = val;
+                          });
+                        })),
+
+                  ],
+                ),
+              ],
+            ),
+          )
         ),
 
         drawer: Container(
 
 
 
-            width: MediaQuery.of(context).size.width * 0.7,
+
+            width: MediaQuery.of(context).size.width * 0.9,
             child: Drawer(
-              child:  Container(
+              child:Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                       colors: [Color(0xFF3ABC16), Color(0xFF66EA96)],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter),
+                      begin: Alignment.topLeft,
+                      end: Alignment.topRight),
                 ),
-
 
                 child: Column(
                   children: [
@@ -337,135 +368,158 @@ class _Screen15State extends State<SettingScreen> {
                       child: Row(
                         children: [
 
+
                           Container(
-                              width: 80,
-                              height: 80,
+                              width: 95,
+                              height: 95,
                               padding: EdgeInsets.symmetric(horizontal: 5),
                               child:   CircleAvatar(
                                   backgroundColor: ReUseAble().getButtonColor(),
-                                  radius: 20,child: Icon(Icons.person,color: Colors.white, size: 60))
+                                  radius: 20,
+                                  child:widget.userProfileData?.avatar_url != null ?
+
+                                  CircleAvatar(
+                                    radius: 95.0,
+                                    backgroundImage: NetworkImage("${widget.userProfileData?.avatar_url}"),
+                                    backgroundColor: Colors.transparent,
+                                  ): Icon(Icons.person,color: Colors.white, size: 60))
                           ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              Flexible(
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width * 0.5,
+                                    child: Text('${widget.userProfileData?.display_name }',style: TextStyle(fontSize: 20,color: Color(0xff003C5E),fontFamily: 'PoppinsBold'),      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,),
+                                  )
+                              ),
 
-                              Text("${widget?.userProfileData?.username}",style: TextStyle(fontSize: 20,color: Color(0xff003C5E),fontFamily: 'PoppinsBold'),),
-                              Text("REF ID: 3Y92Q1",style: TextStyle(fontSize: 16,color: Color(0xff003C5E)),)
+                              Text("REF ID: ${widget.userProfileData?.referral_code }",style: TextStyle(fontSize: 16,color: Color(0xff003C5E)),),
+
 
                             ],
 
                           )
 
 
-
                         ],
                       ),
                     ),
 
-                    GestureDetector(
-                      onTap: (){ Navigator.of(context).push(
-                          ReUseAble().getTransition(HomePageDashboard(userProfileData:widget.userProfileData))
-                      );},
-                      child:
-                      ReUseAble().drawerItem(title: "Dashboard",icon: Icons.dashboard),
-                    ),
 
-                    GestureDetector(
-                      onTap: (){ Navigator.of(context).push(
-                          ReUseAble().getTransition(Commission(userProfileData:widget.userProfileData))
-                      );},
-                      child:
-                      ReUseAble().drawerItem(title: "Commissions",icon: Icons.alternate_email_sharp,),
-                    ),
+                    Expanded(
+                        flex: 1,
+                        child: ListView(
 
-
-                    GestureDetector(
-                      onTap: (){ Navigator.of(context).push(
-                          ReUseAble().getTransition(Purchase(userProfileData:widget.userProfileData))
-                      );},
-                      child:
-                      ReUseAble().drawerItem( title: "Purchases",icon: Icons.shopping_basket, ),
-                    ),
+                            children: [
 
 
 
-                    GestureDetector(
-                      onTap: (){ Navigator.of(context).push(
-                          ReUseAble().getTransition(NetworkScreen(userProfileData:widget.userProfileData))
-                      );},
-                      child:
-                      ReUseAble().drawerItem( title: "Network",icon: Icons.share, ),
-                    ),
+                              GestureDetector(
+                                onTap: (){ Navigator.of(context).push(
+                                    ReUseAble().getTransition(HomePageDashboard(userProfileData:widget.userProfileData))
+                                );},
+                                child:
+                                ReUseAble().drawerItem(title: "Dashboard",icon: Icons.dashboard),
+                              ),
+
+                              GestureDetector(
+                                onTap: (){ Navigator.of(context).push(
+                                    ReUseAble().getTransition(Commission(userProfileData:widget.userProfileData))
+                                );},
+                                child:
+                                ReUseAble().drawerItem(title: "Commissions",icon: Icons.alternate_email_sharp,),
+                              ),
 
 
-                    GestureDetector(
-                      onTap: (){
-                        Navigator.of(context).push(
-                            ReUseAble().getTransition(EWallet(userProfileData:widget.userProfileData))
-                        );
-                      },
-                      child:
-                      ReUseAble().drawerItem(title: "E-wallet",icon: Icons.account_balance_wallet_rounded, ),
-                    ),
-
-
-
-
-
-
-                    GestureDetector(
-                      onTap: (){
-                        Navigator.of(context).push(
-                            ReUseAble().getTransition(SettingScreen(userProfileData:widget.userProfileData))
-                        );
-                      },
-                      child:
-                      ReUseAble().drawerItem(isActive:true,title: "Profile",icon: Icons.person, ),
-                    ),
+                              GestureDetector(
+                                onTap: (){ Navigator.of(context).push(
+                                    ReUseAble().getTransition(Purchase(userProfileData:widget.userProfileData))
+                                );},
+                                child:
+                                ReUseAble().drawerItem(title: "Purchases",icon: Icons.shopping_basket, ),
+                              ),
 
 
 
-                    GestureDetector(
-                      onTap: (){
-                        Navigator.of(context).push(
-                            ReUseAble().getTransition(WishListScreen())
-                        );
-                      },
-                      child:
-                      ReUseAble().drawerItem(title: "Wish / Bookings",icon: Icons.card_travel_sharp, ),
-                    ),
+                              GestureDetector(
+                                onTap: (){ Navigator.of(context).push(
+                                    ReUseAble().getTransition(NetworkScreen(userProfileData:widget.userProfileData))
+                                );},
+                                child:
+                                ReUseAble().drawerItem( title: "Network",icon: Icons.share, ),
+                              ),
+
+
+                              GestureDetector(
+                                onTap: (){
+                                  Navigator.of(context).push(
+                                      ReUseAble().getTransition(EWallet(userProfileData:widget.userProfileData))
+                                  );
+                                },
+                                child:
+                                ReUseAble().drawerItem(title: "E-wallet",icon: Icons.account_balance_wallet_rounded, ),
+                              ),
 
 
 
 
-                    GestureDetector(
-                      onTap: (){
-                        Navigator.of(context).push(
-                            ReUseAble().getTransition(LogoOut())
-                        );
-                      },
-                      child:
-                      ReUseAble().drawerItem(title: "Logout",icon: Icons.exit_to_app_sharp, ),
-                    ),
 
 
-                    Spacer(),
-
-
-                    GestureDetector(
-                      onTap: (){
-                        Navigator.of(context).push(
-                            ReUseAble().getTransition(DashBoardScreen())
-                        );
-                      },
-                      child:
-                      ReUseAble().drawerItem(title: "Continue Shopping",icon: Icons.arrow_back, ),
-                    ),
+                              GestureDetector(
+                                onTap: (){
+                                  Navigator.of(context).push(
+                                      ReUseAble().getTransition(SettingScreen(userProfileData:widget.userProfileData))
+                                  );
+                                },
+                                child:
+                                ReUseAble().drawerItem(isActive: true, title: "Profile",icon: Icons.person, ),
+                              ),
 
 
 
+                              GestureDetector(
+                                onTap: (){
+                                  Navigator.of(context).push(
+                                      ReUseAble().getTransition(WishListScreen(userProfileData:widget.userProfileData ))
+                                  );
+                                },
+                                child:
+                                ReUseAble().drawerItem(title: "Wish / Bookings",icon: Icons.card_travel_sharp, ),
+                              ),
 
+
+
+
+                              GestureDetector(
+                                onTap: (){
+                                  Navigator.of(context).push(
+                                      ReUseAble().getTransition(LogoOut())
+                                  );
+                                },
+                                child:
+                                ReUseAble().drawerItem(title: "Logout",icon: Icons.exit_to_app_sharp, ),
+                              ),
+
+
+                              Spacer(),
+
+
+                              GestureDetector(
+                                onTap: (){
+                                  Navigator.of(context).push(
+                                      ReUseAble().getTransition(DashBoardScreen())
+                                  );
+                                },
+                                child:
+                                ReUseAble().drawerItem(title: "Continue Shopping",icon: Icons.arrow_back, ),
+                              ),
+
+
+
+                            ]))
 
                   ],
                 ),
@@ -544,7 +598,7 @@ class _Screen15State extends State<SettingScreen> {
     setState(() {
       if (pickedFile != null) {
 
-       // settingsBloc.uploadProfile(pickedFile.path, this._str,this.token,  context);
+        settingsBloc.uploadProfile(pickedFile.path, this._str,this.token,  context);
       } else {
         print('No image selected.');
       }

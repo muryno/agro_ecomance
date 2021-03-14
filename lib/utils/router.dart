@@ -6,6 +6,11 @@
 import 'package:agro_ecomance/view/cart/payment_screen.dart';
 import 'package:agro_ecomance/view/commision/withdraw_screen.dart';
 import 'package:agro_ecomance/view/onboarding/Signup_payment_screen.dart';
+import 'package:agro_ecomance/view/setting/address_screen.dart';
+import 'package:agro_ecomance/view/setting/card_screen.dart';
+import 'package:agro_ecomance/view/setting/nextkin_screen.dart';
+import 'package:agro_ecomance/view/setting/personal_info_screen.dart';
+import 'package:agro_ecomance/view/setting/security_screen.dart';
 import 'package:agro_ecomance/view/shoping/CategoriesItems.dart';
 import 'package:agro_ecomance/view/shoping/seeAllDetails.dart';
 import 'package:agro_ecomance/view/shoping/shoping_details.dart';
@@ -90,7 +95,24 @@ class Routers {
       case PageRouteConstants.signUpPaymentScreen:
         return MaterialPageRoute(builder: (_) => SignUpPaymentScreen());
 
-      //SignUpPaymentScreen
+
+
+
+
+      case PageRouteConstants.AddresssScreen:
+        return MaterialPageRoute(builder: (_) => AddresssScreen());
+
+      case PageRouteConstants.NextKinScreen:
+        return MaterialPageRoute(builder: (_) => NextKinScreen());
+      case PageRouteConstants.PersonalInforScreen:
+        return MaterialPageRoute(builder: (_) => PersonalInforScreen());
+
+      case PageRouteConstants.SecurityScreen:
+        return MaterialPageRoute(builder: (_) => SecurityScreen());
+
+      case PageRouteConstants.cardSettingScreen:
+        return MaterialPageRoute(builder: (_) => CardSettingScreen());
+      //
       case PageRouteConstants.oTPScreen:
         return MaterialPageRoute(builder: (_) => OTPScreen(),settings: RouteSettings( arguments: settings.arguments));
 

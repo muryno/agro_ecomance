@@ -45,7 +45,7 @@ List<SliderModel> getSlides(){
   //1
   sliderModel.setDesc("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do");
   sliderModel.setTitle("Unbeatable\nmarket prices\nalways ");
-  sliderModel.setImageAssetPath("assets/images/splash_1.png");
+  sliderModel.setImageAssetPath("assets/images/c3.jpg");
   slides.add(sliderModel);
 
 
@@ -55,7 +55,7 @@ List<SliderModel> getSlides(){
   //2
   sliderModel.setDesc("banking solution");
 
-  sliderModel.setImageAssetPath("assets/images/splash_2.png");
+  sliderModel.setImageAssetPath("assets/images/c1.jpg");
   sliderModel.setTitle("Fresh food items\ndirectly from farm\nto table");
   slides.add(sliderModel);
 
@@ -64,7 +64,7 @@ List<SliderModel> getSlides(){
   //3
   sliderModel.setDesc("activities on your phone");
   sliderModel.setTitle("Fastest\nhome delivery\nservice");
-  sliderModel.setImageAssetPath("assets/images/splash_3.png");
+  sliderModel.setImageAssetPath("assets/images/c2.jpg");
   slides.add(sliderModel);
 
   sliderModel = new SliderModel();
