@@ -131,7 +131,6 @@ class LoginBloc {
               PageRouteConstants.signUpPaymentScreen,(r)=>false),
 
 
-
         }
 
       else
@@ -259,6 +258,7 @@ class LoginBloc {
 
 
 
+
   attempLogin(String type, email_or_phone,String password, BuildContext context) {
 
     Helper.startLoading(context);
@@ -272,25 +272,82 @@ class LoginBloc {
 
       RetrofitClientInstance.getInstance().getDataService().attemptLogin(urs).then((value)=>{
 
-      if (value.data.access_token != null) {
+        if (value.data.access_token != null) {
 
 
-        Helper.loadingSuccessful("Welcome back"),
-             //
-                 StorageUtil.saveUser(value).then((value) =>
-             RetrofitClientInstance.getInstance().reset()),
-             RetrofitClientInstance.getInstance().resets(value.data.access_token),
+          Helper.loadingSuccessful("Welcome back"),
+          //
+          StorageUtil.saveUser(value).then((value) =>
+              RetrofitClientInstance.getInstance().reset()),
+          RetrofitClientInstance.getInstance().resets(value.data.access_token),
 
-             StorageUtil.userDataBiometric(urs),
-
-
-    Helper.startLoading(context,"Wait... loading your data"),
-    getProfile(context,value.data.client),
+          StorageUtil.userDataBiometric(urs),
 
 
-    BackgroundUtils.getTimers(context: context,times:value.data.expires_in )
+          Helper.startLoading(context,"Wait... loading your data"),
+          getProfile(context,value.data.client),
 
 
+          BackgroundUtils.getTimers(context: context,times:value.data.expires_in )
+
+
+
+        }  else
+          {
+
+            Helper.loadingFailed(value.message)
+          }
+
+
+      }).catchError((e){
+        var ad =  jsonDecode(e.response.toString());
+
+        var resp = FailedLogin.fromJson(ad);
+
+        if(resp.data!= null){
+          Navigator.pushReplacementNamed(context, PageRouteConstants.oTPScreen,arguments: resp.data.otp_secret);
+          Helper.loadingFailed(resp.error.toString());
+
+        }else if(resp.error!= null){
+          Helper.loadingFailed(resp.error.toString());
+        }else if(resp.message!= null){
+          Helper.loadingFailed(resp.message.toString());
+        }else{
+          Helper.loadingFailed("error with login.. please check your credentials and try again");
+        }
+      });
+    }catch(e){
+
+      Helper.loadingFailed(e.toString());
+    }
+  }
+
+
+
+
+//{
+//     "otp_secret": "9b75f46a276d57f01e8e973e729e07ca442b7517b14b201a910e93444063",
+//     "otp": 384410,
+//     "password": "sharktale"
+// }
+
+  startForgetEmailPassword(String email, BuildContext context) {
+
+    Helper.startLoading(context);
+    try {
+      var urs = {
+
+        "type": "users",
+        "email":email,
+      };
+
+
+
+
+      RetrofitClientInstance.getInstance().getDataService().startPasswordReset(urs).then((value)=>{
+
+      if (value.otp_secret != null) {
+        Navigator.pushReplacementNamed(context, PageRouteConstants.newPassword,arguments: value.otp_secret)
 
       }  else
         {
@@ -323,7 +380,107 @@ class LoginBloc {
   }
 
 
-      getProfile( BuildContext context, String client) async{
+  startForgetPhonePassword(String phone, BuildContext context) {
+
+    Helper.startLoading(context);
+    try {
+      var urs = {
+
+        "type": "users",
+        "phone": phone
+      };
+
+
+
+
+      RetrofitClientInstance.getInstance().getDataService().startPasswordReset(urs).then((value)=>{
+
+        if (value.otp_secret != null) {
+          Navigator.pushReplacementNamed(context, PageRouteConstants.newPassword,arguments: value.otp_secret)
+
+        }  else
+          {
+
+            Helper.loadingFailed(value.message)
+          }
+
+
+      }).catchError((e){
+        var ad =  jsonDecode(e.response.toString());
+
+        var resp = FailedLogin.fromJson(ad);
+
+        if(resp.data!= null){
+          Navigator.pushReplacementNamed(context, PageRouteConstants.oTPScreen,arguments: resp.data.otp_secret);
+          Helper.loadingFailed(resp.error.toString());
+
+        }else if(resp.error!= null){
+          Helper.loadingFailed(resp.error.toString());
+        }else if(resp.message!= null){
+          Helper.loadingFailed(resp.message.toString());
+        }else{
+          Helper.loadingFailed("error with login.. please check your credentials and try again");
+        }
+      });
+    }catch(e){
+
+      Helper.loadingFailed(e.toString());
+    }
+  }
+
+
+  completeForgetPassword(String otp_secret,String otp,String password, BuildContext context) {
+
+    Helper.startLoading(context);
+    try {
+      var urs = {
+
+        "otp_secret": otp_secret,
+        "otp": otp,
+        "password": password
+
+      };
+
+
+
+
+      RetrofitClientInstance.getInstance().getDataService().completePasswordReset(urs).then((value)=>{
+
+        if (value.status_code ==200 ||value.status_code ==201 ) {
+
+
+        } else {
+
+            Helper.loadingFailed(value.message)
+          }
+
+
+      }).catchError((e){
+        var ad =  jsonDecode(e.response.toString());
+
+        var resp = FailedLogin.fromJson(ad);
+
+        if(resp.data!= null){
+          Navigator.pushReplacementNamed(context, PageRouteConstants.oTPScreen,arguments: resp.data.otp_secret);
+          Helper.loadingFailed(resp.error.toString());
+
+        }else if(resp.error!= null){
+          Helper.loadingFailed(resp.error.toString());
+        }else if(resp.message!= null){
+          Helper.loadingFailed(resp.message.toString());
+        }else{
+          Helper.loadingFailed("error with login.. please check your credentials and try again");
+        }
+      });
+    }catch(e){
+
+      Helper.loadingFailed(e.toString());
+    }
+  }
+
+
+
+  getProfile( BuildContext context, String client) async{
         RetrofitClientInstance.getInstance().getDataService().getUserProfile().then(
                 (value) => {
 

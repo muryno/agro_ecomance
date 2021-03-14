@@ -33,7 +33,6 @@ class StepperSlide extends StatelessWidget {
     return Scaffold(
       body: Container(
         color: Colors.white,
-        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height/11),
         child: Column(
           //crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -43,69 +42,82 @@ class StepperSlide extends StatelessWidget {
             //
 
 
-            Container(
-              alignment: Alignment.topLeft,
-              padding: EdgeInsets.only(left: 20,),
-              child: Text(title , style: TextStyle(fontFamily: 'PoppinsBold',fontSize: 26,color: Color(0xff707070)),textAlign: TextAlign.left,),
-            ),
-            SizedBox(height: 3,),
-            Text(desc , style: TextStyle(fontFamily: 'GothamLight',fontSize: 22,color: Colors.white)),
-
-
 
             Container(
-              padding: EdgeInsets.only(left: 20,top: 30),
-              child:    Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
+              height: MediaQuery.of(context).size.height/2,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
 
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  for (int i = 0; i < 3 ; i++) i == slideIndex ? _buildPageIndicator(true): _buildPageIndicator(false),
+
+                  SizedBox(height: 25,),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    padding: EdgeInsets.only(left: 20,),
+                    child: Text(title , style: TextStyle(fontFamily: 'PoppinsBold',fontSize: 26,color: Color(0xff707070)),textAlign: TextAlign.left,),
+                  ),
+                  SizedBox(height: 3,),
+                  Text(desc , style: TextStyle(fontFamily: 'GothamLight',fontSize: 22,color: Colors.white)),
+
+
+
+                  Container(
+                    padding: EdgeInsets.only(left: 20,top: 30),
+                    child:    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+
+                      children: [
+                        for (int i = 0; i < 3 ; i++) i == slideIndex ? _buildPageIndicator(true): _buildPageIndicator(false),
+                      ],
+                    ),
+                  ),
+
+
+                  Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.only(left: 20,top: 30),
+                        width: 150,
+                        child:      FlatButton(
+                          minWidth: 150,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              side: BorderSide(color:  Color(0xff3CBE1B) )),
+                          color: Colors.white,
+                          textColor:  Color(0xff3CBE1B) ,
+                          padding: EdgeInsets.all(8.0),
+                          onPressed: () {
+                            StorageUtil.saveopenedApp(openBefore(openned: true));
+
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                PageRouteConstants.dashBoardScreen, (r) => false
+                            );
+                          },
+                          child: Text(
+                            "SKIP".toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 14.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+
                 ],
               ),
             ),
 
 
-            Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.only(left: 20,top: 30),
-                  width: 150,
-                  child:      FlatButton(
-                    minWidth: 150,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                        side: BorderSide(color:  Color(0xff3CBE1B) )),
-                    color: Colors.white,
-                    textColor:  Color(0xff3CBE1B) ,
-                    padding: EdgeInsets.all(8.0),
-                    onPressed: () {
-                      StorageUtil.saveopenedApp(openBefore(openned: true));
-
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          PageRouteConstants.dashBoardScreen, (r) => false
-                      );
-                    },
-                    child: Text(
-                      "SKIP".toUpperCase(),
-                      style: TextStyle(
-                        fontSize: 14.0,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
 
 
 
 
 
-
-
-
-            Spacer(),
 
 
 
@@ -114,11 +126,11 @@ class StepperSlide extends StatelessWidget {
             Container(
                 width:   double.infinity,
 
-                height: MediaQuery.of(context).size.height/2-20,
+                height: MediaQuery.of(context).size.height/2,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(imagePath),
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fill,
                   ),
                 )
             ),

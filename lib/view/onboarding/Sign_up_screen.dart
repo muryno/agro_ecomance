@@ -172,7 +172,7 @@ class _SignUpScreen extends State<SignUpScreen>{
                                   hoverColor: Colors.black,
                                   fillColor: Colors.grey[100].withOpacity(0.1),
                                   filled: true,
-                                  suffix: Text('Referral Code'),
+
                                   border: UnderlineInputBorder(
                                     borderSide: BorderSide(color: Colors.grey.withOpacity(0.2)),
                                   ),

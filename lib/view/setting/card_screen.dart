@@ -101,156 +101,163 @@ class _CardSettingScreen extends State<CardSettingScreen> {
         ],
       ),
 
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.all(12.0),
-          child:  Container(
-            // height: MediaQuery.of(context).size.height * 0.8,
+        body: Container(
+          // height: MediaQuery.of(context).size.height * 0.8,
             padding:
             const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child:Stack(
               children: [
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    IconButton(
-                      icon: Icon(Icons.arrow_back,   color: Color(0XFFABA3A3),),
-                      onPressed: () {
 
-                        Navigator.of(context).pop();
-                      },
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.arrow_back,   color: Color(0XFFABA3A3),),
+                          onPressed: () {
+
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        Spacer(),
+                        Text(
+                          "CARD INFORMATION",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Color(0XFFABA3A3),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 40,
+                        )
+                      ],
                     ),
-                    Spacer(),
+
+
+
+                    SizedBox(height: 30,),
+
+
                     Text(
-                      "CARD INFORMATION",
+                      "Agrocard Details",
                       style: TextStyle(
-                        fontSize: 15,
-                        color: Color(0XFFABA3A3),
+                          fontSize: 16,
+                          color: Color(0XFF3BBD17),
+                          fontFamily: 'PoppinsBold'
                       ),
                     ),
-                    SizedBox(
-                      width: 40,
-                    )
+
+                    SizedBox(height: 26,),
+
+                    InkWell(
+                      onTap: (){},
+                      child:  Container(
+                        child:  Image.asset('assets/images/card_.png', fit:BoxFit.cover ,),
+                      ),
+                    ),
+
+                    SizedBox(height: 30,),
+
+                    Container(
+                      child: Column(
+                        children: [
+
+                          Text(
+                            "Card Processing Fee",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0XFF707070),
+
+                            ),
+                          ),
+
+                          Text(
+                            "NGN2,000",
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Color(0XFF3BBD17),
+
+                            ),
+                          ),
+
+                          SizedBox(height: 30,),
+                        ],
+                      ),
+                    ),
+
+
+                    Text(
+                      "Naira Debit Card Details",
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Color(0XFF3BBD17),
+                          fontFamily: 'PoppinsBold'
+                      ),
+                    ),
+                    SizedBox(height: 26,),
+
+
+
+                    GestureDetector(
+                      onTap: (){
+
+                      },
+                      child:     Row(
+                        children: [
+                          Icon(
+                            Icons.add_circle_outline,
+                            color: Color(0XFF3BBD17),
+                            size: 75,
+                          ),
+                          SizedBox(width: 16,),
+                          Text(
+                            "Add New Card ",
+                            style: TextStyle(
+                              fontSize: 16,
+
+
+                            ),
+                          ),
+
+
+                        ],
+                      ),
+                    ),
+
+
+
                   ],
                 ),
 
+                Align(
 
+                  alignment: Alignment.bottomCenter,
+                    child:   Container(
+                      margin: EdgeInsets.symmetric(vertical: 40,horizontal:10 ),
+                      child: RaisedGradientButton(
+                          child: Text(
+                            'Make Payment',
+                            style: TextStyle(fontSize: 18,fontFamily: 'GothamBold',color: Colors.white),
+                          ),
+                          gradient: LinearGradient(
+                            colors: <Color>[Color(0xff3EB120), Colors.greenAccent],
+                          ),
+                          onPressed: (){
 
-                SizedBox(height: 30,),
-
-
-                Text(
-                  "Agrocard Details",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Color(0XFF3BBD17),
-                    fontFamily: 'PoppinsBold'
-                  ),
-                ),
-
-                SizedBox(height: 26,),
-
-                InkWell(
-                  onTap: (){},
-                  child:  Container(
-                    child:  Image.asset('assets/images/card_.png', fit:BoxFit.cover ,),
-                  ),
-                ),
-
-                SizedBox(height: 30,),
-
-                Container(
-                  child: Column(
-                    children: [
-
-                      Text(
-                        " Card Processing Fee",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Color(0XFF707070),
-
-                        ),
+                            // if (_token.data?.access_token != null){
+                            //   chargeCard(int.parse(this.amount));
+                            // }
+                          }
                       ),
-
-                      Text(
-                        "NGN2,000",
-                        style: TextStyle(
-                            fontSize: 20,
-                            color: Color(0XFF3BBD17),
-                            fontFamily: 'PoppinsBold'
-                        ),
-                      ),
-
-                      SizedBox(height: 30,),
-                    ],
-                  ),
-                ),
-
-
-                Text(
-                  "Naira Debit Card Details",
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: Color(0XFF3BBD17),
-                      fontFamily: 'PoppinsRegular'
-                  ),
-                ),
-                SizedBox(height: 26,),
-
-
-
-                GestureDetector(
-                  onTap: (){
-
-                  },
-                  child:     Row(
-                    children: [
-                      Icon(
-                        Icons.add_circle_outline,
-                        color: Color(0XFF3BBD17),
-                        size: 75,
-                      ),
-                      SizedBox(width: 16,),
-                      Text(
-                        "Add New Card ",
-                        style: TextStyle(
-                          fontSize: 16,
-
-
-                        ),
-                      ),
-
-
-                    ],
-                  ),
-                ),
-
-              Container(
-              margin: EdgeInsets.symmetric(vertical: 10),
-              child: RaisedGradientButton(
-                  child: Text(
-                    'Make Payment',
-                    style: TextStyle(fontSize: 18,fontFamily: 'GothamBold',color: Colors.white),
-                  ),
-                  gradient: LinearGradient(
-                    colors: <Color>[Color(0xff3EB120), Colors.greenAccent],
-                  ),
-                  onPressed: (){
-
-                    // if (_token.data?.access_token != null){
-                    //   chargeCard(int.parse(this.amount));
-                    // }
-                  }
-              ),
-            )
-
+                    )
+                )
               ],
-            ),
-            // ],
-            // ),
-          )),
-
+            )
+          // ],
+          // ),
+        ),
 
         drawer: Container(
 

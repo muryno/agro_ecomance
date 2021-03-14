@@ -6,6 +6,8 @@
 import 'package:agro_ecomance/view/cart/payment_screen.dart';
 import 'package:agro_ecomance/view/commision/withdraw_screen.dart';
 import 'package:agro_ecomance/view/onboarding/Signup_payment_screen.dart';
+import 'package:agro_ecomance/view/onboarding/forgot_password.dart';
+import 'package:agro_ecomance/view/onboarding/new_forgot_password.dart';
 import 'package:agro_ecomance/view/setting/address_screen.dart';
 import 'package:agro_ecomance/view/setting/card_screen.dart';
 import 'package:agro_ecomance/view/setting/nextkin_screen.dart';
@@ -116,6 +118,16 @@ class Routers {
       case PageRouteConstants.oTPScreen:
         return MaterialPageRoute(builder: (_) => OTPScreen(),settings: RouteSettings( arguments: settings.arguments));
 
+
+      case PageRouteConstants.forgotPassword:
+        return MaterialPageRoute(builder: (_) => ForgotPassword());
+    //
+      case PageRouteConstants.newPassword:
+        return MaterialPageRoute(builder: (_) => NewPassword(),settings: RouteSettings( arguments: settings.arguments));
+
+
+        ////
+    // //NewPassword
 
 
       default:

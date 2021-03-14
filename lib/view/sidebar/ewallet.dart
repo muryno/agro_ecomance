@@ -52,7 +52,11 @@ class _EWallet extends State<EWallet> {
 
   }
 
-
+  @override
+  void dispose() {
+    ewalletBloc.dispose();
+    super.dispose();
+  }
 
   Widget amount = Container(
       child: TextFormField(
@@ -70,11 +74,7 @@ class _EWallet extends State<EWallet> {
 
 
 
-  @override
-  void dispose() {
-    ewalletBloc.dispose();
-    super.dispose();
-  }
+
 
   @override
   Widget build(BuildContext context) {

@@ -44,7 +44,11 @@ class PageRouteConstants {
   static const String SecurityScreen = '/SecurityScreen';
 
   static const String cardSettingScreen = '/cardSettingScreen';
-//
+
+  static const String forgotPassword = '/ForgotPassword';
+
+  static const String newPassword = '/NewPassword';
+
 
 //paymentScreen
 

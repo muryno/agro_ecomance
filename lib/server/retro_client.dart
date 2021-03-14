@@ -80,8 +80,16 @@ abstract class ApiRestClient {
   Future<loginToken> attemptLogin(@Body() login_request usr);
 
 
+  @POST("password/reset/start")
+  Future<SignUpRes> startPasswordReset(@Body() Map<String,String> usr);
 
- @GET("auth/profile")
+
+  @POST("password/reset/start")
+  Future<SignUpRes> completePasswordReset(@Body() Map<String,String> usr);
+
+
+
+  @GET("auth/profile")
  Future<UserProfile> getUserProfile();
 
 

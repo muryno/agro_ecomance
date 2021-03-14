@@ -190,6 +190,25 @@ class _LoginPage extends State<LoginScreen>{
                   password,
                   SizedBox(height: 35,),
 
+
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.of(context).pushNamed(PageRouteConstants.forgotPassword);
+                    },
+                    child:    Container(
+                      alignment: Alignment.centerRight,
+                      child:   Text(
+                        "Forget Password?",
+
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0XFF3ABC17),
+                            fontFamily: 'PoppinsBold'),
+
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
                     child: RaisedGradientButton(
